@@ -46,18 +46,18 @@ namespace MATAPB.Gaming.FPS
                 else if (angleUD < -Math.PI * 0.45)
                     angleUD = -Math.PI * 0.45;
 
-                if (data.speedLR > actualSpeedLR) actualSpeedLR += 0.004;
-                else if (data.speedLR < actualSpeedLR) actualSpeedLR -= 0.004;
+                if (data.speedLR > actualSpeedLR) actualSpeedLR += 0.4;
+                else if (data.speedLR < actualSpeedLR) actualSpeedLR -= 0.4;
 
-                if (data.speedFB > actualSpeedFB) actualSpeedFB += 0.004;
-                else if (data.speedFB < actualSpeedFB) actualSpeedFB -= 0.004;
+                if (data.speedFB > actualSpeedFB) actualSpeedFB += 0.4;
+                else if (data.speedFB < actualSpeedFB) actualSpeedFB -= 0.4;
 
                 if (fov > PlayerCam.FieldOfView) PlayerCam.FieldOfView += 5.0;
                 else if (fov < PlayerCam.FieldOfView) PlayerCam.FieldOfView -= 5.0;
 
 
-                if (Math.Abs(actualSpeedLR) < 0.004) actualSpeedLR = 0.0;
-                if (Math.Abs(actualSpeedFB) < 0.004) actualSpeedFB = 0.0;
+                if (Math.Abs(actualSpeedLR) < 0.4) actualSpeedLR = 0.0;
+                if (Math.Abs(actualSpeedFB) < 0.4) actualSpeedFB = 0.0;
                 if (Math.Abs(actualSpeedUD) < 0.01) actualSpeedUD = 0.0;
 
                 double preEyeX = PlayerCam.Eye.X, preEyeZ = PlayerCam.Eye.Z;
@@ -65,8 +65,8 @@ namespace MATAPB.Gaming.FPS
 
                 MatVector3 speedVector = new MatVector3()
                 {
-                    X = -Math.Sin(angleLR) * actualSpeedFB + Math.Cos(angleLR) * actualSpeedLR,
-                    Z = Math.Cos(angleLR) * actualSpeedFB + Math.Sin(angleLR) * actualSpeedLR,
+                    X = (-Math.Sin(angleLR) * actualSpeedFB + Math.Cos(angleLR) * actualSpeedLR) * PresentationArea.TimelengthOfFrame,
+                    Z = (Math.Cos(angleLR) * actualSpeedFB + Math.Sin(angleLR) * actualSpeedLR) * PresentationArea.TimelengthOfFrame,
                     Y = 0
                 };
 
@@ -79,8 +79,8 @@ namespace MATAPB.Gaming.FPS
                 MapJudgment2_5D.Map = Map;
                 MapJudgment2_5DResult result = MapJudgment2_5D.Judge(inputData);
 
-                PlayerCam.Eye.X += result.resultVector.X * PresentationArea.TimelengthOfFrame;
-                PlayerCam.Eye.Z += result.resultVector.Z * PresentationArea.TimelengthOfFrame;
+                PlayerCam.Eye.X += result.resultVector.X;
+                PlayerCam.Eye.Z += result.resultVector.Z;
 
                 if (result.mapOK)
                 {
@@ -94,8 +94,8 @@ namespace MATAPB.Gaming.FPS
                 if (targetHeight > 5.0) targetHeight = 5.0;
                 else if (targetHeight < 0.5) targetHeight = 0.5;
 
-                double deltaEyeY = (targetHeight - PlayerCam.Eye.Y) * 0.12;
-                if (Math.Abs(deltaEyeY) < 0.001) deltaEyeY = 0.0;
+                double deltaEyeY = (targetHeight - PlayerCam.Eye.Y) * 10.0;
+                if (Math.Abs(deltaEyeY) < 0.01) deltaEyeY = 0.0;
 
                 PlayerCam.Eye.Y += deltaEyeY * PresentationArea.TimelengthOfFrame;
 

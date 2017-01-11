@@ -31,6 +31,7 @@ namespace MATAPB
         {
             AutoDisposeObject.AllDisposing += AutoDisposeObject_AllDisposing;
             AnimationClock = new Clock(1000.0 / fps);
+            FPS = fps;
             AnimationClock.Tick += AnimationClock_Tick;
 
             Overlay = new Window()

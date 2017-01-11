@@ -24,7 +24,8 @@ namespace MATAPB.Objects.Tags
 
     public enum CloseAnimations
     {
-        None
+        None,
+        Depop
     }
 
     public class Hopup : Tag
@@ -33,21 +34,22 @@ namespace MATAPB.Objects.Tags
         public HoverAnimations HoverAnimation { get; set; }
         public CloseAnimations CloseAnimation { get; set; }
 
-        public double HopupTime { get; set; }
-        public double CloseTime { get; set; }
+        public double HopupTime { get; set; } = 1.0;
+        public double CloseTime { get; set; } = 1.0;
 
-        public MatVector3 MinPosition { get; set; }
-        public MatVector3 MinScale { get; set; }
-        public MatVector3 MinRotation { get; set; }
+        public MatVector3 MinPosition { get; set; } = new MatVector3(0.0);
+        public MatVector3 MinScale { get; set; } = new MatVector3(0.0);
+        public MatVector3 MinRotation { get; set; } = new MatVector3(0.0);
 
-        public MatVector3 MaxPosition { get; set; }
-        public MatVector3 MaxScale { get; set; }
-        public MatVector3 MaxRotation { get; set; }
+        public MatVector3 MaxPosition { get; set; } = new MatVector3(0.0, 1.0, 0.0);
+        public MatVector3 MaxScale { get; set; } = new MatVector3(1.0);
+        public MatVector3 MaxRotation { get; set; } = new MatVector3(0.0);
 
-        private MatVector3 Position { get; set; }
-        private MatVector3 Scale { get; set; }
-        private MatVector3 Rotation { get; set; }
+        private MatVector3 Position { get; set; } = new MatVector3(0.0);
+        private MatVector3 Scale { get; set; } = new MatVector3(0.0);
+        private MatVector3 Rotation { get; set; } = new MatVector3(0.0);
 
+        private Matrix _Hopup_world;
         private EffectMatrixVariable Hopup_world;
 
         private double hopupState = 0, closeStaate = 0;
@@ -60,16 +62,18 @@ namespace MATAPB.Objects.Tags
             Close
         }
 
-        private HopState state;
+        private HopState state = HopState.None;
 
         public void Hop()
         {
             state = HopState.Hop;
+            hopupState = 0.0;
         }
 
         public void Close()
         {
             state = HopState.Close;
+            closeStaate = 1.0;
         }
 
         public override void Download(RenderingContext context)
@@ -91,6 +95,8 @@ namespace MATAPB.Objects.Tags
                 default:
                     break;
             }
+
+            Hopup_world.SetMatrix(_Hopup_world);
         }
 
         private void OnHop()
@@ -103,25 +109,31 @@ namespace MATAPB.Objects.Tags
                     Rotation = MaxRotation;
 
                     state = HopState.Hover;
-                    hopupState = 0.0;
                     break;
 
                 case HopupAnimations.Pop:
+                    hopupState += PresentationArea.TimelengthOfFrame / HopupTime;
                     if (hopupState < 1.0)
                     {
-                        hopupState += PresentationArea.TimelengthOfFrame / HopupTime;
-                        Position
+                        Position = MatVector3.InternalDivision(MinPosition, MaxPosition, hopupState, 1.0 - hopupState);
+                        Scale = MatVector3.InternalDivision(MinScale, MaxScale, hopupState, 1.0 - hopupState);
+                        Rotation = MatVector3.InternalDivision(MinRotation, MaxRotation, hopupState, 1.0 - hopupState);
                     }
                     else
                     {
+                        Position = MaxPosition;
+                        Scale = MaxScale;
+                        Rotation = MaxRotation;
+
                         state = HopState.Hover;
-                        hopupState = 0.0;
                     }
                     break;
 
                 default:
                     break;
             }
+
+            CalcValue();
         }
 
         private void OnHover()
@@ -139,18 +151,37 @@ namespace MATAPB.Objects.Tags
                     Rotation = MinRotation;
                     break;
 
+                case CloseAnimations.Depop:
+                    closeStaate -= PresentationArea.TimelengthOfFrame / CloseTime;
+                    if (closeStaate > 0.0)
+                    {
+                        Position = MatVector3.InternalDivision(MinPosition, MaxPosition, closeStaate, 1.0 - closeStaate);
+                        Scale = MatVector3.InternalDivision(MinScale, MaxScale, closeStaate, 1.0 - closeStaate);
+                        Rotation = MatVector3.InternalDivision(MinRotation, MaxRotation, closeStaate, 1.0 - closeStaate);
+                    }
+                    else
+                    {
+                        Position = MinPosition;
+                        Scale = MinScale;
+                        Rotation = MinRotation;
+
+                        state = HopState.None;
+                    }
+                    CalcValue();
+                    break;
+
                 default:
                     break;
             }
+
+            CalcValue();
         }
 
-        private void ValueDownload()
+        private void CalcValue()
         {
-            Matrix world = Matrix.Scaling(MatVector3.ToSlimDXVector3(Scale));
-            world *= Matrix.RotationX((float)Rotation.X) * Matrix.RotationY((float)Rotation.Y) * Matrix.RotationZ((float)Rotation.Z);
-            world *= Matrix.Translation(MatVector3.ToSlimDXVector3(Position));
-
-            Hopup_world.SetMatrix(world);
+            _Hopup_world = Matrix.Scaling(MatVector3.ToSlimDXVector3(Scale));
+            _Hopup_world *= Matrix.RotationX((float)Rotation.X) * Matrix.RotationY((float)Rotation.Y) * Matrix.RotationZ((float)Rotation.Z);
+            _Hopup_world *= Matrix.Translation(MatVector3.ToSlimDXVector3(Position));
         }
 
         public override string GetShaderText()
@@ -160,7 +191,7 @@ namespace MATAPB.Objects.Tags
 
         public override void SetVariables(Effect effect)
         {
-            Hopup_world = effect.GetVariableByName("PSR_world").AsMatrix();
+            Hopup_world = effect.GetVariableByName("Hopup_world").AsMatrix();
         }
 
         protected override void OnDispose()

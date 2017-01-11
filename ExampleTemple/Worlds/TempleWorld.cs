@@ -22,7 +22,8 @@ namespace ExampleTemple.Worlds
         public TempleWorld()
         {
             hero.Map = mapArea;
-            hero.PlayerCam = new Camera3D();
+            //hero.PlayerCam = new Camera3D();
+            hero.PlayerCam = new MATAPB.Camera();
             hero.PlayerCam.Eye = new MatVector3(0.0, 1.0, 0.0);
             hero.PlayerCam.Up = new MatVector3(0.0, 1.0, 0.0);
             ActiveCamera = hero.PlayerCam;
@@ -32,9 +33,15 @@ namespace ExampleTemple.Worlds
             testImage.Position = new MatVector3(0.0, 2.5, -6.2);
             testImage.Rotation.X = -0.2;
 
+            image = new MATAPB.Objects.Primitive.Plane(0.75, 0.45, Orientations.plusZ);
+            image.Tags.AddTag(new ColorTexture(@"Objects/ほのぼの神社.png"));
+            image.Tags.InsertToFirst(hopup);
+            image.PSRTag.Position = new MatVector3(0.0, 2.0, -6.2);
+            image.PSRTag.Rotation.X = -0.3;
+
             Objects.Add(map);
             Objects.Add(sky);
-            Objects.Add(testImage);
+            Objects.Add(image);
 
             hitArea.MineHit += HitArea_MineHit;
             hitArea.MineLeave += HitArea_MineLeave;
@@ -51,17 +58,19 @@ namespace ExampleTemple.Worlds
         {
             Scale = 0.0008
         };
+        MATAPB.Objects.Primitive.Plane image;
         Mine hitArea = new Mine();
+        Hopup hopup = new Hopup() { HopupAnimation = HopupAnimations.Pop, HopupTime = 0.3, MaxPosition = new MatVector3(0, 0.5, 0), CloseAnimation = CloseAnimations.Depop };
 
 
         private void HitArea_MineHit()
         {
-            testImage.Hop();
+            hopup.Hop();
         }
 
         private void HitArea_MineLeave()
         {
-            testImage.Remove();
+            hopup.Close();
         }
 
         MATAPB.Camera cam1 = new MATAPB.Camera()
@@ -96,29 +105,29 @@ namespace ExampleTemple.Worlds
 
             MoveData data = new MoveData()
             {
-                deltaAngleLR = mouseDelta.X,
-                deltaAngleUD = mouseDelta.Y
+                deltaAngleLR = mouseDelta.X * 0.3,
+                deltaAngleUD = mouseDelta.Y * 0.3
             };
 
             if (Keyboard.KeyStates[Key.D])
             {
                 if (Keyboard.KeyStates[Key.A])
-                    data.speedLR = 0.00;
+                    data.speedLR = 0;
                 else
-                    data.speedLR = -0.03;
+                    data.speedLR = -3;
             }
-            else if (Keyboard.KeyStates[Key.A]) data.speedLR = 0.03;
-            else data.speedLR = 0.0;
+            else if (Keyboard.KeyStates[Key.A]) data.speedLR = 3;
+            else data.speedLR = 0;
 
             if (Keyboard.KeyStates[Key.W])
             {
                 if (Keyboard.KeyStates[Key.S])
-                    data.speedFB = 0.00;
+                    data.speedFB = 0;
                 else
-                    data.speedFB = 0.03;
+                    data.speedFB = 3;
             }
-            else if (Keyboard.KeyStates[Key.S]) data.speedFB = -0.03;
-            else data.speedFB = 0.0;
+            else if (Keyboard.KeyStates[Key.S]) data.speedFB = -3;
+            else data.speedFB = 0;
 
             if (Keyboard.KeyStates[Key.LeftShift])
             {

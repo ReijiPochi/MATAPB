@@ -44,6 +44,12 @@ namespace MATAPB.Objects
             Initialize();
         }
 
+        public void RemoveTag(Tag tag)
+        {
+            tagsList.Remove(tag);
+            Initialize();
+        }
+
         public void Initialize()
         {
             string text = null;

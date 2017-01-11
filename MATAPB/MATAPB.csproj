@@ -142,7 +142,7 @@
     <EmbeddedResource Include="Objects\Tags\PSR.fx" />
     <EmbeddedResource Include="Objects\Tags\Camera.fx" />
     <EmbeddedResource Include="Objects\Tags\Lighting.fx" />
-    <None Include="Objects\Tags\Hopup.fx" />
+    <EmbeddedResource Include="Objects\Tags\Hopup.fx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
