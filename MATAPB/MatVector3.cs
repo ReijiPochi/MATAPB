@@ -86,5 +86,14 @@ namespace MATAPB
         {
             return new MatVector3(v.X * constant, v.Y * constant, v.Z * constant);
         }
+
+        public static MatVector3 InternalDivision(MatVector3 v1, MatVector3 v2, double ratio1, double ratio2)
+        {
+            double sum = ratio1 + ratio2;
+            return new MatVector3(
+                (v1.X * ratio2 + v2.X * ratio1) / sum,
+                (v1.Y * ratio2 + v2.Y * ratio1) / sum,
+                (v1.Z * ratio2 + v2.Z * ratio1) / sum);
+        }
     }
 }

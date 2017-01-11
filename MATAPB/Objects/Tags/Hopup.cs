@@ -22,20 +22,35 @@ namespace MATAPB.Objects.Tags
         UpDown
     }
 
+    public enum CloseAnimations
+    {
+        None
+    }
+
     public class Hopup : Tag
     {
         public HopupAnimations HopupAnimation { get; set; }
         public HoverAnimations HoverAnimation { get; set; }
+        public CloseAnimations CloseAnimation { get; set; }
 
         public double HopupTime { get; set; }
         public double CloseTime { get; set; }
+
+        public MatVector3 MinPosition { get; set; }
+        public MatVector3 MinScale { get; set; }
+        public MatVector3 MinRotation { get; set; }
+
+        public MatVector3 MaxPosition { get; set; }
+        public MatVector3 MaxScale { get; set; }
+        public MatVector3 MaxRotation { get; set; }
 
         private MatVector3 Position { get; set; }
         private MatVector3 Scale { get; set; }
         private MatVector3 Rotation { get; set; }
 
         private EffectMatrixVariable Hopup_world;
-        private double hopupCount = 0, closeCount = 0;
+
+        private double hopupState = 0, closeStaate = 0;
 
         private enum HopState
         {
@@ -80,7 +95,33 @@ namespace MATAPB.Objects.Tags
 
         private void OnHop()
         {
+            switch (HopupAnimation)
+            {
+                case HopupAnimations.None:
+                    Position = MaxPosition;
+                    Scale = MaxScale;
+                    Rotation = MaxRotation;
 
+                    state = HopState.Hover;
+                    hopupState = 0.0;
+                    break;
+
+                case HopupAnimations.Pop:
+                    if (hopupState < 1.0)
+                    {
+                        hopupState += PresentationArea.TimelengthOfFrame / HopupTime;
+                        Position
+                    }
+                    else
+                    {
+                        state = HopState.Hover;
+                        hopupState = 0.0;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void OnHover()
@@ -90,7 +131,17 @@ namespace MATAPB.Objects.Tags
 
         private void OnClose()
         {
+            switch(CloseAnimation)
+            {
+                case CloseAnimations.None:
+                    Position = MinPosition;
+                    Scale = MinScale;
+                    Rotation = MinRotation;
+                    break;
 
+                default:
+                    break;
+            }
         }
 
         private void ValueDownload()

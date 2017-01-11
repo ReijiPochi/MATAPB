@@ -80,6 +80,23 @@ namespace MATAPB
             DefaultCanvas.SetCanvas();
         }
 
+        private static double _FPS = 60.0;
+        public static double FPS
+        {
+            get { return _FPS; }
+            set
+            {
+                _FPS = value;
+                _TimelengthOfFrame = 1.0 / value;
+            }
+        }
+
+        private static double _TimelengthOfFrame = 1.0 / 60.0;
+        public static double TimelengthOfFrame
+        {
+            get { return _TimelengthOfFrame; }
+        }
+
         public static World World { get; set; }
 
         public static Window WorldHost { get; private set; }

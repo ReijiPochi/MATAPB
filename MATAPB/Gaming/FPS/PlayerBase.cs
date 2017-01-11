@@ -38,8 +38,8 @@ namespace MATAPB.Gaming.FPS
         {
             if (data != null)
             {
-                angleLR += data.deltaAngleLR * 0.003;
-                angleUD += data.deltaAngleUD * 0.003;
+                angleLR += data.deltaAngleLR * PresentationArea.TimelengthOfFrame;
+                angleUD += data.deltaAngleUD * PresentationArea.TimelengthOfFrame;
 
                 if (angleUD > Math.PI * 0.45)
                     angleUD = Math.PI * 0.45;
@@ -79,8 +79,8 @@ namespace MATAPB.Gaming.FPS
                 MapJudgment2_5D.Map = Map;
                 MapJudgment2_5DResult result = MapJudgment2_5D.Judge(inputData);
 
-                PlayerCam.Eye.X += result.resultVector.X;
-                PlayerCam.Eye.Z += result.resultVector.Z;
+                PlayerCam.Eye.X += result.resultVector.X * PresentationArea.TimelengthOfFrame;
+                PlayerCam.Eye.Z += result.resultVector.Z * PresentationArea.TimelengthOfFrame;
 
                 if (result.mapOK)
                 {
@@ -97,7 +97,7 @@ namespace MATAPB.Gaming.FPS
                 double deltaEyeY = (targetHeight - PlayerCam.Eye.Y) * 0.12;
                 if (Math.Abs(deltaEyeY) < 0.001) deltaEyeY = 0.0;
 
-                PlayerCam.Eye.Y += deltaEyeY;
+                PlayerCam.Eye.Y += deltaEyeY * PresentationArea.TimelengthOfFrame;
 
                 PlayerCam.Target = new MatVector3()
                 {
