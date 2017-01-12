@@ -28,6 +28,7 @@ namespace ExampleTemple.Worlds
             hero.PlayerCam.Up = new MatVector3(0.0, 1.0, 0.0);
             ActiveCamera = hero.PlayerCam;
 
+            map.PSRTag.Scale = new MatVector3(0.1);
             map.Tags.AddTag(new Tag[] { new ColorTexture(@"Objects\Map.png"), new Lighting() });
             sky.Tags.AddTag(new ColorTexture(@"Objects\Skydome.png"));
             testImage.Position = new MatVector3(0.0, 2.5, -6.2);
@@ -40,6 +41,7 @@ namespace ExampleTemple.Worlds
             image.PSRTag.Rotation.X = -0.3;
 
             Objects.Add(map);
+            //Objects.Add(mapArea);
             Objects.Add(sky);
             Objects.Add(image);
 
@@ -51,8 +53,8 @@ namespace ExampleTemple.Worlds
             hitArea.Hysteresis = 1.0;
         }
 
-        Object3D map = new Object3D(@"Objects\Map.obj");
-        Object3D mapArea = new Object3D(@"Objects\MapArea.obj");
+        Object3D map = new Object3D(@"Objects\E.obj");
+        Object3D mapArea = new Object3D(@"Objects\map2.obj");
         Object3D sky = new Object3D(@"Objects\sky.obj");
         HopupImage testImage = new HopupImage(@"Objects/ほのぼの神社.png", Orientations.plusZ)
         {
@@ -60,7 +62,16 @@ namespace ExampleTemple.Worlds
         };
         MATAPB.Objects.Primitive.Plane image;
         Mine hitArea = new Mine();
-        Hopup hopup = new Hopup() { HopupAnimation = HopupAnimations.Pop, HopupTime = 0.3, MaxPosition = new MatVector3(0, 0.5, 0), CloseAnimation = CloseAnimations.Depop };
+        Hopup hopup = new Hopup()
+        {
+            HopupAnimation = HopupAnimations.PopLiner,
+            HoverAnimation = HoverAnimations.Wave,
+            WaveRate = 0.8,
+            WaveHeight = 0.02,
+            HopupTime = 0.3,
+            MaxPosition = new MatVector3(0, 0.5, 0),
+            CloseAnimation = CloseAnimations.DepopLiner
+        };
 
 
         private void HitArea_MineHit()
@@ -133,6 +144,19 @@ namespace ExampleTemple.Worlds
             {
                 data.speedFB *= 2.0;
                 data.speedLR *= 2.0;
+            }
+
+            if (Keyboard.KeyStates[Key.Space])
+            {
+                data.height = 2.5;
+            }
+            else if(Keyboard.KeyStates[Key.LeftCtrl])
+            {
+                data.height = 0.9;
+            }
+            else
+            {
+                data.height = 1.6;
             }
 
             hero.Move(data);

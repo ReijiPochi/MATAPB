@@ -62,18 +62,18 @@ namespace MATAPB
 
             CreateDeviceAndSwapChain(out _GraphicsDevice, out _SwapChain);
 
-            //RasterizerState state = RasterizerState.FromDescription(
-            //    GraphicsDevice,
-            //    new RasterizerStateDescription()
-            //    {
-            //        CullMode = CullMode.None,
-            //        FillMode = FillMode.Solid
-            //    });
+            RasterizerState state = RasterizerState.FromDescription(
+                GraphicsDevice,
+                new RasterizerStateDescription()
+                {
+                    CullMode = CullMode.None,
+                    FillMode = FillMode.Solid
+                });
 
-            //using (state)
-            //{
-            //    GraphicsDevice.ImmediateContext.Rasterizer.State = state;
-            //}
+            using (state)
+            {
+                GraphicsDevice.ImmediateContext.Rasterizer.State = state;
+            }
 
             DefaultCanvas = new RenderingCanvas() { color = new Color4(0.1f, 0.1f, 0.1f) };
             InitDefaultRenderTarget();

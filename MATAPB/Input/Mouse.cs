@@ -14,6 +14,25 @@ namespace MATAPB.Input
     {
         public static bool CursorLock { get; set; }
 
+        public static bool _Active = true;
+        public static bool Active
+        {
+            get { return _Active; }
+            set
+            {
+                if (value)
+                {
+                    Restart();
+                }
+                else
+                {
+                    Pause();
+                }
+
+                _Active = value;
+            }
+        }
+
         private static bool pause;
 
         public static bool _CursorVisibility;
@@ -123,11 +142,15 @@ namespace MATAPB.Input
 
         private static void Overlay_Activated(object sender, EventArgs e)
         {
-            pause = false;
-            CursorVisibility = _CursorVisibility;
+            Restart();
         }
 
         private static void Overlay_Deactivated(object sender, EventArgs e)
+        {
+            Pause();
+        }
+
+        public static void Pause()
         {
             pause = true;
             cursorLocked = false;
@@ -136,5 +159,10 @@ namespace MATAPB.Input
             PresentationArea.Overlay.Cursor = Cursors.Arrow;
         }
 
+        public static void Restart()
+        {
+            pause = false;
+            CursorVisibility = _CursorVisibility;
+        }
     }
 }

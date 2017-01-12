@@ -10,5 +10,6 @@ namespace MATAPB.Gaming.FPS
     {
         public double speedFB, speedLR, speedUD;
         public double deltaAngleLR, deltaAngleUD;
+        public double height;
     }
 }

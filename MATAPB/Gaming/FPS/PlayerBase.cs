@@ -30,7 +30,7 @@ namespace MATAPB.Gaming.FPS
 
         double actualSpeedLR, actualSpeedFB, actualSpeedUD;
         double angleLR = 0.0, angleUD = 0.0;
-        double targetHeight = 1.6;
+        double heightOffset = 0.0, targetHeight = 0.0;
 
         double fov = 70.0;
 
@@ -79,16 +79,17 @@ namespace MATAPB.Gaming.FPS
                 MapJudgment2_5D.Map = Map;
                 MapJudgment2_5DResult result = MapJudgment2_5D.Judge(inputData);
 
-                PlayerCam.Eye.X += result.resultVector.X;
-                PlayerCam.Eye.Z += result.resultVector.Z;
+                PlayerCam.Eye.X = result.result.X;
+                PlayerCam.Eye.Z = result.result.Z;
 
                 if (result.mapOK)
                 {
-                    targetHeight = result.floorHeight + 1.6;
+                    heightOffset = result.floorHeight;
+                    targetHeight = result.floorHeight + data.height;
                 }
                 else
                 {
-                    targetHeight = PlayerCam.Eye.Y;
+                    targetHeight = heightOffset + data.height;
                 }
 
                 if (targetHeight > 5.0) targetHeight = 5.0;

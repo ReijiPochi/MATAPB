@@ -39,9 +39,15 @@ namespace MATAPB.Input
                             break;
 
                         case "f":
-                            indices.Add(new Indices(line[1]));
-                            indices.Add(new Indices(line[2]));
-                            indices.Add(new Indices(line[3]));
+                            Indices i1 = Indices.FromText(line[1]);
+                            Indices i2 = Indices.FromText(line[2]);
+                            Indices i3 = Indices.FromText(line[3]);
+                            if (i1 == null || i2 == null || i3 == null)
+                                break;
+
+                            indices.Add(i1);
+                            indices.Add(i2);
+                            indices.Add(i3);
                             break;
 
                         default:
@@ -104,22 +110,34 @@ namespace MATAPB.Input
 
         private class Indices
         {
-            public Indices(string indices)
+            public Indices()
+            {
+
+            }
+
+            public static Indices FromText(string indices)
             {
                 string[] index = indices.Split('/');
 
-                if (int.TryParse(index[0], out position) && int.TryParse(index[1], out texCoord) && int.TryParse(index[2], out normal))
+                if (index.Length != 3)
+                    return null;
+
+                Indices result = new Indices();
+
+                if (int.TryParse(index[0], out result.position) && int.TryParse(index[1], out result.texCoord) && int.TryParse(index[2], out result.normal))
                 {
-                    position--;
-                    normal--;
-                    texCoord--;
+                    result.position--;
+                    result.normal--;
+                    result.texCoord--;
                 }
                 else
                 {
-                    position = 0;
-                    normal = 0;
-                    texCoord = 0;
+                    result.position = 0;
+                    result.normal = 0;
+                    result.texCoord = 0;
                 }
+
+                return result;
             }
 
             public int position;

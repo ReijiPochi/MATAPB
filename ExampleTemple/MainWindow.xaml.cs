@@ -38,11 +38,22 @@ namespace ExampleTemple
             PresentationArea.World = templeWorld;
 
             MATAPB.Input.Keyboard.Initialize();
+            MATAPB.Input.Keyboard.KeyInput += Keyboard_KeyInput;
             MATAPB.Input.Mouse.Initialize();
             MATAPB.Input.Mouse.CursorLock = true;
             MATAPB.Input.Mouse.CursorVisibility = false;
 
             PresentationArea.Launch();
+        }
+
+        private void Keyboard_KeyInput(Key key)
+        {
+            if(key == Key.Enter)
+            {
+                MATAPB.Input.Mouse.Active = !MATAPB.Input.Mouse.Active;
+                MATAPB.Input.Mouse.CursorLock = !MATAPB.Input.Mouse.CursorLock;
+                MATAPB.Input.Mouse.CursorVisibility = !MATAPB.Input.Mouse.CursorVisibility;
+            }
         }
     }
 }

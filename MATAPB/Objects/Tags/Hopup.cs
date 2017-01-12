@@ -12,20 +12,19 @@ namespace MATAPB.Objects.Tags
     public enum HopupAnimations
     {
         None,
-        Raise,
-        Pop
+        PopLiner
     }
 
     public enum HoverAnimations
     {
         None,
-        UpDown
+        Wave
     }
 
     public enum CloseAnimations
     {
         None,
-        Depop
+        DepopLiner
     }
 
     public class Hopup : Tag
@@ -36,6 +35,9 @@ namespace MATAPB.Objects.Tags
 
         public double HopupTime { get; set; } = 1.0;
         public double CloseTime { get; set; } = 1.0;
+
+        public double WaveHeight { get; set; } = 0.1;
+        public double WaveRate { get; set; } = 1.0;
 
         public MatVector3 MinPosition { get; set; } = new MatVector3(0.0);
         public MatVector3 MinScale { get; set; } = new MatVector3(0.0);
@@ -52,7 +54,7 @@ namespace MATAPB.Objects.Tags
         private Matrix _Hopup_world;
         private EffectMatrixVariable Hopup_world;
 
-        private double hopupState = 0, closeStaate = 0;
+        private double hopupState = 0.0, closeStaate = 0.0, hoverState = 0.0;
 
         private enum HopState
         {
@@ -104,14 +106,15 @@ namespace MATAPB.Objects.Tags
             switch (HopupAnimation)
             {
                 case HopupAnimations.None:
-                    Position = MaxPosition;
-                    Scale = MaxScale;
-                    Rotation = MaxRotation;
+                    MatVector3.Copy(MaxPosition, Position);
+                    MatVector3.Copy(MaxScale, Scale);
+                    MatVector3.Copy(MaxRotation, Rotation);
 
                     state = HopState.Hover;
+                    hoverState = 0.0;
                     break;
 
-                case HopupAnimations.Pop:
+                case HopupAnimations.PopLiner:
                     hopupState += PresentationArea.TimelengthOfFrame / HopupTime;
                     if (hopupState < 1.0)
                     {
@@ -121,11 +124,12 @@ namespace MATAPB.Objects.Tags
                     }
                     else
                     {
-                        Position = MaxPosition;
-                        Scale = MaxScale;
-                        Rotation = MaxRotation;
+                        MatVector3.Copy(MaxPosition, Position);
+                        MatVector3.Copy(MaxScale, Scale);
+                        MatVector3.Copy(MaxRotation, Rotation);
 
                         state = HopState.Hover;
+                        hoverState = 0.0;
                     }
                     break;
 
@@ -138,7 +142,18 @@ namespace MATAPB.Objects.Tags
 
         private void OnHover()
         {
+            switch(HoverAnimation)
+            {
+                case HoverAnimations.None:
+                    return;
 
+                case HoverAnimations.Wave:
+                    hoverState += PresentationArea.TimelengthOfFrame * 2.0 * Math.PI * WaveRate;
+                    Position.Y = MaxPosition.Y + WaveHeight * Math.Sin(hoverState);
+                    break;
+            }
+
+            CalcValue();
         }
 
         private void OnClose()
@@ -146,12 +161,12 @@ namespace MATAPB.Objects.Tags
             switch(CloseAnimation)
             {
                 case CloseAnimations.None:
-                    Position = MinPosition;
-                    Scale = MinScale;
-                    Rotation = MinRotation;
+                    MatVector3.Copy(MinPosition, Position);
+                    MatVector3.Copy(MinScale, Scale);
+                    MatVector3.Copy(MinRotation, Rotation);
                     break;
 
-                case CloseAnimations.Depop:
+                case CloseAnimations.DepopLiner:
                     closeStaate -= PresentationArea.TimelengthOfFrame / CloseTime;
                     if (closeStaate > 0.0)
                     {
@@ -161,9 +176,9 @@ namespace MATAPB.Objects.Tags
                     }
                     else
                     {
-                        Position = MinPosition;
-                        Scale = MinScale;
-                        Rotation = MinRotation;
+                        MatVector3.Copy(MinPosition, Position);
+                        MatVector3.Copy(MinScale, Scale);
+                        MatVector3.Copy(MinRotation, Rotation);
 
                         state = HopState.None;
                     }

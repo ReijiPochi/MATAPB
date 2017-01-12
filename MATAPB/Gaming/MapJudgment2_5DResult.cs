@@ -9,7 +9,7 @@ namespace MATAPB.Gaming
     public class MapJudgment2_5DResult
     {
         public bool mapOK;
-        public MatVector3 resultVector;
+        public MatVector3 result;
         public double floorHeight;
     }
 }
