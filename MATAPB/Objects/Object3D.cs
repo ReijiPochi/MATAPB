@@ -18,7 +18,7 @@ namespace MATAPB.Objects
         {
             DrawMode = PrimitiveTopology.TriangleList;
 
-            Tags = new TagCollection();
+            Tags = new TagCollection() { AssociatedObject = this };
             PSRTag = new PSR();
             CameraTag = new Tags.Camera();
             Tags.AddTag(new Tag[] { PSRTag, CameraTag});
@@ -35,7 +35,7 @@ namespace MATAPB.Objects
 
             DrawMode = PrimitiveTopology.TriangleList;
 
-            Tags = new TagCollection();
+            Tags = new TagCollection() { AssociatedObject = this };
             PSRTag = new PSR();
             CameraTag = new Tags.Camera();
             Tags.AddTag(new Tag[] { PSRTag, CameraTag });

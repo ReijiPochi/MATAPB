@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoDisposeObject.cs" />
+    <Compile Include="Blend.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Camera3D.cs" />
     <Compile Include="Clock.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Objects\Tags\ColorTexture.cs" />
     <Compile Include="Objects\Tags\Hopup.cs" />
     <Compile Include="Objects\Tags\Lighting.cs" />
+    <Compile Include="Objects\Tags\LookCamera.cs" />
     <Compile Include="Objects\Tags\PSR.cs" />
     <Compile Include="Objects\Tags\Tag.cs" />
     <Compile Include="Objects\Object3D.cs" />
@@ -163,6 +165,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Objects\Tags\ColorTexture.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Objects\Tags\LookCamera.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

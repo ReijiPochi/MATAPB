@@ -19,14 +19,16 @@ namespace MATAPB
         public int ViewPortWidth { get; set; }
         public int ViewPortHeight { get; set; }
 
+        public Matrix ViewMatrix { get; protected set; }
+        public Matrix ProjectionMatrix { get; protected set; }
         public Matrix CameraMatrix { get; protected set; }
 
         public virtual void Take(List<RenderableObject> objects, RenderingContext context)
         {
             if (objects == null || context == null) return;
 
-            ViewPortWidth = (int)context.viewArea.X;
-            ViewPortHeight = (int)context.viewArea.Y;
+            ViewPortWidth = (int)(context.viewArea.X * PresentationArea.ScreenZoom);
+            ViewPortHeight = (int)(context.viewArea.Y * PresentationArea.ScreenZoom);
 
             context.cam = this;
 
@@ -47,9 +49,9 @@ namespace MATAPB
                 MaxZ = 1.0f
             });
             
-            Matrix view = Matrix.LookAtRH(MatVector3.ToSlimDXVector3(Eye), MatVector3.ToSlimDXVector3(Target), MatVector3.ToSlimDXVector3(Up));
-            Matrix projection = Matrix.PerspectiveFovRH((float)(Math.PI * (FieldOfView / 180.0)), (float)ViewPortWidth / ViewPortHeight, 0.1f, 1000.0f);
-            CameraMatrix = view * projection;
+            ViewMatrix = Matrix.LookAtRH(MatVector3.ToSlimDXVector3(Eye), MatVector3.ToSlimDXVector3(Target), MatVector3.ToSlimDXVector3(Up));
+            ProjectionMatrix = Matrix.PerspectiveFovRH((float)(Math.PI * (FieldOfView / 180.0)), (float)ViewPortWidth / ViewPortHeight, 0.1f, 1000.0f);
+            CameraMatrix = ViewMatrix * ProjectionMatrix;
         }
     }
 }

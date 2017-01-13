@@ -23,6 +23,8 @@ namespace MATAPB.Objects
 
         private List<Tag> tagsList = new List<Tag>();
 
+        public Object3D AssociatedObject { get; set; }
+
         public void AddTag(Tag tag)
         {
             tagsList.Add(tag);
@@ -44,9 +46,17 @@ namespace MATAPB.Objects
             Initialize();
         }
 
+        public void ClearAndSet(Tag tag)
+        {
+            tagsList.Clear();
+            tagsList.Add(tag);
+            Initialize();
+        }
+
         public void RemoveTag(Tag tag)
         {
             tagsList.Remove(tag);
+            tag.associatedObject = null;
             Initialize();
         }
 
@@ -79,6 +89,7 @@ namespace MATAPB.Objects
 
             foreach(Tag tag in tagsList)
             {
+                tag.associatedObject = AssociatedObject;
                 tag.Download(context);
             }
 

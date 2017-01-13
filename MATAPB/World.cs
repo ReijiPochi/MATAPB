@@ -15,10 +15,13 @@ namespace MATAPB
         public World()
         {
             Objects = new List<RenderableObject>();
+            OverlayObjects = new List<RenderableObject>();
             InitConstantBuffer();
         }
 
         public List<RenderableObject> Objects { get; set; }
+
+        public List<RenderableObject> OverlayObjects { get; set; }
 
         public Camera ActiveCamera { get; set; }
 
@@ -31,6 +34,8 @@ namespace MATAPB
         {
             PresentationArea.DefaultCanvas.ClearCanvas();
 
+            AnimationObject.DoAnimation();
+
             if(ActiveCamera is Camera3D)
             {
                 Camera3D cam3d = ActiveCamera as Camera3D;
@@ -39,11 +44,15 @@ namespace MATAPB
                 UpdateConstantBuffer();
                 context.cbuffer = WorldConstantBuffer;
                 ActiveCamera.Take(Objects, context);
+                PresentationArea.DefaultCanvas.ClearDepthStencil();
+                ActiveCamera.Take(OverlayObjects, context);
 
                 cam3d.SetSide2();
                 UpdateConstantBuffer();
                 context.cbuffer = WorldConstantBuffer;
                 ActiveCamera.Take(Objects, context);
+                PresentationArea.DefaultCanvas.ClearDepthStencil();
+                ActiveCamera.Take(OverlayObjects, context);
             }
             else
             {
@@ -52,7 +61,12 @@ namespace MATAPB
                 ActiveCamera.CameraUpdate();
                 UpdateConstantBuffer();
                 context.cbuffer = WorldConstantBuffer;
-                if (ActiveCamera != null) ActiveCamera.Take(Objects, context);
+                if (ActiveCamera != null)
+                {
+                    ActiveCamera.Take(Objects, context);
+                    PresentationArea.DefaultCanvas.ClearDepthStencil();
+                    ActiveCamera.Take(OverlayObjects, context);
+                }
             }
         }
 

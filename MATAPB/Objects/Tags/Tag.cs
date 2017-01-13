@@ -10,12 +10,14 @@ using System.IO;
 
 namespace MATAPB.Objects.Tags
 {
-    public abstract class Tag : AutoDisposeObject
+    public abstract class Tag : AnimationObject
     {
         protected bool valueChanged;
         public abstract string GetShaderText();
         public abstract void SetVariables(Effect effect);
         public abstract void Download(RenderingContext context);
+
+        internal Object3D associatedObject;
 
         protected static string LoadShaderText(string name)
         {

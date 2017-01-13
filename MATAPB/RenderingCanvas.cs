@@ -31,6 +31,11 @@ namespace MATAPB
             PresentationArea.GraphicsDevice.ImmediateContext.ClearDepthStencilView(depthStencil, DepthStencilClearFlags.Depth, 1.0f, 0);
         }
 
+        public void ClearDepthStencil()
+        {
+            PresentationArea.GraphicsDevice.ImmediateContext.ClearDepthStencilView(depthStencil, DepthStencilClearFlags.Depth, 1.0f, 0);
+        }
+
         protected override void OnDispose()
         {
             if (renderTarget != null) renderTarget.Dispose();

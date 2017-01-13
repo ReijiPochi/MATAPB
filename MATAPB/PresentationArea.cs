@@ -60,6 +60,9 @@ namespace MATAPB
 
             WorldHost.Show();
 
+            PresentationSource s = PresentationSource.FromVisual(WorldHost);
+            ScreenZoom = s.CompositionTarget.TransformToDevice.M11;
+
             CreateDeviceAndSwapChain(out _GraphicsDevice, out _SwapChain);
 
             RasterizerState state = RasterizerState.FromDescription(
@@ -79,6 +82,8 @@ namespace MATAPB
             InitDefaultRenderTarget();
             InitDefaultDepthStencil();
             DefaultCanvas.SetCanvas();
+
+            Blend.SetUsual();
         }
 
         private static double _FPS = 60.0;
@@ -105,6 +110,8 @@ namespace MATAPB
         public static Window Overlay { get; private set; }
 
         public static Border ViewArea { get; set; }
+
+        public static double ScreenZoom { get; private set; }
 
         private static SlimDX.Direct3D11.Device _GraphicsDevice;
         public static SlimDX.Direct3D11.Device GraphicsDevice
@@ -176,13 +183,13 @@ namespace MATAPB
                     IsWindowed = false,
                     SampleDescription = new SampleDescription
                     {
-                        Count = 4,
+                        Count = 2,
                         Quality = 0
                     },
                     ModeDescription = new ModeDescription
                     {
-                        Width = (int)(ViewArea.ActualWidth),
-                        Height = (int)(ViewArea.ActualHeight),
+                        Width = (int)(ViewArea.ActualWidth * ScreenZoom),
+                        Height = (int)(ViewArea.ActualHeight * ScreenZoom),
                         RefreshRate = new Rational(60, 1),
                         Format = Format.R8G8B8A8_UNorm
                     },
@@ -207,10 +214,10 @@ namespace MATAPB
                 ArraySize = 1,
                 BindFlags = BindFlags.DepthStencil,
                 Format = Format.D32_Float,
-                Width = (int)(ViewArea.ActualWidth),
-                Height = (int)(ViewArea.ActualHeight),
+                Width = (int)(ViewArea.ActualWidth * ScreenZoom),
+                Height = (int)(ViewArea.ActualHeight * ScreenZoom),
                 MipLevels = 1,
-                SampleDescription = new SampleDescription(4, 0)
+                SampleDescription = new SampleDescription(2, 0)
             };
 
             using (Texture2D depthBuffer = new Texture2D(GraphicsDevice, depthBufferDesc))

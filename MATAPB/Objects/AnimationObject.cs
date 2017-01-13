@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MATAPB.Objects
 {
-    public class AnimationObject : RenderableObject
+    public class AnimationObject : AutoDisposeObject
     {
         public AnimationObject()
         {
@@ -31,11 +31,6 @@ namespace MATAPB.Objects
         protected virtual void AnimationOneFrame()
         {
 
-        }
-
-        public override void Draw(RenderingContext context)
-        {
-            
         }
 
         protected override void OnDispose()

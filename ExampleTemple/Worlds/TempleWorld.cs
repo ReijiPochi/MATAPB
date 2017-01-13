@@ -22,13 +22,13 @@ namespace ExampleTemple.Worlds
         public TempleWorld()
         {
             hero.Map = mapArea;
-            //hero.PlayerCam = new Camera3D();
-            hero.PlayerCam = new MATAPB.Camera();
+            hero.PlayerCam = new Camera3D();
+            //hero.PlayerCam = new MATAPB.Camera();
             hero.PlayerCam.Eye = new MatVector3(0.0, 1.0, 0.0);
             hero.PlayerCam.Up = new MatVector3(0.0, 1.0, 0.0);
             ActiveCamera = hero.PlayerCam;
 
-            map.PSRTag.Scale = new MatVector3(0.1);
+            //map.PSRTag.Scale = new MatVector3(0.1);
             map.Tags.AddTag(new Tag[] { new ColorTexture(@"Objects\Map.png"), new Lighting() });
             sky.Tags.AddTag(new ColorTexture(@"Objects\Skydome.png"));
             testImage.Position = new MatVector3(0.0, 2.5, -6.2);
@@ -40,10 +40,16 @@ namespace ExampleTemple.Worlds
             image.PSRTag.Position = new MatVector3(0.0, 2.0, -6.2);
             image.PSRTag.Rotation.X = -0.3;
 
+            test.Tags.ClearAndSet(new LookCamera() { Scale = new MatVector3(0.018), Position = new MatVector3(0.0, 1.5, -6.2) });
+            test.Tags.AddTag(new ColorTexture(@"Objects\sankaku.png"));
+            test.Tags.InsertToFirst(hopup2);
+            hopup2.Hop();
+
             Objects.Add(map);
             //Objects.Add(mapArea);
             Objects.Add(sky);
             Objects.Add(image);
+            OverlayObjects.Add(test);
 
             hitArea.MineHit += HitArea_MineHit;
             hitArea.MineLeave += HitArea_MineLeave;
@@ -53,8 +59,8 @@ namespace ExampleTemple.Worlds
             hitArea.Hysteresis = 1.0;
         }
 
-        Object3D map = new Object3D(@"Objects\E.obj");
-        Object3D mapArea = new Object3D(@"Objects\map2.obj");
+        Object3D map = new Object3D(@"Objects\Map.obj");
+        Object3D mapArea = new Object3D(@"Objects\MapArea.obj");
         Object3D sky = new Object3D(@"Objects\sky.obj");
         HopupImage testImage = new HopupImage(@"Objects/ほのぼの神社.png", Orientations.plusZ)
         {
@@ -72,6 +78,15 @@ namespace ExampleTemple.Worlds
             MaxPosition = new MatVector3(0, 0.5, 0),
             CloseAnimation = CloseAnimations.DepopLiner
         };
+        Hopup hopup2 = new Hopup()
+        {
+            HopupAnimation = HopupAnimations.None,
+            HoverAnimation = HoverAnimations.Wave,
+            WaveRate = 0.8,
+            WaveHeight = 0.5,
+            CloseAnimation = CloseAnimations.None
+        };
+        Object3D test = new MATAPB.Objects.Primitive.Plane(1, 1, Orientations.plusZ);
 
 
         private void HitArea_MineHit()
@@ -100,8 +115,6 @@ namespace ExampleTemple.Worlds
         {
             MovePlayer();
             
-
-
             base.Render(context);
         }
 

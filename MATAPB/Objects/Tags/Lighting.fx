@@ -9,7 +9,7 @@
 ##SOFT_LAMBERT
 #PS
 float lambert = dot(-light1_direction, vertex.normal) * light1_lambertConstant.x + light1_lambertConstant.y;
-result *= lambert * light1_color;
+result.rgb *= lambert * light1_color;
 result += light1_ambient;
 #end
 ##end
@@ -17,7 +17,7 @@ result += light1_ambient;
 ##LAMBERT
 #PS
 float lambert = dot(-light1_direction, vertex.normal) * light1_lambertConstant.x + light1_lambertConstant.y;
-result *= lambert * lambert * light1_color;
+result.rgb *= lambert * lambert * light1_color;
 result += light1_ambient;
 #end
 ##end
