@@ -12,21 +12,21 @@ namespace MATAPB.Gaming.FPS
     {
         public PlayerBase()
         {
-            PlayerCam = new Camera()
+            PlayerCam = new CameraPerspective()
             {
                 Eye = new MatVector3(0.0, 1.0, 0.0),
                 Up = new MatVector3(0.0, 1.0, 0.0)
             };
         }
 
-        public PlayerBase(Camera cam)
+        public PlayerBase(CameraPerspective cam)
         {
             PlayerCam = cam;
         }
 
         public Object3D Map { get; set; }
 
-        public Camera PlayerCam { get; set; }
+        public CameraPerspective PlayerCam { get; set; }
 
         double actualSpeedLR, actualSpeedFB, actualSpeedUD;
         double angleLR = 0.0, angleUD = 0.0;

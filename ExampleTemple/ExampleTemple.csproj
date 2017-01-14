@@ -60,6 +60,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Player.cs" />
+    <Compile Include="Timeline\OpeningTitle.cs" />
+    <Compile Include="Worlds\OpeningWorld.cs" />
     <Compile Include="Worlds\TempleWorld.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

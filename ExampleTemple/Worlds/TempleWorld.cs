@@ -22,8 +22,8 @@ namespace ExampleTemple.Worlds
         public TempleWorld()
         {
             hero.Map = mapArea;
-            hero.PlayerCam = new Camera3D();
-            //hero.PlayerCam = new MATAPB.Camera();
+            //hero.PlayerCam = new Camera3D();
+            hero.PlayerCam = new CameraPerspective();
             hero.PlayerCam.Eye = new MatVector3(0.0, 1.0, 0.0);
             hero.PlayerCam.Up = new MatVector3(0.0, 1.0, 0.0);
             ActiveCamera = hero.PlayerCam;
@@ -99,7 +99,7 @@ namespace ExampleTemple.Worlds
             hopup.Close();
         }
 
-        MATAPB.Camera cam1 = new MATAPB.Camera()
+        MATAPB.CameraPerspective cam1 = new MATAPB.CameraPerspective()
         {
             Eye = new MatVector3(0.0, 2.0, 5.0),
             Target = new MatVector3(0.0, 0.0, 0.0),

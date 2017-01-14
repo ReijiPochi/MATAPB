@@ -34,8 +34,6 @@ namespace MATAPB
         {
             PresentationArea.DefaultCanvas.ClearCanvas();
 
-            AnimationObject.DoAnimation();
-
             if(ActiveCamera is Camera3D)
             {
                 Camera3D cam3d = ActiveCamera as Camera3D;

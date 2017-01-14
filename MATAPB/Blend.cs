@@ -20,12 +20,9 @@ namespace MATAPB
 
         public static void SetUsual()
         {
-            if (!disposeInit)
-            {
+            SetDispose();
 
-            }
-
-            if(!usualInit)
+            if (!usualInit)
             {
                 usual = new BlendStateDescription()
                 {
@@ -53,6 +50,8 @@ namespace MATAPB
 
         public static void SetAdd()
         {
+            SetDispose();
+
             if (!addInit)
             {
                 add = new BlendStateDescription();

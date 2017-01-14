@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using MATAPB.Objects;
-using SlimDX.Direct3D11;
 using SlimDX;
+using SlimDX.Direct3D11;
 
 namespace MATAPB
 {
@@ -15,12 +15,9 @@ namespace MATAPB
         public MatVector3 Eye { get; set; }
         public MatVector3 Target { get; set; }
         public MatVector3 Up { get; set; }
-        public double FieldOfView { get; set; }
         public int ViewPortWidth { get; set; }
         public int ViewPortHeight { get; set; }
 
-        public Matrix ViewMatrix { get; protected set; }
-        public Matrix ProjectionMatrix { get; protected set; }
         public Matrix CameraMatrix { get; protected set; }
 
         public virtual void Take(List<RenderableObject> objects, RenderingContext context)
@@ -32,7 +29,7 @@ namespace MATAPB
 
             context.cam = this;
 
-            foreach(RenderableObject o in objects)
+            foreach (RenderableObject o in objects)
             {
                 o.Draw(context);
             }
@@ -48,10 +45,6 @@ namespace MATAPB
                 Height = ViewPortHeight,
                 MaxZ = 1.0f
             });
-            
-            ViewMatrix = Matrix.LookAtRH(MatVector3.ToSlimDXVector3(Eye), MatVector3.ToSlimDXVector3(Target), MatVector3.ToSlimDXVector3(Up));
-            ProjectionMatrix = Matrix.PerspectiveFovRH((float)(Math.PI * (FieldOfView / 180.0)), (float)ViewPortWidth / ViewPortHeight, 0.1f, 1000.0f);
-            CameraMatrix = ViewMatrix * ProjectionMatrix;
         }
     }
 }

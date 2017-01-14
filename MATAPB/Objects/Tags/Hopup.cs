@@ -78,7 +78,7 @@ namespace MATAPB.Objects.Tags
             closeStaate = 1.0;
         }
 
-        public override void Download(RenderingContext context)
+        protected override void AnimationOneFrame()
         {
             switch (state)
             {
@@ -97,7 +97,10 @@ namespace MATAPB.Objects.Tags
                 default:
                     break;
             }
+        }
 
+        public override void Download(RenderingContext context)
+        {
             Hopup_world.SetMatrix(_Hopup_world);
         }
 

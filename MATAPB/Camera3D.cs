@@ -10,7 +10,7 @@ using SlimDX;
 
 namespace MATAPB
 {
-    public class Camera3D : Camera
+    public class Camera3D : CameraPerspective
     {
         public MatVector3 ActualEye { get; set; }
         public MatVector3 ActualTarget { get; set; }

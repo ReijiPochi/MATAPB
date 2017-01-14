@@ -196,16 +196,9 @@ namespace MATAPB.Objects
 
         private static Effect Compile(string shader)
         {
-            try
+            using (ShaderBytecode shaderBytecode = ShaderBytecode.Compile(shader, "fx_5_0", ShaderFlags.None, EffectFlags.None))
             {
-                using (ShaderBytecode shaderBytecode = ShaderBytecode.Compile(shader, "fx_5_0", ShaderFlags.None, EffectFlags.None))
-                {
-                    return new Effect(PresentationArea.GraphicsDevice, shaderBytecode);
-                }
-            }
-            catch(Exception ex)
-            {
-                return null;
+                return new Effect(PresentationArea.GraphicsDevice, shaderBytecode);
             }
         }
 
