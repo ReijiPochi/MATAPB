@@ -15,8 +15,8 @@ namespace MATAPB
         public MatVector3 Eye { get; set; }
         public MatVector3 Target { get; set; }
         public MatVector3 Up { get; set; }
-        public int ViewPortWidth { get; set; }
-        public int ViewPortHeight { get; set; }
+        public int ViewPortWidth { get; protected set; }
+        public int ViewPortHeight { get; protected set; }
 
         public Matrix CameraMatrix { get; protected set; }
 

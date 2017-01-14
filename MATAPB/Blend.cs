@@ -88,8 +88,8 @@ namespace MATAPB
 
         private static void AutoDisposeObject_AllDisposing()
         {
-            usualState.Dispose();
-            addState.Dispose();
+            if (usualState != null) usualState.Dispose();
+            if (addState != null) addState.Dispose();
         }
     }
 }
