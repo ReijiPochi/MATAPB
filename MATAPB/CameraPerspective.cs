@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using MATAPB.Objects;
-using SlimDX.Direct3D11;
-using SlimDX;
+using SharpDX.Direct3D11;
+using SharpDX;
 
 namespace MATAPB
 {

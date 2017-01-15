@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using MATAPB.Objects;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
 
 namespace MATAPB
 {
@@ -27,7 +27,7 @@ namespace MATAPB
 
         private ConstantBuffer cbuffer;
 
-        public SlimDX.Direct3D11.Buffer WorldConstantBuffer { get; protected set; }
+        public SharpDX.Direct3D11.Buffer WorldConstantBuffer { get; protected set; }
 
 
         public virtual void Render(RenderingContext context)
@@ -78,7 +78,7 @@ namespace MATAPB
                 light1_ambient = new MatVector4Float(0.0, 0.03, 0.1, 0)
             };
 
-            WorldConstantBuffer = new SlimDX.Direct3D11.Buffer(
+            WorldConstantBuffer = new SharpDX.Direct3D11.Buffer(
                 PresentationArea.GraphicsDevice,
                 new BufferDescription
                 {
@@ -92,11 +92,7 @@ namespace MATAPB
         {
             if (WorldConstantBuffer == null) return;
 
-            PresentationArea.GraphicsDevice.ImmediateContext.UpdateSubresource(
-                new DataBox(0, 0, new DataStream(new[] { cbuffer }, true, true)),
-                WorldConstantBuffer,
-                0
-                );
+            PresentationArea.GraphicsDevice.ImmediateContext.UpdateSubresource(ref cbuffer, WorldConstantBuffer);
         }
 
         /// <summary>

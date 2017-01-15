@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SlimDX.Direct3D11;
-using SlimDX;
+using SharpDX.Direct3D11;
+using SharpDX;
 
 namespace MATAPB.Objects.Tags
 {

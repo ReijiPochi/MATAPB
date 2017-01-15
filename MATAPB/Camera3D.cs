@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using MATAPB.Objects;
-using SlimDX.Direct3D11;
-using SlimDX;
+using SharpDX.Direct3D11;
+using SharpDX;
 
 namespace MATAPB
 {
@@ -49,14 +49,7 @@ namespace MATAPB
 
             if (PresentationArea.GraphicsDevice == null) return;
 
-            PresentationArea.GraphicsDevice.ImmediateContext.Rasterizer.SetViewports(new Viewport
-            {
-                X = viewPortX,
-                Y = viewPortY,
-                Width = (int)(ViewPortWidth * 0.5),
-                Height = ViewPortHeight,
-                MaxZ = 1.0f
-            });
+            PresentationArea.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(viewPortX, viewPortY, (float)(ViewPortWidth * 0.5), ViewPortHeight);
 
             Matrix view = Matrix.LookAtRH(MatVector3.ToSlimDXVector3(ActualEye), MatVector3.ToSlimDXVector3(ActualTarget), MatVector3.ToSlimDXVector3(Up));
             Matrix projection = Matrix.PerspectiveFovRH((float)(Math.PI * (FieldOfView / 180.0)), (float)ViewPortWidth / ViewPortHeight, 0.1f, 1000.0f);
