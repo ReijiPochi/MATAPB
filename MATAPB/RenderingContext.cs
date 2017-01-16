@@ -11,7 +11,7 @@ namespace MATAPB
     public class RenderingContext
     {
         public MatVector2 viewArea;
-        public SlimDX.Direct3D11.Buffer cbuffer;
+        public SharpDX.Direct3D11.Buffer cbuffer;
         public Camera cam;
     }
 }

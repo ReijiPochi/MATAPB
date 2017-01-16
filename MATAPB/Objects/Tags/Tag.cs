@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SlimDX.Direct3D11;
+using SharpDX.Direct3D11;
 using System.Reflection;
 using System.IO;
 

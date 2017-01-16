@@ -31,8 +31,6 @@ namespace ExampleTemple.Worlds
             //map.PSRTag.Scale = new MatVector3(0.1);
             map.Tags.AddTag(new Tag[] { new ColorTexture(@"Objects\Map.png"), new Lighting() });
             sky.Tags.AddTag(new ColorTexture(@"Objects\Skydome.png"));
-            testImage.Position = new MatVector3(0.0, 2.5, -6.2);
-            testImage.Rotation.X = -0.2;
 
             image = new MATAPB.Objects.Primitive.Plane(0.75, 0.45, Orientations.plusZ);
             image.Tags.AddTag(new ColorTexture(@"Objects/ほのぼの神社.png"));
@@ -53,7 +51,7 @@ namespace ExampleTemple.Worlds
 
             hitArea.MineHit += HitArea_MineHit;
             hitArea.MineLeave += HitArea_MineLeave;
-            hitArea.MinePosition = testImage.Position;
+            hitArea.MinePosition = image.PSRTag.Position;
             hitArea.TargetPosition = hero.PlayerCam.Eye;
             hitArea.MineRadius = 3.0;
             hitArea.Hysteresis = 1.0;
@@ -62,10 +60,6 @@ namespace ExampleTemple.Worlds
         Object3D map = new Object3D(@"Objects\Map.obj");
         Object3D mapArea = new Object3D(@"Objects\MapArea.obj");
         Object3D sky = new Object3D(@"Objects\sky.obj");
-        HopupImage testImage = new HopupImage(@"Objects/ほのぼの神社.png", Orientations.plusZ)
-        {
-            Scale = 0.0008
-        };
         MATAPB.Objects.Primitive.Plane image;
         Mine hitArea = new Mine();
         Hopup hopup = new Hopup()

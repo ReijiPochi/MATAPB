@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SlimDX;
-using SlimDX.DXGI;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using SharpDX.Direct3D11;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -39,7 +40,7 @@ namespace MATAPB
                 WindowStyle = WindowStyle.None,
                 WindowState = WindowState.Maximized,
                 AllowsTransparency = true,
-                Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0)),
+                Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(1, 0, 0, 0)),
                 ShowInTaskbar = false
             };
             Overlay.Closed += Overlay_Closed;
@@ -52,7 +53,7 @@ namespace MATAPB
                 WindowStyle = WindowStyle.None,
                 WindowState = WindowState.Maximized,
                 Content = ViewArea,
-                Background = new SolidColorBrush(Color.FromRgb(10, 10, 10))
+                Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(10, 10, 10))
             };
             WorldHost.Activated += WorldHost_Activated;
             WorldHost.Deactivated += WorldHost_Deactivated;
@@ -65,7 +66,7 @@ namespace MATAPB
 
             CreateDeviceAndSwapChain(out _GraphicsDevice, out _SwapChain);
 
-            RasterizerState state = RasterizerState.FromDescription(
+            RasterizerState state = new RasterizerState(
                 GraphicsDevice,
                 new RasterizerStateDescription()
                 {
@@ -78,7 +79,7 @@ namespace MATAPB
                 GraphicsDevice.ImmediateContext.Rasterizer.State = state;
             }
 
-            DefaultCanvas = new RenderingCanvas() { color = new Color4(0.1f, 0.1f, 0.1f) };
+            DefaultCanvas = new RenderingCanvas() { color = new Color4(0.1f, 0.1f, 0.1f, 1.0f) };
             InitDefaultRenderTarget();
             InitDefaultDepthStencil();
             DefaultCanvas.SetCanvas();
@@ -113,8 +114,8 @@ namespace MATAPB
 
         public static double ScreenZoom { get; private set; }
 
-        private static SlimDX.Direct3D11.Device _GraphicsDevice;
-        public static SlimDX.Direct3D11.Device GraphicsDevice
+        private static SharpDX.Direct3D11.Device _GraphicsDevice;
+        public static SharpDX.Direct3D11.Device GraphicsDevice
         {
             get { return _GraphicsDevice; }
         }
@@ -169,11 +170,11 @@ namespace MATAPB
                 Overlay.Activate();
         }
 
-        private static void CreateDeviceAndSwapChain(out SlimDX.Direct3D11.Device device, out SwapChain swapChain)
+        private static void CreateDeviceAndSwapChain(out SharpDX.Direct3D11.Device device, out SwapChain swapChain)
         {
             HwndSource source = (HwndSource)HwndSource.FromVisual(WorldHost);
 
-            SlimDX.Direct3D11.Device.CreateWithSwapChain(
+            SharpDX.Direct3D11.Device.CreateWithSwapChain(
                 DriverType.Hardware,
                 DeviceCreationFlags.None,
                 new SwapChainDescription
@@ -201,7 +202,7 @@ namespace MATAPB
 
         private static void InitDefaultRenderTarget()
         {
-            using (Texture2D backBuffer = SlimDX.Direct3D11.Resource.FromSwapChain<Texture2D>(SwapChain, 0))
+            using (Texture2D backBuffer = SharpDX.Direct3D11.Resource.FromSwapChain<Texture2D>(SwapChain, 0))
             {
                 DefaultCanvas.renderTarget = new RenderTargetView(GraphicsDevice, backBuffer);
             }

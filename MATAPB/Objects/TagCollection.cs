@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 using MATAPB.Objects.Tags;
 using System.Collections.ObjectModel;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX.Direct3D11;
+using SharpDX.DXGI;
 using System.Reflection;
 using System.IO;
-using SlimDX.D3DCompiler;
+using SharpDX.D3DCompiler;
 
 namespace MATAPB.Objects
 {
@@ -94,7 +94,7 @@ namespace MATAPB.Objects
             }
 
             CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(0).Apply(PresentationArea.GraphicsDevice.ImmediateContext);
-            worldConstantBuffer.ConstantBuffer = context.cbuffer;
+            worldConstantBuffer.SetConstantBuffer(context.cbuffer);
             PresentationArea.GraphicsDevice.ImmediateContext.InputAssembler.InputLayout = VertexLayout;
         }
 
@@ -196,9 +196,16 @@ namespace MATAPB.Objects
 
         private static Effect Compile(string shader)
         {
-            using (ShaderBytecode shaderBytecode = ShaderBytecode.Compile(shader, "fx_5_0", ShaderFlags.None, EffectFlags.None))
+            try
             {
-                return new Effect(PresentationArea.GraphicsDevice, shaderBytecode);
+                using (ShaderBytecode shaderBytecode = ShaderBytecode.Compile(shader, "fx_5_0", ShaderFlags.None, EffectFlags.None))
+                {
+                    return new Effect(PresentationArea.GraphicsDevice, shaderBytecode);
+                }
+            }
+            catch(Exception ex)
+            {
+                return null;
             }
         }
 

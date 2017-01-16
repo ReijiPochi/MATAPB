@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SlimDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.Direct3D11;
 
 namespace MATAPB.Objects.Tags
 {
@@ -15,13 +16,13 @@ namespace MATAPB.Objects.Tags
 
         public ColorTexture(string path)
         {
-            Texture = ShaderResourceView.FromFile(PresentationArea.GraphicsDevice, path);
+            //Texture = ShaderResourceView.FromFile(PresentationArea.GraphicsDevice, path);
             valueChanged = true;
         }
 
         public ShaderResourceView Texture { get; set; }
 
-        public EffectResourceVariable ColorTexture_texture;
+        public EffectShaderResourceVariable ColorTexture_texture;
 
         public override void Download(RenderingContext context)
         {
@@ -39,7 +40,7 @@ namespace MATAPB.Objects.Tags
 
         public override void SetVariables(Effect effect)
         {
-            ColorTexture_texture = effect.GetVariableByName("ColorTexture_texture").AsResource();
+            ColorTexture_texture = effect.GetVariableByName("ColorTexture_texture").AsShaderResource();
         }
 
         protected override void OnDispose()

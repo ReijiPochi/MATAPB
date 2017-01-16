@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using MATAPB.Objects;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
 
 namespace MATAPB
 {
@@ -39,12 +39,7 @@ namespace MATAPB
         {
             if (PresentationArea.GraphicsDevice == null) return;
 
-            PresentationArea.GraphicsDevice.ImmediateContext.Rasterizer.SetViewports(new Viewport
-            {
-                Width = ViewPortWidth,
-                Height = ViewPortHeight,
-                MaxZ = 1.0f
-            });
+            PresentationArea.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, ViewPortWidth, ViewPortHeight);
         }
     }
 }
