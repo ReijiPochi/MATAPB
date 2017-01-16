@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vector3 = System.Numerics.Vector3;
 
 namespace MATAPB
 {
     public class Line
     {
-        public MatVector3 a;
-        public MatVector3 b;
+        public Vector3 a;
+        public Vector3 b;
 
-        public double aX { get { return a.X; } }
-        public double aZ { get { return a.Z; } }
-        public double bX { get { return b.X; } }
-        public double bZ { get { return b.Z; } }
+        public float aX { get { return a.X; } }
+        public float aZ { get { return a.Z; } }
+        public float bX { get { return b.X; } }
+        public float bZ { get { return b.Z; } }
     }
 }

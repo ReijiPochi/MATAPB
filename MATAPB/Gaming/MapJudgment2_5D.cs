@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vector3 = System.Numerics.Vector3;
+using Vector2 = System.Numerics.Vector2;
 
 using MATAPB.Objects;
 
@@ -16,9 +18,9 @@ namespace MATAPB.Gaming
         {
             int pointCount = Map.indices.Length;
             Line l1 = new Line(), l2 = new Line();
-            MatVector3 centor;
+            Vector3 centor;
 
-            MatVector3 proposalPoint1 = new MatVector3()
+            Vector3 proposalPoint1 = new Vector3()
             {
                 X = inputData.currentPosition.X + inputData.speedVector.X,
                 Z = inputData.currentPosition.Z + inputData.speedVector.Z,
@@ -32,7 +34,7 @@ namespace MATAPB.Gaming
                 floorHeight = 0
             };
 
-            MatVector3 resultSpeedVector = new MatVector3(0);
+            Vector3 resultSpeedVector = new Vector3(0);
 
             for (int i = 0; i < pointCount; i += 3)
             {
@@ -45,11 +47,11 @@ namespace MATAPB.Gaming
                 double cX = (Map.vertices[i1].position.X + Map.vertices[i2].position.X + Map.vertices[i3].position.X) / 3.0;
                 double cZ = (Map.vertices[i1].position.Z + Map.vertices[i2].position.Z + Map.vertices[i3].position.Z) / 3.0;
 
-                centor = new MatVector3(cX, 0.0f, cZ);
+                centor = new Vector3((float)cX, 0.0f, (float)cZ);
 
-                MatVector3 p1 = MatVector3Float.ToMatVector3(Map.vertices[i1].position);
-                MatVector3 p2 = MatVector3Float.ToMatVector3(Map.vertices[i2].position);
-                MatVector3 p3 = MatVector3Float.ToMatVector3(Map.vertices[i3].position);
+                Vector3 p1 = Map.vertices[i1].position;
+                Vector3 p2 = Map.vertices[i2].position;
+                Vector3 p3 = Map.vertices[i3].position;
 
                 l1.a = p1;
                 l1.b = p2;
@@ -117,7 +119,7 @@ namespace MATAPB.Gaming
             }
             else
             {
-                MatVector3 proposalPoint2 = new MatVector3()
+                Vector3 proposalPoint2 = new Vector3()
                 {
                     X = inputData.currentPosition.X + resultSpeedVector.X,
                     Z = inputData.currentPosition.Z + resultSpeedVector.Z,
@@ -135,11 +137,11 @@ namespace MATAPB.Gaming
                     double cX = (Map.vertices[i1].position.X + Map.vertices[i2].position.X + Map.vertices[i3].position.X) / 3.0;
                     double cZ = (Map.vertices[i1].position.Z + Map.vertices[i2].position.Z + Map.vertices[i3].position.Z) / 3.0;
 
-                    centor = new MatVector3(cX, 0.0, cZ);
+                    centor = new Vector3((float)cX, 0.0f, (float)cZ);
 
-                    MatVector3 p1 = MatVector3Float.ToMatVector3(Map.vertices[i1].position);
-                    MatVector3 p2 = MatVector3Float.ToMatVector3(Map.vertices[i2].position);
-                    MatVector3 p3 = MatVector3Float.ToMatVector3(Map.vertices[i3].position);
+                    Vector3 p1 = Map.vertices[i1].position;
+                    Vector3 p2 = Map.vertices[i2].position;
+                    Vector3 p3 = Map.vertices[i3].position;
 
                     l1.a = p1;
                     l1.b = p2;
@@ -183,32 +185,28 @@ namespace MATAPB.Gaming
             return c * d < 0.0 && a * b < 0.0;
         }
 
-        private static double CalcHeight(MatVector3Float a, MatVector3Float b, MatVector3Float c, MatVector3 point)
+        private static double CalcHeight(Vector3 a, Vector3 b, Vector3 c, Vector3 point)
         {
-            MatVector3 _a = MatVector3Float.ToMatVector3(a);
-            MatVector3 _b = MatVector3Float.ToMatVector3(b);
-            MatVector3 _c = MatVector3Float.ToMatVector3(c);
-
-            MatVector3 ab = MatVector3.Direction(_a, _b);
-            MatVector3 ac = MatVector3.Direction(_a, _c);
-            MatVector3 n = MatVector3.Cross(ab, ac);
+            Vector3 ab = b - a;
+            Vector3 ac = c - a;
+            Vector3 n = Vector3.Cross(ab, ac);
 
             return -(n.X * (point.X - a.X) - n.Z * (point.Z - a.Z)) / n.Y + a.Y;
         }
 
-        private static MatVector3 CalcResultVector(Line wall, Line player)
+        private static Vector3 CalcResultVector(Line wall, Line player)
         {
-            MatVector2 wallVector = new MatVector2(wall.bX - wall.aX, wall.bZ - wall.aZ);
-            wallVector = MatVector2.Normalize(wallVector);
+            Vector2 wallVector = new Vector2(wall.bX - wall.aX, wall.bZ - wall.aZ);
+            wallVector = Vector2.Normalize(wallVector);
 
-            MatVector2 playerVector = new MatVector2(player.bX - player.aX, player.bZ - player.aZ);
+            Vector2 playerVector = new Vector2(player.bX - player.aX, player.bZ - player.aZ);
 
-            double dot = -MatVector2.Dot(wallVector, playerVector);
+            float dot = -Vector2.Dot(wallVector, playerVector);
 
-            if (dot > 0.0 && dot < 0.01) dot = 0.01;
-            else if (dot < 0.0 && dot > -0.01) dot = -0.01;
+            if (dot > 0.0f && dot < 0.01f) dot = 0.01f;
+            else if (dot < 0.0f && dot > -0.01f) dot = -0.01f;
 
-            return new MatVector3(dot * wallVector.X, 0, dot * wallVector.Y);
+            return new Vector3(dot * wallVector.X, 0, dot * wallVector.Y);
         }
     }
 }

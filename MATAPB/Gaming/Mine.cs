@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vector3 = System.Numerics.Vector3;
 
 namespace MATAPB.Gaming
 {
@@ -12,24 +13,24 @@ namespace MATAPB.Gaming
 
     public class Mine : ActionObject
     {
-        public MatVector3 MinePosition { get; set; } = new MatVector3();
+        public Vector3 MinePosition { get; set; } = new Vector3();
 
         public double MineRadius { get; set; } = 1.0;
 
         public double Hysteresis { get; set; } = 0.1;
 
-        public MatVector3 TargetPosition { get; set; } = new MatVector3();
+        public Vector3 TargetPosition { get; set; } = new Vector3();
 
         public event MineHitEventHandler MineHit;
         public event MineLeaveEventHandler MineLeave;
 
-        private bool hit;
+        private bool hit = false;
 
         public override void Action()
         {
             if (!hit)
             {
-                if (MatVector3.Distance(MinePosition, TargetPosition) < MineRadius - Hysteresis)
+                if (Vector3.Distance(MinePosition, TargetPosition) < MineRadius - Hysteresis)
                 {
                     hit = true;
                     MineHit?.Invoke();
@@ -37,7 +38,7 @@ namespace MATAPB.Gaming
             }
             else
             {
-                if(MatVector3.Distance(MinePosition, TargetPosition) > MineRadius + Hysteresis)
+                if(Vector3.Distance(MinePosition, TargetPosition) > MineRadius + Hysteresis)
                 {
                     hit = false;
                     MineLeave?.Invoke();

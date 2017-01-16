@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Matrix = System.Numerics.Matrix4x4;
 
 using MATAPB.Objects;
 using SharpDX.Direct3D11;
@@ -22,8 +23,8 @@ namespace MATAPB
         {
             base.CameraUpdate();
 
-            ViewMatrix = Matrix.LookAtRH(MatVector3.ToSlimDXVector3(Eye), MatVector3.ToSlimDXVector3(Target), MatVector3.ToSlimDXVector3(Up));
-            ProjectionMatrix = Matrix.PerspectiveFovRH((float)(Math.PI * (FieldOfView / 180.0)), (float)ViewPortWidth / ViewPortHeight, 0.1f, 1000.0f);
+            ViewMatrix = Matrix.CreateLookAt(Eye, Target, Up);
+            ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)(Math.PI * (FieldOfView / 180.0)), (float)ViewPortWidth / ViewPortHeight, 0.1f, 1000.0f);
             CameraMatrix = ViewMatrix * ProjectionMatrix;
         }
     }

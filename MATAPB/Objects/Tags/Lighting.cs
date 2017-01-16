@@ -9,7 +9,6 @@ namespace MATAPB.Objects.Tags
 {
     public enum LightingMode
     {
-        Default,
         SoftLambert,
         Lambert
     }

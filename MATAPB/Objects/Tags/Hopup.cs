@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vector3 = System.Numerics.Vector3;
+using MATAPB.Vector3Extentions;
+using Matrix = System.Numerics.Matrix4x4;
 
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -39,17 +42,17 @@ namespace MATAPB.Objects.Tags
         public double WaveHeight { get; set; } = 0.1;
         public double WaveRate { get; set; } = 1.0;
 
-        public MatVector3 MinPosition { get; set; } = new MatVector3(0.0);
-        public MatVector3 MinScale { get; set; } = new MatVector3(0.0);
-        public MatVector3 MinRotation { get; set; } = new MatVector3(0.0);
+        public Vector3 MinPosition { get; set; } = new Vector3(0.0f);
+        public Vector3 MinScale { get; set; } = new Vector3(0.0f);
+        public Vector3 MinRotation { get; set; } = new Vector3(0.0f);
 
-        public MatVector3 MaxPosition { get; set; } = new MatVector3(0.0, 1.0, 0.0);
-        public MatVector3 MaxScale { get; set; } = new MatVector3(1.0);
-        public MatVector3 MaxRotation { get; set; } = new MatVector3(0.0);
+        public Vector3 MaxPosition { get; set; } = new Vector3(0.0f, 1.0f, 0.0f);
+        public Vector3 MaxScale { get; set; } = new Vector3(1.0f);
+        public Vector3 MaxRotation { get; set; } = new Vector3(0.0f);
 
-        private MatVector3 Position { get; set; } = new MatVector3(0.0);
-        private MatVector3 Scale { get; set; } = new MatVector3(0.0);
-        private MatVector3 Rotation { get; set; } = new MatVector3(0.0);
+        private Vector3 Position { get; set; } = new Vector3(0.0f);
+        private Vector3 Scale { get; set; } = new Vector3(0.0f);
+        private Vector3 Rotation { get; set; } = new Vector3(0.0f);
 
         private Matrix _Hopup_world;
         private EffectMatrixVariable Hopup_world;
@@ -109,9 +112,9 @@ namespace MATAPB.Objects.Tags
             switch (HopupAnimation)
             {
                 case HopupAnimations.None:
-                    MatVector3.Copy(MaxPosition, Position);
-                    MatVector3.Copy(MaxScale, Scale);
-                    MatVector3.Copy(MaxRotation, Rotation);
+                    Position = MaxPosition;
+                    Scale = MaxScale;
+                    Rotation = MaxRotation;
 
                     state = HopState.Hover;
                     hoverState = 0.0;
@@ -121,15 +124,15 @@ namespace MATAPB.Objects.Tags
                     hopupState += PresentationArea.TimelengthOfFrame / HopupTime;
                     if (hopupState < 1.0)
                     {
-                        Position = MatVector3.InternalDivision(MinPosition, MaxPosition, hopupState, 1.0 - hopupState);
-                        Scale = MatVector3.InternalDivision(MinScale, MaxScale, hopupState, 1.0 - hopupState);
-                        Rotation = MatVector3.InternalDivision(MinRotation, MaxRotation, hopupState, 1.0 - hopupState);
+                        Position = MinPosition.InternalDivision(MaxPosition, hopupState, 1.0 - hopupState);
+                        Scale = MinScale.InternalDivision(MaxScale, hopupState, 1.0 - hopupState);
+                        Rotation = MinRotation.InternalDivision(MaxRotation, hopupState, 1.0 - hopupState);
                     }
                     else
                     {
-                        MatVector3.Copy(MaxPosition, Position);
-                        MatVector3.Copy(MaxScale, Scale);
-                        MatVector3.Copy(MaxRotation, Rotation);
+                        Position = MaxPosition;
+                        Scale = MaxScale;
+                        Rotation = MaxRotation;
 
                         state = HopState.Hover;
                         hoverState = 0.0;
@@ -152,7 +155,7 @@ namespace MATAPB.Objects.Tags
 
                 case HoverAnimations.Wave:
                     hoverState += PresentationArea.TimelengthOfFrame * 2.0 * Math.PI * WaveRate;
-                    Position.Y = MaxPosition.Y + WaveHeight * Math.Sin(hoverState);
+                    Position = new Vector3(MaxPosition.X, (float)(MaxPosition.Y + WaveHeight * Math.Sin(hoverState)), MaxPosition.Z);
                     break;
             }
 
@@ -164,28 +167,27 @@ namespace MATAPB.Objects.Tags
             switch(CloseAnimation)
             {
                 case CloseAnimations.None:
-                    MatVector3.Copy(MinPosition, Position);
-                    MatVector3.Copy(MinScale, Scale);
-                    MatVector3.Copy(MinRotation, Rotation);
+                    Position = MinPosition;
+                    Scale = MinScale;
+                    Rotation = MinRotation;
                     break;
 
                 case CloseAnimations.DepopLiner:
                     closeStaate -= PresentationArea.TimelengthOfFrame / CloseTime;
                     if (closeStaate > 0.0)
                     {
-                        Position = MatVector3.InternalDivision(MinPosition, MaxPosition, closeStaate, 1.0 - closeStaate);
-                        Scale = MatVector3.InternalDivision(MinScale, MaxScale, closeStaate, 1.0 - closeStaate);
-                        Rotation = MatVector3.InternalDivision(MinRotation, MaxRotation, closeStaate, 1.0 - closeStaate);
+                        Position = MinPosition.InternalDivision(MaxPosition, closeStaate, 1.0 - closeStaate);
+                        Scale = MinScale.InternalDivision(MaxScale, closeStaate, 1.0 - closeStaate);
+                        Rotation = MinRotation.InternalDivision(MaxRotation, closeStaate, 1.0 - closeStaate);
                     }
                     else
                     {
-                        MatVector3.Copy(MinPosition, Position);
-                        MatVector3.Copy(MinScale, Scale);
-                        MatVector3.Copy(MinRotation, Rotation);
+                        Position = MinPosition;
+                        Scale = MinScale;
+                        Rotation = MinRotation;
 
                         state = HopState.None;
                     }
-                    CalcValue();
                     break;
 
                 default:
@@ -197,9 +199,9 @@ namespace MATAPB.Objects.Tags
 
         private void CalcValue()
         {
-            _Hopup_world = Matrix.Scaling(MatVector3.ToSlimDXVector3(Scale));
-            _Hopup_world *= Matrix.RotationX((float)Rotation.X) * Matrix.RotationY((float)Rotation.Y) * Matrix.RotationZ((float)Rotation.Z);
-            _Hopup_world *= Matrix.Translation(MatVector3.ToSlimDXVector3(Position));
+            _Hopup_world = Matrix.CreateScale(Scale);
+            _Hopup_world *= Matrix.CreateRotationX(Rotation.X) * Matrix.CreateRotationY(Rotation.Y) * Matrix.CreateRotationZ(Rotation.Z);
+            _Hopup_world *= Matrix.CreateTranslation(Position);
         }
 
         public override string GetShaderText()

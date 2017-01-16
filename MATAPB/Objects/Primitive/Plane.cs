@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vector3 = System.Numerics.Vector3;
+using Vector2 = System.Numerics.Vector2;
 
 namespace MATAPB.Objects.Primitive
 {
@@ -23,66 +25,66 @@ namespace MATAPB.Objects.Primitive
 
         public void UpdateBuffer(double w, double h, Orientations orientation)
         {
-            double w2 = w / 2.0, h2 = h / 2.0;
-            switch(orientation)
+            float w2 = (float)(w / 2.0), h2 = (float)(h / 2.0);
+            switch (orientation)
             {
                 case Orientations.plusX:
                     vertices = new VertexData[]
                     {
-                        new VertexData(){ position=new MatVector3Float(0, h,-w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,0) },
-                        new VertexData(){ position=new MatVector3Float(0, h, w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,0) },
-                        new VertexData(){ position=new MatVector3Float(0,-h,-w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,1) },
-                        new VertexData(){ position=new MatVector3Float(0,-h, w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,1) }
+                        new VertexData(){ position=new Vector3(0, h2,-w2), normal=new Vector3(1,0,0), texCoord=new Vector2(0,0) },
+                        new VertexData(){ position=new Vector3(0, h2, w2), normal=new Vector3(1,0,0), texCoord=new Vector2(1,0) },
+                        new VertexData(){ position=new Vector3(0,-h2,-w2), normal=new Vector3(1,0,0), texCoord=new Vector2(0,1) },
+                        new VertexData(){ position=new Vector3(0,-h2, w2), normal=new Vector3(1,0,0), texCoord=new Vector2(1,1) }
                     };
                     break;
 
                 case Orientations.minusX:
                     vertices = new VertexData[]
                     {
-                        new VertexData(){ position=new MatVector3Float(0, h, w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,0) },
-                        new VertexData(){ position=new MatVector3Float(0, h,-w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,0) },
-                        new VertexData(){ position=new MatVector3Float(0,-h, w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,1) },
-                        new VertexData(){ position=new MatVector3Float(0,-h,-w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,1) }
+                        new VertexData(){ position=new Vector3(0, h2, w2), normal=new Vector3(1,0,0), texCoord=new Vector2(0,0) },
+                        new VertexData(){ position=new Vector3(0, h2,-w2), normal=new Vector3(1,0,0), texCoord=new Vector2(1,0) },
+                        new VertexData(){ position=new Vector3(0,-h2, w2), normal=new Vector3(1,0,0), texCoord=new Vector2(0,1) },
+                        new VertexData(){ position=new Vector3(0,-h2,-w2), normal=new Vector3(1,0,0), texCoord=new Vector2(1,1) }
                     };
                     break;
 
                 case Orientations.plusY:
                     vertices = new VertexData[]
                     {
-                        new VertexData(){ position=new MatVector3Float( h, 0,-w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,0) },
-                        new VertexData(){ position=new MatVector3Float( h, 0, w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,0) },
-                        new VertexData(){ position=new MatVector3Float(-h, 0,-w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,1) },
-                        new VertexData(){ position=new MatVector3Float(-h, 0, w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,1) }
+                        new VertexData(){ position=new Vector3( h2, 0,-w2), normal=new Vector3(1,0,0), texCoord=new Vector2(0,0) },
+                        new VertexData(){ position=new Vector3( h2, 0, w2), normal=new Vector3(1,0,0), texCoord=new Vector2(1,0) },
+                        new VertexData(){ position=new Vector3(-h2, 0,-w2), normal=new Vector3(1,0,0), texCoord=new Vector2(0,1) },
+                        new VertexData(){ position=new Vector3(-h2, 0, w2), normal=new Vector3(1,0,0), texCoord=new Vector2(1,1) }
                     };
                     break;
 
                 case Orientations.minusY:
                     vertices = new VertexData[]
                     {
-                        new VertexData(){ position=new MatVector3Float( h, 0, w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,0) },
-                        new VertexData(){ position=new MatVector3Float( h, 0,-w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,0) },
-                        new VertexData(){ position=new MatVector3Float(-h, 0, w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,1) },
-                        new VertexData(){ position=new MatVector3Float(-h, 0,-w), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,1) }
+                        new VertexData(){ position=new Vector3( h2, 0, w2), normal=new Vector3(1,0,0), texCoord=new Vector2(0,0) },
+                        new VertexData(){ position=new Vector3( h2, 0,-w2), normal=new Vector3(1,0,0), texCoord=new Vector2(1,0) },
+                        new VertexData(){ position=new Vector3(-h2, 0, w2), normal=new Vector3(1,0,0), texCoord=new Vector2(0,1) },
+                        new VertexData(){ position=new Vector3(-h2, 0,-w2), normal=new Vector3(1,0,0), texCoord=new Vector2(1,1) }
                     };
                     break;
 
                 case Orientations.plusZ:
                     vertices = new VertexData[]
                     {
-                        new VertexData(){ position=new MatVector3Float(-w, h, 0), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,0) },
-                        new VertexData(){ position=new MatVector3Float( w, h, 0), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,0) },
-                        new VertexData(){ position=new MatVector3Float(-w,-h, 0), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,1) },
-                        new VertexData(){ position=new MatVector3Float( w,-h, 0), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,1) }
+                        new VertexData(){ position=new Vector3(-w2, h2, 0), normal=new Vector3(1,0,0), texCoord=new Vector2(0,0) },
+                        new VertexData(){ position=new Vector3( w2, h2, 0), normal=new Vector3(1,0,0), texCoord=new Vector2(1,0) },
+                        new VertexData(){ position=new Vector3(-w2,-h2, 0), normal=new Vector3(1,0,0), texCoord=new Vector2(0,1) },
+                        new VertexData(){ position=new Vector3( w2,-h2, 0), normal=new Vector3(1,0,0), texCoord=new Vector2(1,1) }
                     };
                     break;
 
                 case Orientations.minusZ:
                     vertices = new VertexData[]
                     {
-                        new VertexData(){ position=new MatVector3Float( w, h, 0), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,0) },
-                        new VertexData(){ position=new MatVector3Float(-w, h, 0), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,0) },
-                        new VertexData(){ position=new MatVector3Float( w,-h, 0), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(0,1) },
-                        new VertexData(){ position=new MatVector3Float(-w,-h, 0), normal=new MatVector3Float(1,0,0), texCoord=new MatVector2Float(1,1) }
+                        new VertexData(){ position=new Vector3( w2, h2, 0), normal=new Vector3(1,0,0), texCoord=new Vector2(0,0) },
+                        new VertexData(){ position=new Vector3(-w2, h2, 0), normal=new Vector3(1,0,0), texCoord=new Vector2(1,0) },
+                        new VertexData(){ position=new Vector3( w2,-h2, 0), normal=new Vector3(1,0,0), texCoord=new Vector2(0,1) },
+                        new VertexData(){ position=new Vector3(-w2,-h2, 0), normal=new Vector3(1,0,0), texCoord=new Vector2(1,1) }
                     };
                     break;
 

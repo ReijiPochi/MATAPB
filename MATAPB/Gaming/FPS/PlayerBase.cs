@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Vector3 = System.Numerics.Vector3;
 using MATAPB.Objects;
 
 namespace MATAPB.Gaming.FPS
@@ -14,8 +14,8 @@ namespace MATAPB.Gaming.FPS
         {
             PlayerCam = new CameraPerspective()
             {
-                Eye = new MatVector3(0.0, 1.0, 0.0),
-                Up = new MatVector3(0.0, 1.0, 0.0)
+                Eye = new Vector3(0.0f, 1.0f, 0.0f),
+                Up = new Vector3(0.0f, 1.0f, 0.0f)
             };
         }
 
@@ -63,11 +63,11 @@ namespace MATAPB.Gaming.FPS
                 double preEyeX = PlayerCam.Eye.X, preEyeZ = PlayerCam.Eye.Z;
 
 
-                MatVector3 speedVector = new MatVector3()
+                Vector3 speedVector = new Vector3()
                 {
-                    X = (-Math.Sin(angleLR) * actualSpeedFB + Math.Cos(angleLR) * actualSpeedLR) * PresentationArea.TimelengthOfFrame,
-                    Z = (Math.Cos(angleLR) * actualSpeedFB + Math.Sin(angleLR) * actualSpeedLR) * PresentationArea.TimelengthOfFrame,
-                    Y = 0
+                    X = (float)((-Math.Sin(angleLR) * actualSpeedFB + Math.Cos(angleLR) * actualSpeedLR) * PresentationArea.TimelengthOfFrame),
+                    Z = (float)((Math.Cos(angleLR) * actualSpeedFB + Math.Sin(angleLR) * actualSpeedLR) * PresentationArea.TimelengthOfFrame),
+                    Y = 0.0f
                 };
 
                 MapJudgment2_5DInput inputData = new MapJudgment2_5DInput()
@@ -78,9 +78,7 @@ namespace MATAPB.Gaming.FPS
 
                 MapJudgment2_5D.Map = Map;
                 MapJudgment2_5DResult result = MapJudgment2_5D.Judge(inputData);
-
-                PlayerCam.Eye.X = result.result.X;
-                PlayerCam.Eye.Z = result.result.Z;
+                
 
                 if (result.mapOK)
                 {
@@ -98,13 +96,17 @@ namespace MATAPB.Gaming.FPS
                 double deltaEyeY = (targetHeight - PlayerCam.Eye.Y) * 10.0;
                 if (Math.Abs(deltaEyeY) < 0.01) deltaEyeY = 0.0;
 
-                PlayerCam.Eye.Y += deltaEyeY * PresentationArea.TimelengthOfFrame;
+                
+                PlayerCam.Eye = new Vector3(
+                    result.result.X,
+                    (float)(PlayerCam.Eye.Y + deltaEyeY * PresentationArea.TimelengthOfFrame),
+                    result.result.Z);
 
-                PlayerCam.Target = new MatVector3()
+                PlayerCam.Target = new Vector3()
                 {
-                    X = -Math.Sin(angleLR) * Math.Cos(angleUD) + PlayerCam.Eye.X,
-                    Z = Math.Cos(angleLR) * Math.Cos(angleUD) + PlayerCam.Eye.Z,
-                    Y = -Math.Sin(angleUD) + PlayerCam.Eye.Y
+                    X = (float)(-Math.Sin(angleLR) * Math.Cos(angleUD) + PlayerCam.Eye.X),
+                    Z = (float)(Math.Cos(angleLR) * Math.Cos(angleUD) + PlayerCam.Eye.Z),
+                    Y = (float)(-Math.Sin(angleUD) + PlayerCam.Eye.Y)
                 };
             }
         }

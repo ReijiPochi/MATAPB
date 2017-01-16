@@ -56,6 +56,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -82,6 +83,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -116,12 +118,8 @@
     <Compile Include="Input\Mouse.cs" />
     <Compile Include="Input\ObjLoader.cs" />
     <Compile Include="Line.cs" />
-    <Compile Include="MatVector2Float.cs" />
-    <Compile Include="MatVector2.cs" />
-    <Compile Include="MatVector3.cs" />
-    <Compile Include="MatVector3Float.cs" />
-    <Compile Include="MatVector4Float.cs" />
     <Compile Include="AnimationObject.cs" />
+    <Compile Include="MatVector3.cs" />
     <Compile Include="Objects\Picture.cs" />
     <Compile Include="Objects\Primitive\Plane.cs" />
     <Compile Include="Objects\RenderableObject.cs" />
@@ -154,6 +152,7 @@
     <Compile Include="RenderingContext.cs" />
     <Compile Include="Timeline\Timeline.cs" />
     <Compile Include="Timeline\TimelineObject.cs" />
+    <Compile Include="VectorExtentions.cs" />
     <Compile Include="VertexData.cs" />
     <Compile Include="World.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

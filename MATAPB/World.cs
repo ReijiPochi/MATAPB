@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vector4 = System.Numerics.Vector4;
+using Matrix = System.Numerics.Matrix4x4;
 
 using MATAPB.Objects;
 using SharpDX;
@@ -72,10 +74,10 @@ namespace MATAPB
         {
             cbuffer = new ConstantBuffer()
             {
-                light1_color = new MatVector4Float(1.1, 1.1, 1.1, 0),
-                light1_direction = MatVector4Float.Normalize(new MatVector4Float(2.0, -2.0, -10.0, 0)),
-                light1_lambertConstant = new MatVector4Float(0.3, 0.7, 0, 0),
-                light1_ambient = new MatVector4Float(0.0, 0.03, 0.1, 0)
+                light1_color = new Vector4(1.1f, 1.1f, 1.1f, 0.0f),
+                light1_direction = Vector4.Normalize(new Vector4(2.0f, -2.0f, -10.0f, 0)),
+                light1_lambertConstant = new Vector4(0.3f, 0.7f, 0, 0),
+                light1_ambient = new Vector4(0.0f, 0.03f, 0.1f, 0)
             };
 
             WorldConstantBuffer = new SharpDX.Direct3D11.Buffer(
@@ -100,10 +102,10 @@ namespace MATAPB
         /// </summary>
         public struct ConstantBuffer
         {
-            public MatVector4Float light1_color;
-            public MatVector4Float light1_direction;
-            public MatVector4Float light1_lambertConstant;
-            public MatVector4Float light1_ambient;
+            public Vector4 light1_color;
+            public Vector4 light1_direction;
+            public Vector4 light1_lambertConstant;
+            public Vector4 light1_ambient;
 
             public static int SizeInBytes
             {

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Vector3 = System.Numerics.Vector3;
+using Matrix = System.Numerics.Matrix4x4;
 using SharpDX;
 
 namespace MATAPB
@@ -17,8 +18,8 @@ namespace MATAPB
         {
             base.CameraUpdate();
 
-            Matrix ViewMatrix = Matrix.LookAtRH(MatVector3.ToSlimDXVector3(Eye), MatVector3.ToSlimDXVector3(Target), MatVector3.ToSlimDXVector3(Up));
-            Matrix ProjectionMatrix = Matrix.OrthoRH(
+            Matrix ViewMatrix = Matrix.CreateLookAt(Eye, Target, Up);
+            Matrix ProjectionMatrix = Matrix.CreateOrthographic(
                 (float)CameraWidth,
                 (float)CameraHeight,
                 0.01f,

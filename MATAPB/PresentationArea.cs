@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Vector2 = System.Numerics.Vector2;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.DXGI;
@@ -79,7 +79,7 @@ namespace MATAPB
                 GraphicsDevice.ImmediateContext.Rasterizer.State = state;
             }
 
-            DefaultCanvas = new RenderingCanvas() { color = new Color4(0.1f, 0.1f, 0.1f, 1.0f) };
+            DefaultCanvas = new RenderingCanvas() { color = new Color4(0.0f, 0.0f, 0.0f, 1.0f) };
             InitDefaultRenderTarget();
             InitDefaultDepthStencil();
             DefaultCanvas.SetCanvas();
@@ -149,7 +149,7 @@ namespace MATAPB
         {
             RenderingContext context = new RenderingContext()
             {
-                viewArea = new MatVector2(ViewArea.ActualWidth, ViewArea.ActualHeight)
+                viewArea = new Vector2((float)ViewArea.ActualWidth, (float)ViewArea.ActualHeight)
             };
 
             if (World != null)

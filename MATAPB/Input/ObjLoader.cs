@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Vector3 = System.Numerics.Vector3;
+using Vector2 = System.Numerics.Vector2;
 using SharpDX;
 using System.IO;
 
@@ -73,9 +74,9 @@ namespace MATAPB.Input
             {
                 result[count] = new VertexData()
                 {
-                    position = new MatVector3Float(positions[index.position].X, positions[index.position].Y, positions[index.position].Z),
-                    normal = new MatVector3Float(normals[index.normal].X, normals[index.normal].Y, normals[index.normal].Z),
-                    texCoord = new MatVector2Float(texCoords[index.texCoord].X, 1.0f - texCoords[index.texCoord].Y)
+                    position = new Vector3(positions[index.position].X, positions[index.position].Y, positions[index.position].Z),
+                    normal = new Vector3(normals[index.normal].X, normals[index.normal].Y, normals[index.normal].Z),
+                    texCoord = new Vector2(texCoords[index.texCoord].X, 1.0f - texCoords[index.texCoord].Y)
                 };
 
                 indexBuffer[count] = count;

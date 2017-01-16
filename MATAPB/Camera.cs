@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vector3 = System.Numerics.Vector3;
+using Matrix = System.Numerics.Matrix4x4;
 
 using MATAPB.Objects;
 using SharpDX;
@@ -12,9 +14,9 @@ namespace MATAPB
 {
     public class Camera
     {
-        public MatVector3 Eye { get; set; }
-        public MatVector3 Target { get; set; }
-        public MatVector3 Up { get; set; }
+        public Vector3 Eye { get; set; }
+        public Vector3 Target { get; set; }
+        public Vector3 Up { get; set; }
         public int ViewPortWidth { get; protected set; }
         public int ViewPortHeight { get; protected set; }
 
