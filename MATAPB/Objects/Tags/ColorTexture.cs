@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using MATAPB.Input;
 
 namespace MATAPB.Objects.Tags
 {
@@ -16,7 +17,7 @@ namespace MATAPB.Objects.Tags
 
         public ColorTexture(string path)
         {
-            //Texture = ShaderResourceView.FromFile(PresentationArea.GraphicsDevice, path);
+            Texture = TextureLoader.GenTexture(path);
             valueChanged = true;
         }
 
