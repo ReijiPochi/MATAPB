@@ -35,7 +35,6 @@ namespace ExampleTemple.Worlds
 
             image.Tags.InsertToFirst(hopup);
             image.PSRTag.Position = new Vector3(0.0f, 2.0f, -6.2f);
-            image.PSRTag.Scale = new Vector3(0.5f);
             image.PSRTag.Rotation = new Vector3(-0.3f, 0, 0);
 
             test.Tags.ClearAndSet(new LookCamera() { Scale = new Vector3(0.05f), Position = new Vector3(0.0f, 1.5f, -6.2f) });

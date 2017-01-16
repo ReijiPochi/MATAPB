@@ -20,8 +20,8 @@ namespace MATAPB.Objects
 
             Orientation = Orientations.plusZ;
             UpdateBuffer(
-                image.PixelWidth * PresentationArea.ScreenZoom / 1000.0,
-                image.PixelHeight * PresentationArea.ScreenZoom / 1000.0,
+                image.PixelWidth / 1000.0,
+                image.PixelHeight / 1000.0,
                 Orientation);
 
             Tags.AddTag(new ColorTexture(path));
