@@ -16,8 +16,6 @@
 [Rr]eleases/
 x86/
 bld/
-*.exe
-*.dll
 [Oo]bj/
 [Ll]og/
 

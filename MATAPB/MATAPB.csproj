@@ -103,6 +103,7 @@
     <Compile Include="CameraPerspective.cs" />
     <Compile Include="Camera3D.cs" />
     <Compile Include="Clock.cs" />
+    <Compile Include="Input\TextureLoader.cs" />
     <Compile Include="MatColor.cs" />
     <Compile Include="Gaming\ActionObject.cs" />
     <Compile Include="Gaming\FPS\MoveData.cs" />
