@@ -21,7 +21,7 @@ namespace ExampleTemple.Worlds
 
             miniMapCanvas = new RenderingCanvas(miniMapTex);
             ColorTexture miniMapTexTag = new ColorTexture(miniMapTex);
-            miniMapTexTag.Opacity.Value = 0.7;
+            miniMapTexTag.Opacity.Value = 0.85;
             miniMap.Tags.AddTag(miniMapTexTag);
 
             Objects.Add(miniMap);

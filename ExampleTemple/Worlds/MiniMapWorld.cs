@@ -18,12 +18,12 @@ namespace ExampleTemple.Worlds
             ActiveCamera = cam;
         }
 
-        Picture map = new Picture(@"Objects\Map.png");
+        Picture map = new Picture(@"Objects\MiniMap.png");
 
         public CameraOrthographic cam = new CameraOrthographic()
         {
-            CameraHeight = 2.0,
-            CameraWidth = 2.0,
+            CameraHeight = 0.25,
+            CameraWidth = 0.25,
         };
     }
 }
