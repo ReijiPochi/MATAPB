@@ -19,9 +19,9 @@ namespace MATAPB
         public Matrix ProjectionMatrix { get; protected set; }
         
 
-        public override void CameraUpdate()
+        public override void CameraUpdate(RenderingContext context)
         {
-            base.CameraUpdate();
+            base.CameraUpdate(context);
 
             ViewMatrix = Matrix.CreateLookAt(Eye, Target, Up);
             ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)(Math.PI * (FieldOfView / 180.0)), (float)ViewPortWidth / ViewPortHeight, 0.1f, 1000.0f);

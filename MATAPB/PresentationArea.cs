@@ -80,6 +80,8 @@ namespace MATAPB
             }
 
             DefaultCanvas = new RenderingCanvas() { color = new Color4(0.0f, 0.0f, 0.0f, 1.0f) };
+            DefaultCanvas.width = (int)(ViewArea.ActualWidth * ScreenZoom);
+            DefaultCanvas.height = (int)(ViewArea.ActualHeight * ScreenZoom);
             InitDefaultRenderTarget();
             InitDefaultDepthStencil();
             DefaultCanvas.SetCanvas();
@@ -147,13 +149,16 @@ namespace MATAPB
 
         public static void Render()
         {
-            RenderingContext context = new RenderingContext()
-            {
-                viewArea = new Vector2((float)ViewArea.ActualWidth, (float)ViewArea.ActualHeight)
-            };
-
             if (World != null)
             {
+                RenderingContext context = new RenderingContext()
+                {
+                    viewArea = new Vector2((float)ViewArea.ActualWidth, (float)ViewArea.ActualHeight),
+                    canvas = DefaultCanvas
+                };
+
+                DefaultCanvas.ClearCanvas();
+
                 World.Render(context);
                 SwapChain.Present(0, PresentFlags.None);
             }

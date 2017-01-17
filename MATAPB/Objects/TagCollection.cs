@@ -60,6 +60,17 @@ namespace MATAPB.Objects
             Initialize();
         }
 
+        public Tag GetTag(Type type)
+        {
+            foreach(Tag t in tagsList)
+            {
+                if (t.GetType() == type)
+                    return t;
+            }
+
+            return null;
+        }
+
         public void Initialize()
         {
             string text = null;

@@ -12,6 +12,8 @@ namespace MATAPB.Timeline
         public double EndTime { get; set; }
         public bool Running { get; protected set; }
 
+        public Timeline Host { get; set; }
+
         public virtual void Start()
         {
             Running = true;

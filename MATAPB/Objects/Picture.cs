@@ -11,6 +11,12 @@ namespace MATAPB.Objects
 {
     public class Picture : Primitive.Plane
     {
+        public Picture(double w, double h, Orientations orientation = Orientations.plusZ)
+        {
+            Orientation = orientation;
+            UpdateBuffer(w, h, orientation);
+        }
+
         public Picture(string path)
         {
             BitmapImage image = new BitmapImage();
@@ -24,7 +30,18 @@ namespace MATAPB.Objects
                 image.PixelHeight / 1000.0,
                 Orientation);
 
-            Tags.AddTag(new ColorTexture(path));
+            ColorTextureTag = new ColorTexture(path);
+            Tags.AddTag(ColorTextureTag);
+        }
+
+        private ColorTexture _ColorTextureTag;
+        public ColorTexture ColorTextureTag
+        {
+            get { return _ColorTextureTag; }
+            set
+            {
+                _ColorTextureTag = value;
+            }
         }
     }
 }

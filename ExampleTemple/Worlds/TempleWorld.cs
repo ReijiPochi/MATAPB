@@ -42,10 +42,15 @@ namespace ExampleTemple.Worlds
             test.Tags.InsertToFirst(hopup2);
             hopup2.Hop();
 
+            //miniMapCanvas = new RenderingCanvas(miniMap);
+            //miniMapObj.Tags.AddTag(new ColorTexture(miniMap));
+            //miniMapObj.PSRTag.Position = new Vector3(0, 1, 0);
+
             Objects.Add(map);
             //Objects.Add(mapArea);
             Objects.Add(sky);
             Objects.Add(image);
+            //Objects.Add(miniMapObj);
             OverlayObjects.Add(test);
 
             hitArea.MineHit += HitArea_MineHit;
@@ -64,8 +69,8 @@ namespace ExampleTemple.Worlds
         {
             HopupAnimation = HopupAnimations.PopLiner,
             HoverAnimation = HoverAnimations.Wave,
-            WaveRate = 0.5,
-            WaveHeight = 0.05,
+            WaveRate = 0.4,
+            WaveHeight = 0.02,
             HopupTime = 0.3,
             MaxPosition = new Vector3(0, 0.5f, 0),
             CloseAnimation = CloseAnimations.DepopLiner
@@ -79,7 +84,12 @@ namespace ExampleTemple.Worlds
             CloseAnimation = CloseAnimations.None
         };
         Object3D test = new MATAPB.Objects.Primitive.Plane(1, 1, Orientations.plusZ);
+        Texture miniMap = new Texture(200, 200);
+        RenderingCanvas miniMapCanvas;
+        MATAPB.Objects.Primitive.Plane miniMapObj = new MATAPB.Objects.Primitive.Plane(1, 1, Orientations.plusZ);
 
+        HUDWorld hudWorld = new HUDWorld();
+        MiniMapWorld miniMapWorld = new MiniMapWorld();
 
         private void HitArea_MineHit()
         {
@@ -91,14 +101,6 @@ namespace ExampleTemple.Worlds
             hopup.Close();
         }
 
-        MATAPB.CameraPerspective cam1 = new MATAPB.CameraPerspective()
-        {
-            Eye = new Vector3(0.0f, 2.0f, 5.0f),
-            Target = new Vector3(0.0f, 0.0f, 0.0f),
-            Up = new Vector3(0.0f, 1.0f, 0.0f),
-            FieldOfView = 70.0
-        };
-
         Player hero = new Player()
         {
         };
@@ -106,8 +108,21 @@ namespace ExampleTemple.Worlds
         public override void Render(RenderingContext context)
         {
             MovePlayer();
-            
-            base.Render(context);
+
+            hudWorld.miniMapCanvas.SetCanvas();
+            {
+                hudWorld.miniMapCanvas.ClearCanvas();
+                context.canvas = hudWorld.miniMapCanvas;
+                miniMapWorld.Render(context);
+            }
+
+            PresentationArea.DefaultCanvas.SetCanvas();
+            {
+                context.canvas = PresentationArea.DefaultCanvas;
+                base.Render(context);
+
+                hudWorld.Render(context);
+            }
         }
 
         private void MovePlayer()

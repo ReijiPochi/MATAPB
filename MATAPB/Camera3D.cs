@@ -29,7 +29,7 @@ namespace MATAPB
 
             viewPortX = 0;
 
-            CameraUpdate();
+            CameraUpdate(null);
         }
 
         public void SetSide2()
@@ -42,10 +42,10 @@ namespace MATAPB
 
             viewPortX = (int)(ViewPortWidth * 0.5);
 
-            CameraUpdate();
+            CameraUpdate(null);
         }
 
-        public override void CameraUpdate()
+        public override void CameraUpdate(RenderingContext context)
         {
             //base.CameraUpdate();
 

@@ -56,7 +56,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <UseVSHostingProcess>true</UseVSHostingProcess>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -98,6 +98,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimationDouble.cs" />
+    <Compile Include="AnimationMode.cs" />
     <Compile Include="AutoDisposeObject.cs" />
     <Compile Include="Blend.cs" />
     <Compile Include="Camera.cs" />
@@ -150,6 +152,7 @@
     </Compile>
     <Compile Include="RenderingCanvas.cs" />
     <Compile Include="RenderingContext.cs" />
+    <Compile Include="Texture.cs" />
     <Compile Include="Timeline\Timeline.cs" />
     <Compile Include="Timeline\TimelineObject.cs" />
     <Compile Include="VectorExtentions.cs" />

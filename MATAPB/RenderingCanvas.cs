@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using SharpDX;
 using SharpDX.Direct3D11;
+using SharpDX.DXGI;
 
 namespace MATAPB
 {
@@ -16,9 +17,40 @@ namespace MATAPB
 
         }
 
+        public RenderingCanvas(Texture tex)
+        {
+            //RenderTargetViewDescription rtvDesc = new RenderTargetViewDescription()
+            //{
+            //    Format = Format.R8G8B8A8_UNorm,
+            //    Dimension = RenderTargetViewDimension.Texture2D
+            //};
+
+            renderTarget = new RenderTargetView(PresentationArea.GraphicsDevice, tex.Tex);
+
+            Texture2DDescription depthBufferDesc = new Texture2DDescription
+            {
+                ArraySize = 1,
+                BindFlags = BindFlags.DepthStencil,
+                Format = Format.D32_Float,
+                Width = tex.Description.Width,
+                Height = tex.Description.Height,
+                MipLevels = 1,
+                SampleDescription = tex.Description.SampleDescription
+            };
+
+            using (Texture2D depthBuffer = new Texture2D(PresentationArea.GraphicsDevice, depthBufferDesc))
+            {
+                depthStencil = new DepthStencilView(PresentationArea.GraphicsDevice, depthBuffer);
+            }
+
+            width = tex.Description.Width;
+            height = tex.Description.Height;
+        }
+
         public Color4 color;
         public RenderTargetView renderTarget;
         public DepthStencilView depthStencil;
+        public double width, height;
 
         public void SetCanvas()
         {

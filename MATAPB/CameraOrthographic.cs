@@ -14,9 +14,9 @@ namespace MATAPB
         public double CameraWidth { get; set; } = 1.0;
         public double CameraHeight { get; set; } = 1.0;
 
-        public override void CameraUpdate()
+        public override void CameraUpdate(RenderingContext context)
         {
-            base.CameraUpdate();
+            base.CameraUpdate(context);
 
             Matrix ViewMatrix = Matrix.CreateLookAt(Eye, Target, Up);
             Matrix ProjectionMatrix = Matrix.CreateOrthographic(

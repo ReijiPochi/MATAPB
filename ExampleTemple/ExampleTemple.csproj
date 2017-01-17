@@ -61,7 +61,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Player.cs" />
+    <Compile Include="Timeline\Gaming.cs" />
     <Compile Include="Timeline\OpeningTitle.cs" />
+    <Compile Include="Worlds\HUDWorld.cs" />
+    <Compile Include="Worlds\MiniMapWorld.cs" />
     <Compile Include="Worlds\OpeningWorld.cs" />
     <Compile Include="Worlds\TempleWorld.cs" />
     <Page Include="MainWindow.xaml">

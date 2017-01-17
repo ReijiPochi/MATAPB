@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using MATAPB;
+using MATAPB.Timeline;
+using ExampleTemple.Timeline;
 
 namespace ExampleTemple
 {
@@ -28,14 +30,14 @@ namespace ExampleTemple
             Loaded += MainWindow_Loaded;
         }
 
-        Worlds.TempleWorld templeWorld;
+        MATAPB.Timeline.Timeline mainTL = new MATAPB.Timeline.Timeline();
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             PresentationArea.Initialize(60.0);
 
-            templeWorld = new Worlds.TempleWorld();
-            PresentationArea.World = templeWorld;
+            mainTL.Add(new OpeningTitle(), 0, 3);
+            mainTL.Add(new Gaming(), 5, 7);
 
             MATAPB.Input.Keyboard.Initialize();
             MATAPB.Input.Keyboard.KeyInput += Keyboard_KeyInput;
@@ -44,6 +46,8 @@ namespace ExampleTemple
             MATAPB.Input.Mouse.CursorVisibility = false;
 
             PresentationArea.Launch();
+
+            mainTL.Start();
         }
 
         private void Keyboard_KeyInput(Key key)

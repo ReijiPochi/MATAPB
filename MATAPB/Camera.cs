@@ -14,9 +14,9 @@ namespace MATAPB
 {
     public class Camera
     {
-        public Vector3 Eye { get; set; }
-        public Vector3 Target { get; set; }
-        public Vector3 Up { get; set; }
+        public Vector3 Eye { get; set; } = new Vector3(0, 0, 1);
+        public Vector3 Target { get; set; } = new Vector3(0, 0, 0);
+        public Vector3 Up { get; set; } = new Vector3(0, 1, 0);
         public int ViewPortWidth { get; protected set; }
         public int ViewPortHeight { get; protected set; }
 
@@ -26,9 +26,6 @@ namespace MATAPB
         {
             if (objects == null || context == null) return;
 
-            ViewPortWidth = (int)(context.viewArea.X * PresentationArea.ScreenZoom);
-            ViewPortHeight = (int)(context.viewArea.Y * PresentationArea.ScreenZoom);
-
             context.cam = this;
 
             foreach (RenderableObject o in objects)
@@ -37,10 +34,12 @@ namespace MATAPB
             }
         }
 
-        public virtual void CameraUpdate()
+        public virtual void CameraUpdate(RenderingContext context)
         {
             if (PresentationArea.GraphicsDevice == null) return;
 
+            ViewPortWidth = (int)context.canvas.width;
+            ViewPortHeight = (int)context.canvas.height;
             PresentationArea.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, ViewPortWidth, ViewPortHeight);
         }
     }

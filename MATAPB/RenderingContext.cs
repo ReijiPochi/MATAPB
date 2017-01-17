@@ -14,5 +14,6 @@ namespace MATAPB
         public Vector2 viewArea;
         public SharpDX.Direct3D11.Buffer cbuffer;
         public Camera cam;
+        public RenderingCanvas canvas;
     }
 }

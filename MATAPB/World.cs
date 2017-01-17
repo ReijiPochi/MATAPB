@@ -34,8 +34,6 @@ namespace MATAPB
 
         public virtual void Render(RenderingContext context)
         {
-            PresentationArea.DefaultCanvas.ClearCanvas();
-
             if(ActiveCamera is Camera3D)
             {
                 Camera3D cam3d = ActiveCamera as Camera3D;
@@ -44,27 +42,27 @@ namespace MATAPB
                 UpdateConstantBuffer();
                 context.cbuffer = WorldConstantBuffer;
                 ActiveCamera.Take(Objects, context);
-                PresentationArea.DefaultCanvas.ClearDepthStencil();
+                context.canvas.ClearDepthStencil();
                 ActiveCamera.Take(OverlayObjects, context);
 
                 cam3d.SetSide2();
                 UpdateConstantBuffer();
                 context.cbuffer = WorldConstantBuffer;
                 ActiveCamera.Take(Objects, context);
-                PresentationArea.DefaultCanvas.ClearDepthStencil();
+                context.canvas.ClearDepthStencil();
                 ActiveCamera.Take(OverlayObjects, context);
             }
             else
             {
                 if (ActiveCamera == null) return;
 
-                ActiveCamera.CameraUpdate();
+                ActiveCamera.CameraUpdate(context);
                 UpdateConstantBuffer();
                 context.cbuffer = WorldConstantBuffer;
                 if (ActiveCamera != null)
                 {
                     ActiveCamera.Take(Objects, context);
-                    PresentationArea.DefaultCanvas.ClearDepthStencil();
+                    context.canvas.ClearDepthStencil();
                     ActiveCamera.Take(OverlayObjects, context);
                 }
             }

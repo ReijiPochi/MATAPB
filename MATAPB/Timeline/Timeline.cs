@@ -15,10 +15,18 @@ namespace MATAPB.Timeline
 
     public class Timeline : AnimationObject
     {
-        public List<TimelineObject> Objects { get; } = new List<TimelineObject>();
+        private List<TimelineObject> Objects { get; } = new List<TimelineObject>();
 
         public double CurrentTime { get; protected set; } = 0.0;
         public TimelineState State { get; protected set; } = TimelineState.Stop;
+
+        public void Add(TimelineObject obj, double start, double end)
+        {
+            obj.Host = this;
+            obj.StartTime = start;
+            obj.EndTime = end;
+            Objects.Add(obj);
+        }
 
         public void Start()
         {
@@ -47,14 +55,14 @@ namespace MATAPB.Timeline
             {
                 if (to.Running)
                 {
-                    if(to.EndTime > CurrentTime)
+                    if(to.EndTime < CurrentTime)
                     {
                         to.End();
                     }
                 }
                 else
                 {
-                    if (to.StartTime > CurrentTime && CurrentTime < to.EndTime)
+                    if (to.StartTime < CurrentTime && CurrentTime < to.EndTime)
                     {
                         to.Start();
                     }
