@@ -16,16 +16,16 @@ namespace MATAPB
     {
         public World()
         {
-            Objects = new List<RenderableObject>();
-            OverlayObjects = new List<RenderableObject>();
             InitConstantBuffer();
         }
 
-        public List<RenderableObject> Objects { get; set; }
+        public List<RenderableObject> Objects { get; set; } = new List<RenderableObject>();
 
-        public List<RenderableObject> OverlayObjects { get; set; }
+        public List<RenderableObject> OverlayObjects { get; set; } = new List<RenderableObject>();
 
         public Camera ActiveCamera { get; set; }
+
+        public Light GlobalLight1 { get; set; } = new Light();
 
         private ConstantBuffer cbuffer;
 
@@ -70,14 +70,6 @@ namespace MATAPB
 
         protected void InitConstantBuffer()
         {
-            cbuffer = new ConstantBuffer()
-            {
-                light1_color = new Vector4(1.1f, 1.1f, 1.1f, 0.0f),
-                light1_direction = Vector4.Normalize(new Vector4(2.0f, -2.0f, -10.0f, 0)),
-                light1_lambertConstant = new Vector4(0.3f, 0.7f, 0, 0),
-                light1_ambient = new Vector4(0.0f, 0.03f, 0.1f, 0)
-            };
-
             WorldConstantBuffer = new SharpDX.Direct3D11.Buffer(
                 PresentationArea.GraphicsDevice,
                 new BufferDescription
@@ -91,6 +83,14 @@ namespace MATAPB
         protected void UpdateConstantBuffer()
         {
             if (WorldConstantBuffer == null) return;
+
+            cbuffer = new ConstantBuffer()
+            {
+                light1_color = GlobalLight1.Color,
+                light1_direction = Vector4.Normalize(GlobalLight1.Direction),
+                light1_lambertConstant = GlobalLight1.LambertConstant,
+                light1_ambient = GlobalLight1.Ambitent
+            };
 
             PresentationArea.GraphicsDevice.ImmediateContext.UpdateSubresource(ref cbuffer, WorldConstantBuffer);
         }

@@ -79,7 +79,7 @@ namespace MATAPB
                 GraphicsDevice.ImmediateContext.Rasterizer.State = state;
             }
 
-            DefaultCanvas = new RenderingCanvas() { color = new Color4(0.0f, 0.0f, 0.0f, 1.0f) };
+            DefaultCanvas = new RenderingCanvas();
             DefaultCanvas.width = (int)(ViewArea.ActualWidth * ScreenZoom);
             DefaultCanvas.height = (int)(ViewArea.ActualHeight * ScreenZoom);
             InitDefaultRenderTarget();

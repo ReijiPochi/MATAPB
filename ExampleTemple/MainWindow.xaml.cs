@@ -36,8 +36,8 @@ namespace ExampleTemple
         {
             PresentationArea.Initialize(60.0);
 
-            mainTL.Add(new OpeningTitle(), 0, 3);
-            mainTL.Add(new Gaming(), 5, 7);
+            mainTL.Add(new OpeningTitle(), 0, 2);
+            mainTL.Add(new Gaming(), 3, 7);
 
             MATAPB.Input.Keyboard.Initialize();
             MATAPB.Input.Keyboard.KeyInput += Keyboard_KeyInput;

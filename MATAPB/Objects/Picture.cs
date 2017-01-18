@@ -17,7 +17,7 @@ namespace MATAPB.Objects
             UpdateBuffer(w, h, orientation);
         }
 
-        public Picture(string path)
+        public Picture(string path, double scale = 1.0)
         {
             BitmapImage image = new BitmapImage();
             image.BeginInit();
@@ -26,8 +26,8 @@ namespace MATAPB.Objects
 
             Orientation = Orientations.plusZ;
             UpdateBuffer(
-                image.PixelWidth / 1000.0,
-                image.PixelHeight / 1000.0,
+                image.PixelWidth * scale / 1000.0,
+                image.PixelHeight * scale / 1000.0,
                 Orientation);
 
             ColorTextureTag = new ColorTexture(path);

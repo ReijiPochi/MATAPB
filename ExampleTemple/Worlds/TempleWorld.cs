@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Input;
 using MATAPB.Input;
 using MATAPB.Gaming;
+using System.Numerics;
 
 using Keyboard = MATAPB.Input.Keyboard;
 using Vector3 = System.Numerics.Vector3;
@@ -22,6 +23,10 @@ namespace ExampleTemple.Worlds
     {
         public TempleWorld()
         {
+            GlobalLight1.Color = new Vector4(1.1f, 1.1f, 1.1f, 0.0f);
+            GlobalLight1.Direction = new Vector4(2.0f, -2.0f, -10.0f, 0);
+            GlobalLight1.Ambitent = new Vector4(0.0f, 0.03f, 0.1f, 0);
+
             hero.Map = mapArea;
             //hero.PlayerCam = new Camera3D();
             hero.PlayerCam = new CameraPerspective();
@@ -108,6 +113,9 @@ namespace ExampleTemple.Worlds
         public override void Render(RenderingContext context)
         {
             MovePlayer();
+
+            miniMapWorld.map.PSRTag.Position = new Vector3((float)(hero.PlayerCam.Eye.X / 100.0), (float)(-hero.PlayerCam.Eye.Z / 100.0), 0.0f);
+            miniMapWorld.map.PSRTag.Rotation = new Vector3(0, 0, (float)hero.angleLR);
 
             hudWorld.miniMapCanvas.SetCanvas();
             {

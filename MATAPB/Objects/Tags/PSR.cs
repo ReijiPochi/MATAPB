@@ -11,6 +11,12 @@ using SharpDX;
 
 namespace MATAPB.Objects.Tags
 {
+    public enum PSROrder
+    {
+        SRP,
+        SPR
+    }
+
     public class PSR : Tag
     {
         public PSR()
@@ -20,6 +26,7 @@ namespace MATAPB.Objects.Tags
             Rotation = new Vector3(0.0f);
         }
 
+        public PSROrder Order { get; set; }
         public Vector3 Position { get; set; }
         public Vector3 Scale { get; set; }
         public Vector3 Rotation { get; set; }
@@ -34,9 +41,25 @@ namespace MATAPB.Objects.Tags
             {
                 if (prePosition != Position || preScale != Scale || preRotation != Rotation)
                 {
-                    Matrix world = Matrix.CreateScale(Scale);
-                    world *= Matrix.CreateRotationX(Rotation.X) * Matrix.CreateRotationY(Rotation.Y) * Matrix.CreateRotationZ(Rotation.Z);
-                    world *= Matrix.CreateTranslation(Position);
+                    Matrix world = new Matrix();
+
+                    switch (Order)
+                    {
+                        case PSROrder.SRP:
+                            world = Matrix.CreateScale(Scale);
+                            world *= Matrix.CreateRotationX(Rotation.X) * Matrix.CreateRotationY(Rotation.Y) * Matrix.CreateRotationZ(Rotation.Z);
+                            world *= Matrix.CreateTranslation(Position);
+                            break;
+
+                        case PSROrder.SPR:
+                            world = Matrix.CreateScale(Scale);
+                            world *= Matrix.CreateTranslation(Position);
+                            world *= Matrix.CreateRotationX(Rotation.X) * Matrix.CreateRotationY(Rotation.Y) * Matrix.CreateRotationZ(Rotation.Z);
+                            break;
+
+                        default:
+                            break;
+                    }
 
                     PSR_world.SetMatrix(world);
 

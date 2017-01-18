@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="AnimationDouble.cs" />
     <Compile Include="AnimationMode.cs" />
+    <Compile Include="AnimationVector3.cs" />
     <Compile Include="AutoDisposeObject.cs" />
     <Compile Include="Blend.cs" />
     <Compile Include="Camera.cs" />
@@ -108,6 +109,8 @@
     <Compile Include="Camera3D.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="Input\TextureLoader.cs" />
+    <Compile Include="Light.cs" />
+    <Compile Include="LightMode.cs" />
     <Compile Include="MatColor.cs" />
     <Compile Include="Gaming\ActionObject.cs" />
     <Compile Include="Gaming\FPS\MoveData.cs" />

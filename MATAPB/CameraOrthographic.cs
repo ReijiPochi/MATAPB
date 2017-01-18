@@ -11,6 +11,10 @@ namespace MATAPB
 {
     public class CameraOrthographic : Camera
     {
+        public CameraOrthographic()
+        {
+        }
+
         public double CameraWidth { get; set; } = 1.0;
         public double CameraHeight { get; set; } = 1.0;
 

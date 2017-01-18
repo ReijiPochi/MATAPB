@@ -24,9 +24,6 @@ namespace MATAPB
         public AnimationMode Mode { get; set; } = AnimationMode.Step;
         public double ActualValue { get; set; }
 
-        public double MaxValue { get; set; }
-        public double MinValue { get; set; }
-
         public double Delta { get; set; } = 0.1;
         public double Threshold { get; set; } = 0.1;
 
@@ -35,6 +32,7 @@ namespace MATAPB
             if (!valueChanged)
             {
                 ValueChanged = false;
+                return;
             }
 
             switch (Mode)

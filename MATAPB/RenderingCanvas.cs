@@ -47,7 +47,7 @@ namespace MATAPB
             height = tex.Description.Height;
         }
 
-        public Color4 color;
+        public Color4 color = new Color4(0.0f, 0.0f, 0.0f, 0.0f);
         public RenderTargetView renderTarget;
         public DepthStencilView depthStencil;
         public double width, height;

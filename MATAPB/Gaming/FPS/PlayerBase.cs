@@ -29,7 +29,7 @@ namespace MATAPB.Gaming.FPS
         public CameraPerspective PlayerCam { get; set; }
 
         double actualSpeedLR, actualSpeedFB, actualSpeedUD;
-        double angleLR = 0.0, angleUD = 0.0;
+        public double angleLR = 0.0, angleUD = 0.0;
         double heightOffset = 0.0, targetHeight = 0.0;
 
         double fov = 70.0;

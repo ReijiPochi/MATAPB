@@ -34,7 +34,7 @@ namespace MATAPB
                 usual.RenderTarget[0].BlendOperation = BlendOperation.Add;
                 usual.RenderTarget[0].DestinationBlend = BlendOption.InverseSourceAlpha;
                 usual.RenderTarget[0].SourceAlphaBlend = BlendOption.One;
-                usual.RenderTarget[0].DestinationAlphaBlend = BlendOption.Zero;
+                usual.RenderTarget[0].DestinationAlphaBlend = BlendOption.DestinationAlpha;
                 usual.RenderTarget[0].AlphaBlendOperation = BlendOperation.Add;
                 usual.RenderTarget[0].RenderTargetWriteMask = ColorWriteMaskFlags.All;
 

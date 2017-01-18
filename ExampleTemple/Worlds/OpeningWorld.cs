@@ -17,8 +17,8 @@ namespace ExampleTemple.Worlds
 
             logo.ColorTextureTag.Opacity.ActualValue = 0.0;
             logo.ColorTextureTag.Opacity.Mode = AnimationMode.Liner;
-            logo.ColorTextureTag.Opacity.Delta = 0.02;
-            logo.ColorTextureTag.Opacity.Threshold = 0.02;
+            logo.ColorTextureTag.Opacity.Delta = 0.04;
+            logo.ColorTextureTag.Opacity.Threshold = 0.04;
             
             Objects.Add(logo);
         }
