@@ -8,6 +8,7 @@ using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.DXGI;
 using SharpDX.Direct3D11;
+using SharpDX.Direct2D1;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -38,9 +39,9 @@ namespace MATAPB
             Overlay = new Window()
             {
                 WindowStyle = WindowStyle.None,
-                WindowState = WindowState.Maximized,
+                WindowState = System.Windows.WindowState.Maximized,
                 AllowsTransparency = true,
-                Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(1, 0, 0, 0)),
+                Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(1, 0, 0, 0)),
                 ShowInTaskbar = false
             };
             Overlay.Closed += Overlay_Closed;
@@ -51,9 +52,9 @@ namespace MATAPB
             WorldHost = new Window()
             {
                 WindowStyle = WindowStyle.None,
-                WindowState = WindowState.Maximized,
+                WindowState = System.Windows.WindowState.Maximized,
                 Content = ViewArea,
-                Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(10, 10, 10))
+                Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(10, 10, 10))
             };
             WorldHost.Activated += WorldHost_Activated;
             WorldHost.Deactivated += WorldHost_Deactivated;
@@ -71,7 +72,7 @@ namespace MATAPB
                 new RasterizerStateDescription()
                 {
                     CullMode = CullMode.None,
-                    FillMode = FillMode.Solid
+                    FillMode = SharpDX.Direct3D11.FillMode.Solid
                 });
 
             using (state)
@@ -85,6 +86,8 @@ namespace MATAPB
             InitDefaultRenderTarget();
             InitDefaultDepthStencil();
             DefaultCanvas.SetCanvas();
+
+            InitD2d();
 
             Blend.SetUsual();
         }
@@ -121,6 +124,14 @@ namespace MATAPB
         {
             get { return _GraphicsDevice; }
         }
+
+        public static SharpDX.Direct2D1.Factory D2dFactory { get; set; }
+
+        public static SharpDX.Direct2D1.Device D2dDevice { get; set; }
+
+        public static SharpDX.DirectWrite.Factory DwFactory { get; set; }
+
+        public static SharpDX.WIC.ImagingFactory ImagingFactory { get; set; }
 
         private static SwapChain _SwapChain;
         public static SwapChain SwapChain
@@ -181,7 +192,7 @@ namespace MATAPB
 
             SharpDX.Direct3D11.Device.CreateWithSwapChain(
                 DriverType.Hardware,
-                DeviceCreationFlags.None,
+                DeviceCreationFlags.BgraSupport,
                 new SwapChainDescription
                 {
                     BufferCount = 1,
@@ -230,6 +241,12 @@ namespace MATAPB
             {
                 DefaultCanvas.depthStencil = new DepthStencilView(GraphicsDevice, depthBuffer);
             }
+        }
+
+        private static void InitD2d()
+        {
+            D2dFactory = new SharpDX.Direct2D1.Factory();
+            DwFactory = new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Shared);
         }
 
         private static void Overlay_Closed(object sender, EventArgs e)

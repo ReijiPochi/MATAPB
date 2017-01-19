@@ -29,7 +29,6 @@ namespace ExampleTemple.Worlds
             CameraWidth = PresentationArea.ViewArea.ActualWidth / 1000.0
         };
 
-        public Picture logo = new Picture(@"Objects\ロゴ.png");
-        Object3D sky = new Object3D(@"Objects\sky.obj");
+        public Picture logo = new Picture(@"Objects\ロゴ.png", 0.5);
     }
 }

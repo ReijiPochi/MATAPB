@@ -42,7 +42,7 @@ namespace MATAPB.Objects.Tags
 
             foreach(string line in lines)
             {
-                if (line.Length > 2)
+                if (line.Length >= 2)
                 {
                     if (!loading && line[0] == '#' && line[1] == '#')
                     {

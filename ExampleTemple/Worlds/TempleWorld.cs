@@ -13,6 +13,7 @@ using System.Windows.Input;
 using MATAPB.Input;
 using MATAPB.Gaming;
 using System.Numerics;
+using MATAPB._2D;
 
 using Keyboard = MATAPB.Input.Keyboard;
 using Vector3 = System.Numerics.Vector3;
@@ -47,6 +48,11 @@ namespace ExampleTemple.Worlds
             test.Tags.InsertToFirst(hopup2);
             hopup2.Hop();
 
+            TextTexture testTex = new TextTexture(500, 500) { Text = "ABCあいうえお"};
+            testTex.Draw();
+            textTest.Tags.AddTag(new Tag[] { new ColorTexture(testTex), new SolidColor(SolidColorOverwriteMode.Color, new MatColor(0, 1, 0, 0.5)) });
+            textTest.PSRTag.Position = new Vector3(0.0f, 1.0f, 0.0f);
+
             //miniMapCanvas = new RenderingCanvas(miniMap);
             //miniMapObj.Tags.AddTag(new ColorTexture(miniMap));
             //miniMapObj.PSRTag.Position = new Vector3(0, 1, 0);
@@ -55,8 +61,9 @@ namespace ExampleTemple.Worlds
             //Objects.Add(mapArea);
             Objects.Add(sky);
             Objects.Add(image);
-            //Objects.Add(miniMapObj);
+            Objects.Add(textTest);
             OverlayObjects.Add(test);
+            
 
             hitArea.MineHit += HitArea_MineHit;
             hitArea.MineLeave += HitArea_MineLeave;
@@ -91,7 +98,7 @@ namespace ExampleTemple.Worlds
         Object3D test = new MATAPB.Objects.Primitive.Plane(1, 1, Orientations.plusZ);
         Texture miniMap = new Texture(200, 200);
         RenderingCanvas miniMapCanvas;
-        MATAPB.Objects.Primitive.Plane miniMapObj = new MATAPB.Objects.Primitive.Plane(1, 1, Orientations.plusZ);
+        MATAPB.Objects.Primitive.Plane textTest = new MATAPB.Objects.Primitive.Plane(1, 1, Orientations.plusZ);
 
         HUDWorld hudWorld = new HUDWorld();
         MiniMapWorld miniMapWorld = new MiniMapWorld();
