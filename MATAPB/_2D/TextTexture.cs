@@ -60,7 +60,11 @@ namespace MATAPB._2D
             get { return _Text; }
             set
             {
+                if (_Text == value)
+                    return;
+
                 valueChanged = true;
+
                 _Text = value;
             }
         }

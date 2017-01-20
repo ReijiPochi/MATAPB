@@ -58,6 +58,11 @@ namespace ExampleTemple
                 MATAPB.Input.Mouse.CursorLock = !MATAPB.Input.Mouse.CursorLock;
                 MATAPB.Input.Mouse.CursorVisibility = !MATAPB.Input.Mouse.CursorVisibility;
             }
+
+            if (key == Key.Escape)
+            {
+                Application.Current.Shutdown();
+            }
         }
     }
 }

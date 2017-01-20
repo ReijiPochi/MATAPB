@@ -8,7 +8,7 @@ using MATAPB.Objects;
 
 namespace MATAPB.Gaming.FPS
 {
-    public class PlayerBase
+    public class PlayerBase : RenderableObject
     {
         public PlayerBase()
         {
@@ -109,6 +109,16 @@ namespace MATAPB.Gaming.FPS
                     Y = (float)(-Math.Sin(angleUD) + PlayerCam.Eye.Y)
                 };
             }
+        }
+
+        public override void Draw(RenderingContext context)
+        {
+            
+        }
+
+        protected override void OnDispose()
+        {
+            
         }
     }
 }

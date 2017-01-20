@@ -141,6 +141,7 @@
     <Compile Include="Objects\Tags\SolidColor.cs" />
     <Compile Include="Objects\Tags\Tag.cs" />
     <Compile Include="Objects\Object3D.cs" />
+    <Compile Include="Objects\Text.cs" />
     <Compile Include="Orientations.cs" />
     <Compile Include="OverlayWindow.cs" />
     <Compile Include="PresentationArea.cs" />
