@@ -121,7 +121,7 @@ namespace MATAPB.Objects.Tags
                     break;
 
                 case HopupAnimations.PopLiner:
-                    hopupState += PresentationArea.TimelengthOfFrame / HopupTime;
+                    hopupState += PresentationBase.TimelengthOfFrame / HopupTime;
                     if (hopupState < 1.0)
                     {
                         Position = MinPosition.InternalDivision(MaxPosition, hopupState, 1.0 - hopupState);
@@ -154,7 +154,7 @@ namespace MATAPB.Objects.Tags
                     return;
 
                 case HoverAnimations.Wave:
-                    hoverState += PresentationArea.TimelengthOfFrame * 2.0 * Math.PI * WaveRate;
+                    hoverState += PresentationBase.TimelengthOfFrame * 2.0 * Math.PI * WaveRate;
                     Position = new Vector3(MaxPosition.X, (float)(MaxPosition.Y + WaveHeight * Math.Sin(hoverState)), MaxPosition.Z);
                     break;
             }
@@ -173,7 +173,7 @@ namespace MATAPB.Objects.Tags
                     break;
 
                 case CloseAnimations.DepopLiner:
-                    closeStaate -= PresentationArea.TimelengthOfFrame / CloseTime;
+                    closeStaate -= PresentationBase.TimelengthOfFrame / CloseTime;
                     if (closeStaate > 0.0)
                     {
                         Position = MinPosition.InternalDivision(MaxPosition, closeStaate, 1.0 - closeStaate);

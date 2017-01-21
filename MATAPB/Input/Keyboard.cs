@@ -18,7 +18,7 @@ namespace MATAPB.Input
 
         public static void Initialize()
         {
-            if (PresentationArea.Overlay == null)
+            if (PresentationBase.Overlay == null)
                 throw new Exception("PresentationArea.Overlay が null です。");
 
             foreach(Key key in Enum.GetValues(typeof(Key)))
@@ -26,8 +26,8 @@ namespace MATAPB.Input
                 KeyStates[key] = false;
             }
 
-            PresentationArea.Overlay.PreviewKeyDown += Overlay_PreviewKeyDown;
-            PresentationArea.Overlay.PreviewKeyUp += Overlay_PreviewKeyUp;
+            PresentationBase.Overlay.PreviewKeyDown += Overlay_PreviewKeyDown;
+            PresentationBase.Overlay.PreviewKeyUp += Overlay_PreviewKeyUp;
         }
 
         private static void Overlay_PreviewKeyDown(object sender, KeyEventArgs e)

@@ -9,6 +9,12 @@ using MATAPB.Input;
 
 namespace MATAPB.Objects.Tags
 {
+    public enum TextureSamplingFilter
+    {
+        Anisotropic,
+        Clear
+    }
+
     public class ColorTexture : Tag
     {
         public ColorTexture()
@@ -30,6 +36,8 @@ namespace MATAPB.Objects.Tags
 
         public ShaderResourceView Texture { get; set; }
 
+        public TextureSamplingFilter FilterType { get; set; } = TextureSamplingFilter.Anisotropic;
+
         public AnimationDouble Opacity { get; set; } = new AnimationDouble();
 
         private EffectShaderResourceVariable ColorTexture_texture;
@@ -47,7 +55,19 @@ namespace MATAPB.Objects.Tags
 
         public override string GetShaderText()
         {
-            return LoadShaderText("ColorTexture.fx");
+            Dictionary<string, string> data = Disassemble(LoadShaderText("ColorTexture.fx"));
+
+            switch (FilterType)
+            {
+                case TextureSamplingFilter.Anisotropic:
+                    return data["FILTER_ANISOTROPIC"] + data["COMMON"];
+
+                case TextureSamplingFilter.Clear:
+                    return data["FILTER_CLEAR"] + data["COMMON"];
+
+                default:
+                    return null;
+            }
         }
 
         public override void SetVariables(Effect effect)

@@ -64,32 +64,32 @@ namespace MATAPB.Objects
         {
             if (!Visible || VertexBuffer == null) return;
 
-            PresentationArea.GraphicsDevice.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, VertexData.SizeInBytes, 0));
-            PresentationArea.GraphicsDevice.ImmediateContext.InputAssembler.PrimitiveTopology = DrawMode;
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, VertexData.SizeInBytes, 0));
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.PrimitiveTopology = DrawMode;
 
             if (Tags != null) Tags.PrepareToDraw(context);
 
             if (IndexBuffer == null)
             {
-                PresentationArea.GraphicsDevice.ImmediateContext.Draw(VertexCount, 0);
+                PresentationBase.GraphicsDevice.ImmediateContext.Draw(VertexCount, 0);
             }
             else
             {
-                PresentationArea.GraphicsDevice.ImmediateContext.InputAssembler.SetIndexBuffer(IndexBuffer, Format.R32_UInt, 0);
-                PresentationArea.GraphicsDevice.ImmediateContext.DrawIndexed(IndexCount, 0, 0);
+                PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.SetIndexBuffer(IndexBuffer, Format.R32_UInt, 0);
+                PresentationBase.GraphicsDevice.ImmediateContext.DrawIndexed(IndexCount, 0, 0);
             }
         }
 
         protected void InitVertexBuffer(VertexData[] vertices)
         {
-            VertexBuffer = SharpDX.Direct3D11.Buffer.Create(PresentationArea.GraphicsDevice, BindFlags.VertexBuffer, vertices);
+            VertexBuffer = SharpDX.Direct3D11.Buffer.Create(PresentationBase.GraphicsDevice, BindFlags.VertexBuffer, vertices);
 
             VertexCount = vertices.Length;
         }
 
         protected void InitIndexBuffer(int[] indices)
         {
-            IndexBuffer = SharpDX.Direct3D11.Buffer.Create(PresentationArea.GraphicsDevice, BindFlags.IndexBuffer, indices);
+            IndexBuffer = SharpDX.Direct3D11.Buffer.Create(PresentationBase.GraphicsDevice, BindFlags.IndexBuffer, indices);
 
             IndexCount = indices.Length;
         }

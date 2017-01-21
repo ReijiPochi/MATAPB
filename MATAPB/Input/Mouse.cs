@@ -42,9 +42,9 @@ namespace MATAPB.Input
             set
             {
                 if (value)
-                    PresentationArea.Overlay.Cursor = Cursors.Arrow;
+                    PresentationBase.Overlay.Cursor = Cursors.Arrow;
                 else
-                    PresentationArea.Overlay.Cursor = Cursors.None;
+                    PresentationBase.Overlay.Cursor = Cursors.None;
 
                 _CursorVisibility = value;
             }
@@ -72,12 +72,12 @@ namespace MATAPB.Input
 
         public static void Initialize()
         {
-            if (PresentationArea.Overlay == null)
+            if (PresentationBase.Overlay == null)
                 throw new Exception("PresentationArea.Overlay が null です。");
 
-            PresentationArea.Overlay.PreviewMouseMove += Overlay_PreviewMouseMove;
-            PresentationArea.Overlay.Deactivated += Overlay_Deactivated;
-            PresentationArea.Overlay.Activated += Overlay_Activated;
+            PresentationBase.Overlay.PreviewMouseMove += Overlay_PreviewMouseMove;
+            PresentationBase.Overlay.Deactivated += Overlay_Deactivated;
+            PresentationBase.Overlay.Activated += Overlay_Activated;
         }
 
         public static Point GetDelta()
@@ -156,7 +156,7 @@ namespace MATAPB.Input
             cursorLocked = false;
             prePosition.X = 0;
             prePosition.Y = 0;
-            PresentationArea.Overlay.Cursor = Cursors.Arrow;
+            PresentationBase.Overlay.Cursor = Cursors.Arrow;
         }
 
         public static void Restart()

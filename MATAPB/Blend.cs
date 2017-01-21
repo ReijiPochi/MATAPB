@@ -38,12 +38,12 @@ namespace MATAPB
                 usual.RenderTarget[0].AlphaBlendOperation = BlendOperation.Add;
                 usual.RenderTarget[0].RenderTargetWriteMask = ColorWriteMaskFlags.All;
 
-                usualState = new BlendState(PresentationArea.GraphicsDevice, usual);
+                usualState = new BlendState(PresentationBase.GraphicsDevice, usual);
 
                 usualInit = true;
             }
 
-            PresentationArea.GraphicsDevice.ImmediateContext.OutputMerger.BlendState = usualState;
+            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.BlendState = usualState;
         }
 
         //public static void SetAdd()

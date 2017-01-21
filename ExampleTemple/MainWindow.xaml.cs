@@ -34,7 +34,7 @@ namespace ExampleTemple
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            PresentationArea.Initialize(60.0);
+            PresentationBase.Initialize(60.0);
 
             mainTL.Add(new OpeningTitle(), 0, 2);
             mainTL.Add(new Gaming(), 3, 7);
@@ -45,7 +45,7 @@ namespace ExampleTemple
             MATAPB.Input.Mouse.CursorLock = true;
             MATAPB.Input.Mouse.CursorVisibility = false;
 
-            PresentationArea.Launch();
+            PresentationBase.Launch();
 
             mainTL.Start();
         }

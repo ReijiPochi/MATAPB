@@ -104,9 +104,9 @@ namespace MATAPB.Objects
                 tag.Download(context);
             }
 
-            CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(0).Apply(PresentationArea.GraphicsDevice.ImmediateContext);
+            CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(0).Apply(PresentationBase.GraphicsDevice.ImmediateContext);
             worldConstantBuffer.SetConstantBuffer(context.cbuffer);
-            PresentationArea.GraphicsDevice.ImmediateContext.InputAssembler.InputLayout = VertexLayout;
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.InputLayout = VertexLayout;
         }
 
         private void InitVertexLayout()
@@ -117,7 +117,7 @@ namespace MATAPB.Objects
                 VertexLayout.Dispose();
 
             VertexLayout = new InputLayout(
-                PresentationArea.GraphicsDevice,
+                PresentationBase.GraphicsDevice,
                 CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(0).Description.Signature,
                 new[] {
                     new InputElement { SemanticName = "SV_Position", Format = Format.R32G32B32_Float },
@@ -209,7 +209,7 @@ namespace MATAPB.Objects
         {
             using (ShaderBytecode shaderBytecode = ShaderBytecode.Compile(shader, "fx_5_0", ShaderFlags.None, EffectFlags.None))
             {
-                return new Effect(PresentationArea.GraphicsDevice, shaderBytecode);
+                return new Effect(PresentationBase.GraphicsDevice, shaderBytecode);
             }
         }
 

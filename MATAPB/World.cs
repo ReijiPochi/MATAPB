@@ -71,7 +71,7 @@ namespace MATAPB
         protected void InitConstantBuffer()
         {
             WorldConstantBuffer = new SharpDX.Direct3D11.Buffer(
-                PresentationArea.GraphicsDevice,
+                PresentationBase.GraphicsDevice,
                 new BufferDescription
                 {
                     SizeInBytes = ConstantBuffer.SizeInBytes,
@@ -92,7 +92,7 @@ namespace MATAPB
                 light1_ambient = GlobalLight1.Ambitent
             };
 
-            PresentationArea.GraphicsDevice.ImmediateContext.UpdateSubresource(ref cbuffer, WorldConstantBuffer);
+            PresentationBase.GraphicsDevice.ImmediateContext.UpdateSubresource(ref cbuffer, WorldConstantBuffer);
         }
 
         /// <summary>

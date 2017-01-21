@@ -22,9 +22,9 @@ namespace MATAPB
 {
     public delegate void PreviewRenderEventHandler();
 
-    public class PresentationArea
+    public class PresentationBase
     {
-        public PresentationArea()
+        public PresentationBase()
         {
             throw new Exception("PresentationAreaはインスタンス化できません。");
         }
@@ -148,6 +148,16 @@ namespace MATAPB
         public static void Launch()
         {
             AnimationClock.Start();
+        }
+
+        public static void LockObjects()
+        {
+            AnimationObject.Lock();
+        }
+
+        public static void UnlockObjects()
+        {
+            AnimationObject.Unlock();
         }
 
         private static void AnimationClock_Tick(long time)

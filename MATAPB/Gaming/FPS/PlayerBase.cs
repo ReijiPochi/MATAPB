@@ -38,8 +38,8 @@ namespace MATAPB.Gaming.FPS
         {
             if (data != null)
             {
-                angleLR += data.deltaAngleLR * PresentationArea.TimelengthOfFrame;
-                angleUD += data.deltaAngleUD * PresentationArea.TimelengthOfFrame;
+                angleLR += data.deltaAngleLR * PresentationBase.TimelengthOfFrame;
+                angleUD += data.deltaAngleUD * PresentationBase.TimelengthOfFrame;
 
                 if (angleUD > Math.PI * 0.45)
                     angleUD = Math.PI * 0.45;
@@ -65,20 +65,32 @@ namespace MATAPB.Gaming.FPS
 
                 Vector3 speedVector = new Vector3()
                 {
-                    X = (float)((-Math.Sin(angleLR) * actualSpeedFB + Math.Cos(angleLR) * actualSpeedLR) * PresentationArea.TimelengthOfFrame),
-                    Z = (float)((Math.Cos(angleLR) * actualSpeedFB + Math.Sin(angleLR) * actualSpeedLR) * PresentationArea.TimelengthOfFrame),
+                    X = (float)((-Math.Sin(angleLR) * actualSpeedFB + Math.Cos(angleLR) * actualSpeedLR) * PresentationBase.TimelengthOfFrame),
+                    Z = (float)((Math.Cos(angleLR) * actualSpeedFB + Math.Sin(angleLR) * actualSpeedLR) * PresentationBase.TimelengthOfFrame),
                     Y = 0.0f
                 };
 
-                MapJudgment2_5DInput inputData = new MapJudgment2_5DInput()
-                {
-                    speedVector = speedVector,
-                    currentPosition = PlayerCam.Eye
-                };
+                MapJudgment2_5DResult result;
 
-                MapJudgment2_5D.Map = Map;
-                MapJudgment2_5DResult result = MapJudgment2_5D.Judge(inputData);
-                
+                if (Map != null)
+                {
+                    MapJudgment2_5DInput inputData = new MapJudgment2_5DInput()
+                    {
+                        speedVector = speedVector,
+                        currentPosition = PlayerCam.Eye
+                    };
+
+                    MapJudgment2_5D.Map = Map;
+                    result = MapJudgment2_5D.Judge(inputData);
+                }
+                else
+                {
+                    result = new MapJudgment2_5DResult()
+                    {
+                        mapOK = true,
+                        result = PlayerCam.Eye + speedVector
+                    };
+                }
 
                 if (result.mapOK)
                 {
@@ -99,7 +111,7 @@ namespace MATAPB.Gaming.FPS
                 
                 PlayerCam.Eye = new Vector3(
                     result.result.X,
-                    (float)(PlayerCam.Eye.Y + deltaEyeY * PresentationArea.TimelengthOfFrame),
+                    (float)(PlayerCam.Eye.Y + deltaEyeY * PresentationBase.TimelengthOfFrame),
                     result.result.Z);
 
                 PlayerCam.Target = new Vector3()

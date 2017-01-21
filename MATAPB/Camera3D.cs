@@ -49,9 +49,9 @@ namespace MATAPB
         {
             //base.CameraUpdate();
 
-            if (PresentationArea.GraphicsDevice == null) return;
+            if (PresentationBase.GraphicsDevice == null) return;
 
-            PresentationArea.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(viewPortX, viewPortY, (float)(ViewPortWidth * 0.5), ViewPortHeight);
+            PresentationBase.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(viewPortX, viewPortY, (float)(ViewPortWidth * 0.5), ViewPortHeight);
 
             Matrix view = Matrix.CreateLookAt(ActualEye, ActualTarget, Up);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView((float)(Math.PI * (FieldOfView / 180.0)), (float)ViewPortWidth / ViewPortHeight, 0.1f, 1000.0f);

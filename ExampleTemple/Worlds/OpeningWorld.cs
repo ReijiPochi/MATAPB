@@ -25,8 +25,8 @@ namespace ExampleTemple.Worlds
 
         public CameraOrthographic cam = new CameraOrthographic()
         {
-            CameraHeight = PresentationArea.ViewArea.ActualHeight / 1000.0,
-            CameraWidth = PresentationArea.ViewArea.ActualWidth / 1000.0
+            CameraHeight = PresentationBase.ViewArea.ActualHeight / 1000.0,
+            CameraWidth = PresentationBase.ViewArea.ActualWidth / 1000.0
         };
 
         public Picture logo = new Picture(@"Objects\ロゴ.png", 0.5);

@@ -129,9 +129,9 @@ namespace ExampleTemple.Worlds
                 miniMapWorld.Render(context);
             }
 
-            PresentationArea.DefaultCanvas.SetCanvas();
+            PresentationBase.DefaultCanvas.SetCanvas();
             {
-                context.canvas = PresentationArea.DefaultCanvas;
+                context.canvas = PresentationBase.DefaultCanvas;
                 base.Render(context);
 
                 hudWorld.Render(context);

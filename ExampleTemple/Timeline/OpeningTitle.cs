@@ -23,7 +23,7 @@ namespace ExampleTemple.Timeline
         {
             base.Start();
 
-            PresentationArea.World = opWorld;
+            PresentationBase.World = opWorld;
 
             opWorld.logo.ColorTextureTag.Opacity.Value = 1.0;
         }

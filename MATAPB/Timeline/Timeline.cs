@@ -49,7 +49,7 @@ namespace MATAPB.Timeline
             if (State != TimelineState.Run)
                 return;
 
-            CurrentTime += PresentationArea.TimelengthOfFrame;
+            CurrentTime += PresentationBase.TimelengthOfFrame;
 
             foreach(TimelineObject to in Objects)
             {

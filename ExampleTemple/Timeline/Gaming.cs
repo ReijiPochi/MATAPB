@@ -18,7 +18,7 @@ namespace ExampleTemple.Timeline
         {
             base.Start();
 
-            PresentationArea.World = templeWorld;
+            PresentationBase.World = templeWorld;
 
             Host.Stop();
         }

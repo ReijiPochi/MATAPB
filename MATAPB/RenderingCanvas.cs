@@ -25,7 +25,7 @@ namespace MATAPB
             //    Dimension = RenderTargetViewDimension.Texture2D
             //};
 
-            renderTarget = new RenderTargetView(PresentationArea.GraphicsDevice, tex.Tex);
+            renderTarget = new RenderTargetView(PresentationBase.GraphicsDevice, tex.Tex);
 
             Texture2DDescription depthBufferDesc = new Texture2DDescription
             {
@@ -38,9 +38,9 @@ namespace MATAPB
                 SampleDescription = tex.Description.SampleDescription
             };
 
-            using (Texture2D depthBuffer = new Texture2D(PresentationArea.GraphicsDevice, depthBufferDesc))
+            using (Texture2D depthBuffer = new Texture2D(PresentationBase.GraphicsDevice, depthBufferDesc))
             {
-                depthStencil = new DepthStencilView(PresentationArea.GraphicsDevice, depthBuffer);
+                depthStencil = new DepthStencilView(PresentationBase.GraphicsDevice, depthBuffer);
             }
 
             width = tex.Description.Width;
@@ -54,18 +54,18 @@ namespace MATAPB
 
         public void SetCanvas()
         {
-            PresentationArea.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(depthStencil, renderTarget);
+            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(depthStencil, renderTarget);
         }
 
         public void ClearCanvas()
         {
-            PresentationArea.GraphicsDevice.ImmediateContext.ClearRenderTargetView(renderTarget, color);
-            PresentationArea.GraphicsDevice.ImmediateContext.ClearDepthStencilView(depthStencil, DepthStencilClearFlags.Depth, 1.0f, 0);
+            PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(renderTarget, color);
+            PresentationBase.GraphicsDevice.ImmediateContext.ClearDepthStencilView(depthStencil, DepthStencilClearFlags.Depth, 1.0f, 0);
         }
 
         public void ClearDepthStencil()
         {
-            PresentationArea.GraphicsDevice.ImmediateContext.ClearDepthStencilView(depthStencil, DepthStencilClearFlags.Depth, 1.0f, 0);
+            PresentationBase.GraphicsDevice.ImmediateContext.ClearDepthStencilView(depthStencil, DepthStencilClearFlags.Depth, 1.0f, 0);
         }
 
         protected override void OnDispose()

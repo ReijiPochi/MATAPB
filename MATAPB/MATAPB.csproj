@@ -144,7 +144,7 @@
     <Compile Include="Objects\Text.cs" />
     <Compile Include="Orientations.cs" />
     <Compile Include="OverlayWindow.cs" />
-    <Compile Include="PresentationArea.cs" />
+    <Compile Include="PresentationBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

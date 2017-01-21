@@ -18,7 +18,7 @@ namespace MATAPB._2D
             using (Surface surface = Tex.QueryInterface<Surface>())
             {
                 renderTarget2D = new RenderTarget(
-                    PresentationArea.D2dFactory,
+                    PresentationBase.D2dFactory,
                     surface,
                     new RenderTargetProperties(new PixelFormat(Format.B8G8R8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied))
                     );
@@ -29,7 +29,7 @@ namespace MATAPB._2D
 
             brush = new SolidColorBrush(renderTarget2D, Color.Black, new BrushProperties() { Opacity = 1.0f });
 
-            format = new TextFormat(PresentationArea.DwFactory, _Font, _FontSize)
+            format = new TextFormat(PresentationBase.DwFactory, _Font, _FontSize)
             {
                 TextAlignment = TextAlignment.Center,
                 ParagraphAlignment = ParagraphAlignment.Center
@@ -46,7 +46,7 @@ namespace MATAPB._2D
 
                 if (format != null) format.Dispose();
 
-                format = new TextFormat(PresentationArea.DwFactory, Font, _FontSize)
+                format = new TextFormat(PresentationBase.DwFactory, Font, _FontSize)
                 {
                     TextAlignment = TextAlignment.Center,
                     ParagraphAlignment = ParagraphAlignment.Center
@@ -79,7 +79,7 @@ namespace MATAPB._2D
 
                 if (format != null) format.Dispose();
 
-                format = new TextFormat(PresentationArea.DwFactory, Font, _FontSize)
+                format = new TextFormat(PresentationBase.DwFactory, Font, _FontSize)
                 {
                     TextAlignment = TextAlignment.Center,
                     ParagraphAlignment = ParagraphAlignment.Center
@@ -101,7 +101,7 @@ namespace MATAPB._2D
 
             if (valueChanged)
             {
-                layout = new TextLayout(PresentationArea.DwFactory, Text, format, Description.Width, Description.Height);
+                layout = new TextLayout(PresentationBase.DwFactory, Text, format, Description.Width, Description.Height);
                 valueChanged = false;
             }
 

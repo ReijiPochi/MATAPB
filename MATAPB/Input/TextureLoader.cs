@@ -38,10 +38,10 @@ namespace MATAPB.Input
                 Usage = ResourceUsage.Default
             };
 
-            Texture2D tex = new Texture2D(PresentationArea.GraphicsDevice, desc, new[] { dataBox });
+            Texture2D tex = new Texture2D(PresentationBase.GraphicsDevice, desc, new[] { dataBox });
             data.Unlock();
 
-            return new ShaderResourceView(PresentationArea.GraphicsDevice, tex);
+            return new ShaderResourceView(PresentationBase.GraphicsDevice, tex);
         }
     }
 }

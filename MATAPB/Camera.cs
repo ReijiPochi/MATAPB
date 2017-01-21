@@ -36,11 +36,11 @@ namespace MATAPB
 
         public virtual void CameraUpdate(RenderingContext context)
         {
-            if (PresentationArea.GraphicsDevice == null) return;
+            if (PresentationBase.GraphicsDevice == null) return;
 
             ViewPortWidth = (int)context.canvas.width;
             ViewPortHeight = (int)context.canvas.height;
-            PresentationArea.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, ViewPortWidth, ViewPortHeight);
+            PresentationBase.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, ViewPortWidth, ViewPortHeight);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace MATAPB
                 Usage = ResourceUsage.Default
             };
 
-            Tex = new Texture2D(PresentationArea.GraphicsDevice, Description);
+            Tex = new Texture2D(PresentationBase.GraphicsDevice, Description);
 
             //ShaderResourceViewDescription srvDesc = new ShaderResourceViewDescription()
             //{
@@ -36,7 +36,7 @@ namespace MATAPB
             //    Dimension = SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
             //};
 
-            ShaderResource = new ShaderResourceView(PresentationArea.GraphicsDevice, Tex);
+            ShaderResource = new ShaderResourceView(PresentationBase.GraphicsDevice, Tex);
         }
 
         public ShaderResourceView ShaderResource { get; set; }
