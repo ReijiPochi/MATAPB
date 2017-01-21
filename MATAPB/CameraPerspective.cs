@@ -11,9 +11,20 @@ using SharpDX;
 
 namespace MATAPB
 {
+    public enum CameraPerspectiveMode
+    {
+        UseFOV,
+        UseWidthHeight
+    }
+
     public class CameraPerspective : Camera
     {
+        public CameraPerspectiveMode Mode { get; set; } = CameraPerspectiveMode.UseFOV;
+
         public double FieldOfView { get; set; }
+
+        public double CameraWidth { get; set; }
+        public double CameraHeight { get; set; }
 
         public Matrix ViewMatrix { get; protected set; }
         public Matrix ProjectionMatrix { get; protected set; }
@@ -24,7 +35,21 @@ namespace MATAPB
             base.CameraUpdate(context);
 
             ViewMatrix = Matrix.CreateLookAt(Eye, Target, Up);
-            ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)(Math.PI * (FieldOfView / 180.0)), (float)ViewPortWidth / ViewPortHeight, 0.1f, 1000.0f);
+
+            switch (Mode)
+            {
+                case CameraPerspectiveMode.UseFOV:
+                    ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)(Math.PI * (FieldOfView / 180.0)), (float)ViewPortWidth / ViewPortHeight, 0.1f, 1000.0f);
+                    break;
+
+                case CameraPerspectiveMode.UseWidthHeight:
+                    ProjectionMatrix = Matrix.CreatePerspective((float)CameraWidth, (float)CameraHeight, 1.0f, 1000.0f);
+                    break;
+
+                default:
+                    break;
+            }
+            
             CameraMatrix = ViewMatrix * ProjectionMatrix;
         }
     }
