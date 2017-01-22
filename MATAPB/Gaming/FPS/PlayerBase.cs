@@ -28,11 +28,16 @@ namespace MATAPB.Gaming.FPS
 
         public CameraPerspective PlayerCam { get; set; }
 
-        double actualSpeedLR, actualSpeedFB, actualSpeedUD;
+        public double SpeedLRDelta { get; set; } = 20.0;
+        public double SpeedFBDelta { get; set; } = 20.0;
+        public double FOVDelta { get; set; } = 200.0;
+        public double Inertia { get; set; } = 10.0;
+
+        double actualSpeedLR, actualSpeedFB;
+        double actualSpeedX, actualSpeedZ;
         public double angleLR = 0.0, angleUD = 0.0;
         double heightOffset = 0.0, targetHeight = 0.0;
-
-        double fov = 70.0;
+        double inertiaX, inertiaZ;
 
         public virtual void Move(MoveData data)
         {
@@ -46,29 +51,37 @@ namespace MATAPB.Gaming.FPS
                 else if (angleUD < -Math.PI * 0.45)
                     angleUD = -Math.PI * 0.45;
 
-                if (data.speedLR > actualSpeedLR) actualSpeedLR += 0.4;
-                else if (data.speedLR < actualSpeedLR) actualSpeedLR -= 0.4;
+                if (data.speedLR > actualSpeedLR) actualSpeedLR += SpeedLRDelta * PresentationBase.TimelengthOfFrame;
+                else if (data.speedLR < actualSpeedLR) actualSpeedLR -= SpeedLRDelta * PresentationBase.TimelengthOfFrame;
 
-                if (data.speedFB > actualSpeedFB) actualSpeedFB += 0.4;
-                else if (data.speedFB < actualSpeedFB) actualSpeedFB -= 0.4;
+                if (data.speedFB > actualSpeedFB) actualSpeedFB += SpeedFBDelta * PresentationBase.TimelengthOfFrame;
+                else if (data.speedFB < actualSpeedFB) actualSpeedFB -= SpeedFBDelta * PresentationBase.TimelengthOfFrame;
 
-                if (fov > PlayerCam.FieldOfView) PlayerCam.FieldOfView += 5.0;
-                else if (fov < PlayerCam.FieldOfView) PlayerCam.FieldOfView -= 5.0;
+                if (data.fov > PlayerCam.FieldOfView + FOVDelta * PresentationBase.TimelengthOfFrame) PlayerCam.FieldOfView += FOVDelta * PresentationBase.TimelengthOfFrame;
+                else if (data.fov < PlayerCam.FieldOfView - FOVDelta * PresentationBase.TimelengthOfFrame) PlayerCam.FieldOfView -= FOVDelta * PresentationBase.TimelengthOfFrame;
+                else PlayerCam.FieldOfView = data.fov;
 
 
-                if (Math.Abs(actualSpeedLR) < 0.4) actualSpeedLR = 0.0;
-                if (Math.Abs(actualSpeedFB) < 0.4) actualSpeedFB = 0.0;
-                if (Math.Abs(actualSpeedUD) < 0.01) actualSpeedUD = 0.0;
+                if (Math.Abs(actualSpeedLR) < SpeedLRDelta * PresentationBase.TimelengthOfFrame) actualSpeedLR = 0.0;
+                if (Math.Abs(actualSpeedFB) < SpeedFBDelta * PresentationBase.TimelengthOfFrame) actualSpeedFB = 0.0;
 
                 double preEyeX = PlayerCam.Eye.X, preEyeZ = PlayerCam.Eye.Z;
 
 
-                Vector3 speedVector = new Vector3()
-                {
-                    X = (float)((-Math.Sin(angleLR) * actualSpeedFB + Math.Cos(angleLR) * actualSpeedLR) * PresentationBase.TimelengthOfFrame),
-                    Z = (float)((Math.Cos(angleLR) * actualSpeedFB + Math.Sin(angleLR) * actualSpeedLR) * PresentationBase.TimelengthOfFrame),
-                    Y = 0.0f
-                };
+                double X = (float)((-Math.Sin(angleLR) * actualSpeedFB + Math.Cos(angleLR) * actualSpeedLR) * PresentationBase.TimelengthOfFrame);
+                double Z = (float)((Math.Cos(angleLR) * actualSpeedFB + Math.Sin(angleLR) * actualSpeedLR) * PresentationBase.TimelengthOfFrame);
+
+                if (X > actualSpeedX) actualSpeedX += (X - actualSpeedX) * Inertia * PresentationBase.TimelengthOfFrame;
+                else if (X < actualSpeedX) actualSpeedX += (X - actualSpeedX) * Inertia * PresentationBase.TimelengthOfFrame;
+
+                if (Z > actualSpeedZ) actualSpeedZ += (Z - actualSpeedZ) * Inertia * PresentationBase.TimelengthOfFrame;
+                else if (Z < actualSpeedZ) actualSpeedZ += (Z - actualSpeedZ) * Inertia * PresentationBase.TimelengthOfFrame;
+
+                if (Math.Abs(actualSpeedX) < 0.0001) actualSpeedX = 0.0;
+                if (Math.Abs(actualSpeedZ) < 0.0001) actualSpeedZ = 0.0;
+
+
+                Vector3 speedVector = new Vector3((float)actualSpeedX, 0, (float)actualSpeedZ);
 
                 MapJudgment2_5DResult result;
 
@@ -102,11 +115,8 @@ namespace MATAPB.Gaming.FPS
                     targetHeight = heightOffset + data.height;
                 }
 
-                if (targetHeight > 5.0) targetHeight = 5.0;
-                else if (targetHeight < 0.5) targetHeight = 0.5;
-
                 double deltaEyeY = (targetHeight - PlayerCam.Eye.Y) * 10.0;
-                if (Math.Abs(deltaEyeY) < 0.01) deltaEyeY = 0.0;
+                if (Math.Abs(deltaEyeY) < 0.0001) deltaEyeY = 0.0;
 
                 
                 PlayerCam.Eye = new Vector3(

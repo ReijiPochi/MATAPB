@@ -50,6 +50,8 @@ namespace MATAPB.Input
             }
         }
 
+        public static bool RightButtonDown { get; set; }
+
         private static bool cursorLocked;
         private static POINT lockPosition;
         private static bool oneTimeCancel;
@@ -76,8 +78,22 @@ namespace MATAPB.Input
                 throw new Exception("PresentationArea.Overlay が null です。");
 
             PresentationBase.Overlay.PreviewMouseMove += Overlay_PreviewMouseMove;
+            PresentationBase.Overlay.MouseDown += Overlay_MouseDown;
+            PresentationBase.Overlay.MouseUp += Overlay_MouseUp;
             PresentationBase.Overlay.Deactivated += Overlay_Deactivated;
             PresentationBase.Overlay.Activated += Overlay_Activated;
+        }
+
+        private static void Overlay_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+                RightButtonDown = true;
+        }
+
+        private static void Overlay_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Released)
+                RightButtonDown = false;
         }
 
         public static Point GetDelta()

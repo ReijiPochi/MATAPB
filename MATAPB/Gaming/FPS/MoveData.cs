@@ -8,8 +8,8 @@ namespace MATAPB.Gaming.FPS
 {
     public class MoveData
     {
-        public double speedFB, speedLR, speedUD;
+        public double speedFB, speedLR;
         public double deltaAngleLR, deltaAngleUD;
-        public double height;
+        public double height, fov;
     }
 }
