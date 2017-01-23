@@ -37,7 +37,7 @@ technique10 MyTechnique
 	pass MyPass
 	{
 		SetVertexShader(CompileShader(vs_5_0, MyVertexShader()));
-		$GS2$
+		SetGeometryShader(CompileShader(gs_5_0, MyGeometryShader()));
 		SetPixelShader(CompileShader(ps_5_0, MyPixelShader()));
 	}
 }

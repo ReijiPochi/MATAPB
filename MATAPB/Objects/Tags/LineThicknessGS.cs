@@ -9,7 +9,7 @@ namespace MATAPB.Objects.Tags
 {
     public class LineThicknessGS : Tag
     {
-        public double Thickness { get; set; } = 0.1;
+        public double Thickness { get; set; } = 0.01;
 
         private EffectScalarVariable LineThicknessGS_halfThickness;
 

@@ -160,6 +160,7 @@ namespace MATAPB.Objects
                     case "#end":
                         v = false;
                         vs = false;
+                        gs = false;
                         ps = false;
                         continue;
 
@@ -185,6 +186,9 @@ namespace MATAPB.Objects
                 }
             }
 
+            if (geometryShader == null)
+                geometryShader = LoadShaderText("DefaultGS.fx");
+
             string[] baseText = LoadShaderText("EffectBase.fx").Split('$');
             string result = null;
 
@@ -206,11 +210,6 @@ namespace MATAPB.Objects
 
                     case "PS":
                         result += pixelShader;
-                        break;
-
-                    case "GS2":
-                        if (gs)
-                            result += "SetGeometryShader(CompileShader(gs_5_0, MyGeometryShader()));";
                         break;
 
                     default:
