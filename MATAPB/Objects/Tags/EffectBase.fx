@@ -22,6 +22,8 @@ $VS$
 	return vertex;
 }
 
+$GS$
+
 float4 MyPixelShader(VertexData vertex) : SV_Target
 {
 	float4 result = float4(0, 0, 0, 0);
@@ -35,6 +37,7 @@ technique10 MyTechnique
 	pass MyPass
 	{
 		SetVertexShader(CompileShader(vs_5_0, MyVertexShader()));
+		$GS2$
 		SetPixelShader(CompileShader(ps_5_0, MyPixelShader()));
 	}
 }

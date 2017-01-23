@@ -131,8 +131,8 @@ namespace MATAPB.Objects
         {
             string[] lines = shaderText.Split(new char[] { '\r', '\n' });
 
-            bool v = false, vs = false, ps = false;
-            string variables = null, vertexShader = null, pixelShader = null;
+            bool v = false, vs = false, gs = false, ps = false;
+            string variables = null, vertexShader = null, geometryShader = null, pixelShader = null;
 
             foreach(string line in lines)
             {
@@ -147,6 +147,10 @@ namespace MATAPB.Objects
 
                     case "#VS":
                         vs = true;
+                        continue;
+
+                    case "#GS":
+                        gs = true;
                         continue;
 
                     case "#PS":
@@ -171,6 +175,10 @@ namespace MATAPB.Objects
                 {
                     vertexShader += line + "\r\n";
                 }
+                else if(gs)
+                {
+                    geometryShader += line + "\r\n";
+                }
                 else if(ps)
                 {
                     pixelShader += line + "\r\n";
@@ -192,8 +200,17 @@ namespace MATAPB.Objects
                         result += vertexShader;
                         break;
 
+                    case "GS":
+                        result += geometryShader;
+                        break;
+
                     case "PS":
                         result += pixelShader;
+                        break;
+
+                    case "GS2":
+                        if (gs)
+                            result += "SetGeometryShader(CompileShader(gs_5_0, MyGeometryShader()));";
                         break;
 
                     default:

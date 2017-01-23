@@ -128,7 +128,9 @@
     <Compile Include="Line.cs" />
     <Compile Include="AnimationObject.cs" />
     <Compile Include="MatVector3.cs" />
+    <Compile Include="Objects\Circle.cs" />
     <Compile Include="Objects\Picture.cs" />
+    <Compile Include="Objects\Primitive\Line.cs" />
     <Compile Include="Objects\Primitive\Plane.cs" />
     <Compile Include="Objects\RenderableObject.cs" />
     <Compile Include="Objects\TagCollection.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="Objects\Tags\ColorTexture.cs" />
     <Compile Include="Objects\Tags\Hopup.cs" />
     <Compile Include="Objects\Tags\Lighting.cs" />
+    <Compile Include="Objects\Tags\LineThicknessGS.cs" />
     <Compile Include="Objects\Tags\LookCamera.cs" />
     <Compile Include="Objects\Tags\PSR.cs" />
     <Compile Include="Objects\Tags\SolidColor.cs" />
@@ -203,6 +206,7 @@
     <EmbeddedResource Include="Objects\Tags\LookCamera.fx" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Objects\Tags\LineThicknessGS.fx" />
     <Content Include="sharpdx_direct3d11_1_effects_arm.dll" />
     <Content Include="sharpdx_direct3d11_1_effects_x64.dll" />
     <Content Include="sharpdx_direct3d11_1_effects_x86.dll" />

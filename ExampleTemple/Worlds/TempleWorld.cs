@@ -33,6 +33,7 @@ namespace ExampleTemple.Worlds
             hero.PlayerCam = new CameraPerspective();
             hero.PlayerCam.Eye = new Vector3(0.0f, 1.0f, 0.0f);
             hero.PlayerCam.Up = new Vector3(0.0f, 1.0f, 0.0f);
+            hero.PlayerCam.FieldOfView = 100.0;
             ActiveCamera = hero.PlayerCam;
 
             //map.PSRTag.Scale = new MatVector3(0.1);
@@ -149,6 +150,8 @@ namespace ExampleTemple.Worlds
                 deltaAngleLR = mouseDelta.X * 0.3,
                 deltaAngleUD = mouseDelta.Y * 0.3
             };
+
+            data.fov = 70.0;
 
             if (Keyboard.KeyStates[Key.D])
             {

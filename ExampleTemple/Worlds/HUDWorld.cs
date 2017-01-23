@@ -40,14 +40,19 @@ namespace ExampleTemple.Worlds
             score.CameraTag.UseCustomCamera = true;
             score.CameraTag.CustomCamera = customCam;
 
+            centerMark.Radius = 0.01;
+
             Objects.Add(miniMap);
             Objects.Add(scoreBg);
+            //OverlayObjects.Add(centerMark);
             OverlayObjects.Add(score);
         }
 
         Texture miniMapTex = new Texture(1000, 1000);
         public RenderingCanvas miniMapCanvas;
         Picture miniMap = new Picture(1, 1);
+
+        Circle centerMark = new Circle();
 
         CameraPerspective customCam = new CameraPerspective()
         {

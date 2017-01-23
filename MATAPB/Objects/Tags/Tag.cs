@@ -23,7 +23,6 @@ namespace MATAPB.Objects.Tags
         {
             string shader;
             Assembly a = Assembly.GetExecutingAssembly();
-            string[] resources = a.GetManifestResourceNames();
             using (StreamReader sr = new StreamReader(a.GetManifestResourceStream("MATAPB.Objects.Tags." + name)))
             {
                 shader = sr.ReadToEnd();
