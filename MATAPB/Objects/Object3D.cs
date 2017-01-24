@@ -67,7 +67,7 @@ namespace MATAPB.Objects
             PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, VertexData.SizeInBytes, 0));
             PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.PrimitiveTopology = DrawMode;
 
-            if (Tags != null) Tags.PrepareToDraw(context);
+            if (Tags != null && Tags.Count != 0) Tags.PrepareToDraw(context);
 
             if (IndexBuffer == null)
             {

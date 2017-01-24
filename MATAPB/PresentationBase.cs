@@ -17,6 +17,7 @@ using System.Windows.Threading;
 
 using MATAPB.Objects;
 using MATAPB.Gaming;
+using MATAPB.Objects.Tags;
 
 namespace MATAPB
 {
@@ -80,16 +81,20 @@ namespace MATAPB
                 GraphicsDevice.ImmediateContext.Rasterizer.State = state;
             }
 
-            DefaultCanvas = new RenderingCanvas();
-            DefaultCanvas.width = (int)(ViewArea.ActualWidth * ScreenZoom);
-            DefaultCanvas.height = (int)(ViewArea.ActualHeight * ScreenZoom);
             InitDefaultRenderTarget();
-            InitDefaultDepthStencil();
             DefaultCanvas.SetCanvas();
 
             InitD2d();
 
             Blend.SetUsual();
+
+            using (Texture2D backBuffer = SharpDX.Direct3D11.Resource.FromSwapChain<Texture2D>(SwapChain, 0))
+            {
+                BackBuffer = new RenderTargetView(GraphicsDevice, backBuffer);
+            }
+
+            BackGround = new Objects.Primitive.Plane(2, 2, Orientations.plusZ);
+            BackGround.Tags.ClearAndSet(new ColorTexture() { Texture = DefaultCanvas.renderView });
         }
 
         private static double _FPS = 60.0;
@@ -141,6 +146,10 @@ namespace MATAPB
 
         public static RenderingCanvas DefaultCanvas { get; private set; }
 
+        public static RenderTargetView BackBuffer { get; private set; }
+
+        public static MATAPB.Objects.Primitive.Plane BackGround { get; private set; }
+
         public static Clock AnimationClock { get; private set; }
 
         public static event PreviewRenderEventHandler PreviewRender;
@@ -181,6 +190,12 @@ namespace MATAPB
                 DefaultCanvas.ClearCanvas();
 
                 World.Render(context);
+
+                GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(BackBuffer);
+                GraphicsDevice.ImmediateContext.ClearRenderTargetView(BackBuffer, SharpDX.Color.Black);
+
+                BackGround.Draw(new RenderingContext());
+
                 SwapChain.Present(0, PresentFlags.None);
             }
         }
@@ -210,7 +225,7 @@ namespace MATAPB
                     IsWindowed = false,
                     SampleDescription = new SampleDescription
                     {
-                        Count = 2,
+                        Count = 1,
                         Quality = 0
                     },
                     ModeDescription = new ModeDescription
@@ -228,29 +243,8 @@ namespace MATAPB
 
         private static void InitDefaultRenderTarget()
         {
-            using (Texture2D backBuffer = SharpDX.Direct3D11.Resource.FromSwapChain<Texture2D>(SwapChain, 0))
-            {
-                DefaultCanvas.renderTarget = new RenderTargetView(GraphicsDevice, backBuffer);
-            }
-        }
-
-        private static void InitDefaultDepthStencil()
-        {
-            Texture2DDescription depthBufferDesc = new Texture2DDescription
-            {
-                ArraySize = 1,
-                BindFlags = BindFlags.DepthStencil,
-                Format = Format.D32_Float,
-                Width = (int)(ViewArea.ActualWidth * ScreenZoom),
-                Height = (int)(ViewArea.ActualHeight * ScreenZoom),
-                MipLevels = 1,
-                SampleDescription = new SampleDescription(2, 0)
-            };
-
-            using (Texture2D depthBuffer = new Texture2D(GraphicsDevice, depthBufferDesc))
-            {
-                DefaultCanvas.depthStencil = new DepthStencilView(GraphicsDevice, depthBuffer);
-            }
+            Texture tex = new Texture((int)(ViewArea.ActualWidth * ScreenZoom), (int)(ViewArea.ActualHeight * ScreenZoom), 2);
+            DefaultCanvas = new RenderingCanvas(tex);
         }
 
         private static void InitD2d()

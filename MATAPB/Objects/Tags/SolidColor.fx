@@ -4,7 +4,7 @@
 float4 SolidColor_color;
 #end
 #PS
-result.rgb = SolidColor_color.rgb;
+result.color.rgb = SolidColor_color.rgb;
 #end
 ##end
 
@@ -13,6 +13,6 @@ result.rgb = SolidColor_color.rgb;
 float4 SolidColor_color;
 #end
 #PS
-result = SolidColor_color;
+result.color = SolidColor_color;
 #end
 ##end

@@ -60,6 +60,14 @@ namespace MATAPB.Objects
             Initialize();
         }
 
+        public void ClearTag()
+        {
+            tagsList.Clear();
+            Initialize();
+        }
+
+        public int Count { get { return tagsList.Count; } }
+
         public Tag GetTag(Type type)
         {
             foreach(Tag t in tagsList)
@@ -79,6 +87,8 @@ namespace MATAPB.Objects
             {
                 text += tag.GetShaderText() + "\r\n";
             }
+
+            if (text == null) return;
 
             if (CurrentEffect != null)
                 CurrentEffect.Dispose();
@@ -221,7 +231,7 @@ namespace MATAPB.Objects
             return result;
         }
 
-        private static Effect Compile(string shader)
+        public static Effect Compile(string shader)
         {
             using (ShaderBytecode shaderBytecode = ShaderBytecode.Compile(shader, "fx_5_0", ShaderFlags.None, EffectFlags.None))
             {
@@ -229,7 +239,7 @@ namespace MATAPB.Objects
             }
         }
 
-        private static string LoadShaderText(string name)
+        public static string LoadShaderText(string name)
         {
             string shader;
             Assembly a = Assembly.GetExecutingAssembly();

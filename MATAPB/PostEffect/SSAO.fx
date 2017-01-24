@@ -1,12 +1,11 @@
-﻿$V$
+﻿Texture2D renderTarget;
+Texture2D gBuffer;
+Texture2D zBuffer;
 
-cbuffer WorldConstantBuffer
+SamplerState tex_sampler
 {
-	float4 light1_color;
-	float4 light1_direction;
-	float4 light1_lambertConstant;
-	float4 light1_ambient;
-}
+	Filter = MIN_MAG_LINEAR_MIP_POINT;
+};
 
 struct VertexData
 {
@@ -17,26 +16,23 @@ struct VertexData
 
 struct ColorOutput
 {
-	float4 color : SV_TARGET0;
-	float4 g : SV_TARGET1;
-	float z : SV_TARGET2;
+	float4 color : SV_Target0;
+	float4 g : SV_Target1;
+	float z : SV_Target2;
 };
 
 VertexData MyVertexShader(VertexData vertex)
 {
-
-$VS$
 	return vertex;
 }
-
-$GS$
 
 ColorOutput MyPixelShader(VertexData vertex)
 {
 	ColorOutput result = (ColorOutput)0;
-	result.g = vertex.normal;
 
-$PS$
+	result.color = gBuffer.Sample(tex_sampler, vertex.texCoord);
+	result.color.a = 0.5;
+
 	return result;
 }
 
@@ -45,7 +41,6 @@ technique10 MyTechnique
 	pass MyPass
 	{
 		SetVertexShader(CompileShader(vs_5_0, MyVertexShader()));
-		SetGeometryShader(CompileShader(gs_5_0, MyGeometryShader()));
 		SetPixelShader(CompileShader(ps_5_0, MyPixelShader()));
 	}
 }

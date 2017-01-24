@@ -12,7 +12,7 @@ namespace MATAPB
 {
     public class Texture : AutoDisposeObject
     {
-        public Texture(int w, int h)
+        public Texture(int w, int h, int sample = 1)
         {
             Description = new Texture2DDescription()
             {
@@ -24,7 +24,7 @@ namespace MATAPB
                 Width = w,
                 MipLevels = 1,
                 OptionFlags = ResourceOptionFlags.None,
-                SampleDescription = new SampleDescription(1, 0),
+                SampleDescription = new SampleDescription(sample, 0),
                 Usage = ResourceUsage.Default
             };
 

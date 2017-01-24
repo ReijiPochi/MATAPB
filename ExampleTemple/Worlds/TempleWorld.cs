@@ -102,6 +102,8 @@ namespace ExampleTemple.Worlds
         HUDWorld hudWorld = new HUDWorld();
         MiniMapWorld miniMapWorld = new MiniMapWorld();
 
+        MATAPB.PostEffect.SSAO ssao = new MATAPB.PostEffect.SSAO();
+
         private void HitArea_MineHit()
         {
             hopup.Hop();
@@ -137,6 +139,8 @@ namespace ExampleTemple.Worlds
 
                 hudWorld.Render(context);
             }
+
+            ssao.Apply(PresentationBase.DefaultCanvas);
         }
 
         private void MovePlayer()
