@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using MATAPB.Objects;
 using MATAPB.Gaming;
 using MATAPB.Objects.Tags;
+using MATAPB.PostEffect;
 
 namespace MATAPB
 {
@@ -95,6 +96,8 @@ namespace MATAPB
 
             BackGround = new Objects.Primitive.Plane(2, 2, Orientations.plusZ);
             BackGround.Tags.ClearAndSet(new ColorTexture() { Texture = DefaultCanvas.renderView });
+
+            SSAOEffect = new SSAO();
         }
 
         private static double _FPS = 60.0;
@@ -154,6 +157,8 @@ namespace MATAPB
 
         public static event PreviewRenderEventHandler PreviewRender;
 
+        public static SSAO SSAOEffect { get; set; }
+
         public static void Launch()
         {
             AnimationClock.Start();
@@ -194,7 +199,8 @@ namespace MATAPB
                 GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(BackBuffer);
                 GraphicsDevice.ImmediateContext.ClearRenderTargetView(BackBuffer, SharpDX.Color.Black);
 
-                BackGround.Draw(new RenderingContext());
+                //BackGround.Draw(new RenderingContext());
+                SSAOEffect.Apply(DefaultCanvas);
 
                 SwapChain.Present(0, PresentFlags.None);
             }

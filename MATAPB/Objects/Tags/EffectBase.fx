@@ -2,6 +2,7 @@
 
 cbuffer WorldConstantBuffer
 {
+	float4 eye;
 	float4 light1_color;
 	float4 light1_direction;
 	float4 light1_lambertConstant;
@@ -15,26 +16,40 @@ struct VertexData
 	float2 texCoord : TEXCOORD;
 };
 
+struct VertexOutput
+{
+	float4 position : SV_Position;
+	float4 normal : NORMAL;
+	float2 texCoord : TEXCOORD;
+	float4 coord : POSITION0;
+};
+
 struct ColorOutput
 {
 	float4 color : SV_TARGET0;
-	float4 g : SV_TARGET1;
-	float z : SV_TARGET2;
+	float4 z : SV_TARGET1;
+	float4 g : SV_TARGET2;
 };
 
-VertexData MyVertexShader(VertexData vertex)
+VertexOutput MyVertexShader(VertexData vertex)
 {
+	VertexOutput result = (VertexOutput)0;
 
+	result.position = vertex.position;
+	result.normal = vertex.normal;
+	result.texCoord = vertex.texCoord;
+	result.coord = vertex.position;
 $VS$
-	return vertex;
+	return result;
 }
 
 $GS$
 
-ColorOutput MyPixelShader(VertexData vertex)
+ColorOutput MyPixelShader(VertexOutput vertex)
 {
 	ColorOutput result = (ColorOutput)0;
-	result.g = vertex.normal;
+	result.z = vertex.normal / 2.0 + 0.5;
+	result.g = distance(vertex.coord, eye) / 1000.0;
 
 $PS$
 	return result;

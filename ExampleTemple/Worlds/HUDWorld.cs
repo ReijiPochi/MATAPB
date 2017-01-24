@@ -40,7 +40,7 @@ namespace ExampleTemple.Worlds
             score.CameraTag.UseCustomCamera = true;
             score.CameraTag.CustomCamera = customCam;
 
-            centerMark.Radius = 0.01;
+            //centerMark.Radius = 0.01;
 
             Objects.Add(miniMap);
             Objects.Add(scoreBg);
@@ -52,7 +52,7 @@ namespace ExampleTemple.Worlds
         public RenderingCanvas miniMapCanvas;
         Picture miniMap = new Picture(1, 1);
 
-        Circle centerMark = new Circle();
+        //Circle centerMark = new Circle();
 
         CameraPerspective customCam = new CameraPerspective()
         {

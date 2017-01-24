@@ -14,24 +14,17 @@ struct VertexData
 	float2 texCoord : TEXCOORD;
 };
 
-struct ColorOutput
-{
-	float4 color : SV_Target0;
-	float4 g : SV_Target1;
-	float z : SV_Target2;
-};
-
 VertexData MyVertexShader(VertexData vertex)
 {
 	return vertex;
 }
 
-ColorOutput MyPixelShader(VertexData vertex)
+float4 MyPixelShader(VertexData vertex) : SV_Target
 {
-	ColorOutput result = (ColorOutput)0;
+	float4 result;
 
-	result.color = gBuffer.Sample(tex_sampler, vertex.texCoord);
-	result.color.a = 0.5;
+	result = gBuffer.Sample(tex_sampler, vertex.texCoord);
+	result.a = 1.0;
 
 	return result;
 }

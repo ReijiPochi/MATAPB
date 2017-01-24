@@ -86,6 +86,7 @@ namespace MATAPB
 
             cbuffer = new ConstantBuffer()
             {
+                eye = new Vector4(ActiveCamera.Eye, 0),
                 light1_color = GlobalLight1.Color,
                 light1_direction = Vector4.Normalize(GlobalLight1.Direction),
                 light1_lambertConstant = GlobalLight1.LambertConstant,
@@ -100,6 +101,7 @@ namespace MATAPB
         /// </summary>
         public struct ConstantBuffer
         {
+            public Vector4 eye;
             public Vector4 light1_color;
             public Vector4 light1_direction;
             public Vector4 light1_lambertConstant;

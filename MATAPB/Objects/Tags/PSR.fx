@@ -3,6 +3,6 @@ matrix PSR_world;
 #end
 
 #VS
-vertex.position = mul(vertex.position, PSR_world);
-vertex.normal = mul(vertex.normal, PSR_world);
+result.position = mul(result.position, PSR_world);
+result.normal = mul(result.normal, PSR_world);
 #end

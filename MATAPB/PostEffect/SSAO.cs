@@ -34,13 +34,6 @@ namespace MATAPB.PostEffect
             gBuffer.SetResource(target.geometryView);
             zBuffer.SetResource(target.zView);
 
-            RenderingContext rc = new RenderingContext()
-            {
-                canvas = target
-            };
-
-            target.SetCanvas();
-
             CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(0).Apply(PresentationBase.GraphicsDevice.ImmediateContext);
             PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.InputLayout = VertexLayout;
 

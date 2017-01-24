@@ -3,5 +3,5 @@ matrix LookCamera_matrix;
 #end
 
 #VS
-vertex.position = mul(vertex.position, LookCamera_matrix);
+result.position = mul(result.position, LookCamera_matrix);
 #end

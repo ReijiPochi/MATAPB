@@ -3,6 +3,6 @@ matrix Hopup_world;
 #end
 
 #VS
-vertex.position = mul(vertex.position, Hopup_world);
-vertex.normal = mul(vertex.normal, Hopup_world);
+result.position = mul(result.position, Hopup_world);
+result.normal = mul(result.normal, Hopup_world);
 #end

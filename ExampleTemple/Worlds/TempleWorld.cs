@@ -125,22 +125,20 @@ namespace ExampleTemple.Worlds
             miniMapWorld.map.PSRTag.Position = new Vector3((float)(hero.PlayerCam.Eye.X / 100.0), (float)(-hero.PlayerCam.Eye.Z / 100.0), 0.0f);
             miniMapWorld.map.PSRTag.Rotation = new Vector3(0, 0, (float)hero.angleLR);
 
-            hudWorld.miniMapCanvas.SetCanvas();
-            {
-                hudWorld.miniMapCanvas.ClearCanvas();
-                context.canvas = hudWorld.miniMapCanvas;
-                miniMapWorld.Render(context);
-            }
+            //hudWorld.miniMapCanvas.SetCanvas();
+            //{
+            //    hudWorld.miniMapCanvas.ClearCanvas();
+            //    context.canvas = hudWorld.miniMapCanvas;
+            //    miniMapWorld.Render(context);
+            //}
 
             PresentationBase.DefaultCanvas.SetCanvas();
             {
                 context.canvas = PresentationBase.DefaultCanvas;
                 base.Render(context);
 
-                hudWorld.Render(context);
+                //hudWorld.Render(context);
             }
-
-            ssao.Apply(PresentationBase.DefaultCanvas);
         }
 
         private void MovePlayer()

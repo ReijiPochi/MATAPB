@@ -24,5 +24,6 @@ SamplerState ColorTexture_sampler
 #PS
 result.color = ColorTexture_texture.Sample(ColorTexture_sampler, vertex.texCoord);
 result.color.a *= ColorTexture_opacity;
+result.g.a = result.color.a;
 #end
 ##end

@@ -104,7 +104,7 @@ namespace MATAPB
             {
                 ArraySize = 1,
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                Format = Format.D32_Float,
+                Format = Format.R32_Float,
                 Width = tex2D.Description.Width,
                 Height = tex2D.Description.Height,
                 MipLevels = 1,
@@ -160,7 +160,7 @@ namespace MATAPB
         {
             if (geometryTarget != null && zTarget != null)
             {
-                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(depthStencil, renderTarget, zTarget, geometryTarget);
+                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(depthStencil, renderTarget, geometryTarget, zTarget);
                 //PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(
             }
             else
@@ -173,6 +173,7 @@ namespace MATAPB
         {
             PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(renderTarget, color);
             PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(geometryTarget, Color.Black);
+            PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(zTarget, Color.Transparent);
             PresentationBase.GraphicsDevice.ImmediateContext.ClearDepthStencilView(depthStencil, DepthStencilClearFlags.Depth, 1.0f, 0);
         }
 
