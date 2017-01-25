@@ -29,7 +29,7 @@ float3 randomNormal(float2 tex)
 
 float4 MyPixelShader(VertexData vertex) : SV_Target
 {
-	const unsigned int samples = 16;
+	const unsigned int samples = 4;
 	//Count of SSAO samples. 0-16, because sampleSphere has only 16 elements
 
 	//SSAO Radius

@@ -25,7 +25,7 @@ namespace ExampleTemple.Worlds
     {
         public TempleWorld()
         {
-            Effect = new SSAO();
+            Effect = new Straight();
 
             GlobalLight1.Color = new Vector4(1.1f, 1.1f, 1.1f, 0.0f);
             GlobalLight1.Direction = new Vector4(2.0f, -2.0f, -10.0f, 0);

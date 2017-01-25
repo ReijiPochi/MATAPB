@@ -149,6 +149,7 @@
     <Compile Include="OverlayWindow.cs" />
     <Compile Include="PostEffect\PostEffect.cs" />
     <Compile Include="PostEffect\SSAO.cs" />
+    <Compile Include="PostEffect\Straight.cs" />
     <Compile Include="PresentationBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -185,6 +186,7 @@
     <EmbeddedResource Include="Objects\Tags\DefaultGS.fx" />
     <None Include="packages.config" />
     <EmbeddedResource Include="PostEffect\SSAO.fx" />
+    <EmbeddedResource Include="PostEffect\Straight.fx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -10,6 +10,7 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System.Reflection;
 using System.IO;
+using SharpDX.Direct3D;
 
 namespace MATAPB.PostEffect
 {
@@ -24,7 +25,18 @@ namespace MATAPB.PostEffect
         public InputLayout VertexLayout { get; protected set; }
         protected Plane TargetPlane { get; } = new Plane(2, 2, Orientations.plusZ);
 
-        public abstract void Apply(RenderingCanvas target);
+        public virtual void Apply(RenderingCanvas target)
+        {
+            CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(0).Apply(PresentationBase.GraphicsDevice.ImmediateContext);
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.InputLayout = VertexLayout;
+
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TargetPlane.VertexBuffer, VertexData.SizeInBytes, 0));
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.SetIndexBuffer(TargetPlane.IndexBuffer, Format.R32_UInt, 0);
+
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+
+            PresentationBase.GraphicsDevice.ImmediateContext.DrawIndexed(TargetPlane.IndexCount, 0, 0);
+        }
 
         public static string LoadShaderText(string name)
         {
