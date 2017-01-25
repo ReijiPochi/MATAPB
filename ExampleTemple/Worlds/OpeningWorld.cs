@@ -29,6 +29,12 @@ namespace ExampleTemple.Worlds
             CameraWidth = PresentationBase.ViewArea.ActualWidth / 1000.0
         };
 
+        public override void Render(RenderingContext context)
+        {
+            SwitchToBackbuffer();
+            base.Render(context);
+        }
+
         public Picture logo = new Picture(@"Objects\ロゴ.png", 0.5);
     }
 }

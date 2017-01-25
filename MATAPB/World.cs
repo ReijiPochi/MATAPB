@@ -9,6 +9,7 @@ using Matrix = System.Numerics.Matrix4x4;
 using MATAPB.Objects;
 using SharpDX;
 using SharpDX.Direct3D11;
+using MATAPB.PostEffect;
 
 namespace MATAPB
 {
@@ -30,6 +31,8 @@ namespace MATAPB
         private ConstantBuffer cbuffer;
 
         public SharpDX.Direct3D11.Buffer WorldConstantBuffer { get; protected set; }
+
+        public PostEffect.PostEffect Effect { get; set; }
 
 
         public virtual void Render(RenderingContext context)
@@ -78,6 +81,15 @@ namespace MATAPB
                     BindFlags = BindFlags.ConstantBuffer
                 }
                 );
+        }
+
+        protected void SwitchToBackbuffer()
+        {
+            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(PresentationBase.BackBuffer);
+            PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(PresentationBase.BackBuffer, Color.Black);
+
+            if (Effect != null)
+                Effect.Apply(PresentationBase.DefaultCanvas);
         }
 
         protected void UpdateConstantBuffer()

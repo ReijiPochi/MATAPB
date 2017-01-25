@@ -16,8 +16,33 @@ namespace MATAPB.Objects
 {
     public class TagCollection : AutoDisposeObject
     {
+        public TagCollection()
+        {
+
+        }
+
         public Effect CurrentEffect { get; protected set; }
         private EffectConstantBuffer worldConstantBuffer;
+
+        private EffectScalarVariable gzBufferOn;
+
+        private bool _OutputToGZbuffer = true;
+        public bool OutputToGZbuffer
+        {
+            get
+            {
+                return _OutputToGZbuffer;
+            }
+            set
+            {
+                if (gzBufferOn != null)
+                {
+                    gzBufferOn.Set(value);
+                }
+
+                _OutputToGZbuffer = value;
+            }
+        }
 
         public InputLayout VertexLayout { get; protected set; }
 
@@ -96,6 +121,9 @@ namespace MATAPB.Objects
             CurrentEffect = Compile(Build(text));
             InitVertexLayout();
             worldConstantBuffer = CurrentEffect.GetConstantBufferByName("WorldConstantBuffer");
+            gzBufferOn = CurrentEffect.GetVariableByName("gzBufferOn").AsScalar();
+
+            gzBufferOn.Set(OutputToGZbuffer);
 
             foreach (Tag tag in tagsList)
             {

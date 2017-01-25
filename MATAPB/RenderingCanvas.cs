@@ -161,7 +161,6 @@ namespace MATAPB
             if (geometryTarget != null && zTarget != null)
             {
                 PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(depthStencil, renderTarget, geometryTarget, zTarget);
-                //PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(
             }
             else
             {

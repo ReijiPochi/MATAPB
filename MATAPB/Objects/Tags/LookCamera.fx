@@ -4,4 +4,5 @@ matrix LookCamera_matrix;
 
 #VS
 result.position = mul(result.position, LookCamera_matrix);
+result.coord = result.position;
 #end

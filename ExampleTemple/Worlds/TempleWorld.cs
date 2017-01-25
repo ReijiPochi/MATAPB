@@ -17,6 +17,7 @@ using MATAPB._2D;
 
 using Keyboard = MATAPB.Input.Keyboard;
 using Vector3 = System.Numerics.Vector3;
+using MATAPB.PostEffect;
 
 namespace ExampleTemple.Worlds
 {
@@ -24,6 +25,8 @@ namespace ExampleTemple.Worlds
     {
         public TempleWorld()
         {
+            Effect = new SSAO();
+
             GlobalLight1.Color = new Vector4(1.1f, 1.1f, 1.1f, 0.0f);
             GlobalLight1.Direction = new Vector4(2.0f, -2.0f, -10.0f, 0);
             GlobalLight1.Ambitent = new Vector4(0.0f, 0.03f, 0.1f, 0);
@@ -47,11 +50,13 @@ namespace ExampleTemple.Worlds
             test.Tags.ClearAndSet(new LookCamera() { Scale = new Vector3(0.05f), Position = new Vector3(0.0f, 1.5f, -6.2f) });
             test.Tags.AddTag(new ColorTexture(@"Objects\sankaku.png"));
             test.Tags.InsertToFirst(hopup2);
+            test.Tags.OutputToGZbuffer = false;
             hopup2.Hop();
 
             text.TextValue = "Welcom";
             text.FontSize = 50;
             text.PSRTag.Position = Vector3.UnitY;
+            text.Tags.OutputToGZbuffer = false;
 
             //miniMapCanvas = new RenderingCanvas(miniMap);
             //miniMapObj.Tags.AddTag(new ColorTexture(miniMap));
@@ -121,24 +126,30 @@ namespace ExampleTemple.Worlds
         public override void Render(RenderingContext context)
         {
             MovePlayer();
+            MoveMinimap();
 
-            miniMapWorld.map.PSRTag.Position = new Vector3((float)(hero.PlayerCam.Eye.X / 100.0), (float)(-hero.PlayerCam.Eye.Z / 100.0), 0.0f);
-            miniMapWorld.map.PSRTag.Rotation = new Vector3(0, 0, (float)hero.angleLR);
-
-            //hudWorld.miniMapCanvas.SetCanvas();
-            //{
-            //    hudWorld.miniMapCanvas.ClearCanvas();
-            //    context.canvas = hudWorld.miniMapCanvas;
-            //    miniMapWorld.Render(context);
-            //}
+            hudWorld.miniMapCanvas.SetCanvas();
+            {
+                hudWorld.miniMapCanvas.ClearCanvas();
+                context.canvas = hudWorld.miniMapCanvas;
+                miniMapWorld.Render(context);
+            }
 
             PresentationBase.DefaultCanvas.SetCanvas();
             {
                 context.canvas = PresentationBase.DefaultCanvas;
                 base.Render(context);
-
-                //hudWorld.Render(context);
             }
+
+            SwitchToBackbuffer();
+
+            hudWorld.Render(context);
+        }
+
+        private void MoveMinimap()
+        {
+            miniMapWorld.map.PSRTag.Position = new Vector3((float)(hero.PlayerCam.Eye.X / 100.0), (float)(-hero.PlayerCam.Eye.Z / 100.0), 0.0f);
+            miniMapWorld.map.PSRTag.Rotation = new Vector3(0, 0, (float)hero.angleLR);
         }
 
         private void MovePlayer()

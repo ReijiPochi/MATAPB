@@ -196,12 +196,6 @@ namespace MATAPB
 
                 World.Render(context);
 
-                GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(BackBuffer);
-                GraphicsDevice.ImmediateContext.ClearRenderTargetView(BackBuffer, SharpDX.Color.Black);
-
-                //BackGround.Draw(new RenderingContext());
-                SSAOEffect.Apply(DefaultCanvas);
-
                 SwapChain.Present(0, PresentFlags.None);
             }
         }
@@ -236,10 +230,10 @@ namespace MATAPB
                     },
                     ModeDescription = new ModeDescription
                     {
-                        Width = (int)(ViewArea.ActualWidth * ScreenZoom),
-                        Height = (int)(ViewArea.ActualHeight * ScreenZoom),
+                        Width = (int)(ViewArea.ActualWidth),
+                        Height = (int)(ViewArea.ActualHeight),
                         RefreshRate = new Rational(60, 1),
-                        Format = Format.R8G8B8A8_UNorm
+                        Format = Format.R8G8B8A8_UNorm,
                     },
                     Usage = Usage.RenderTargetOutput
                 },
@@ -249,7 +243,7 @@ namespace MATAPB
 
         private static void InitDefaultRenderTarget()
         {
-            Texture tex = new Texture((int)(ViewArea.ActualWidth * ScreenZoom), (int)(ViewArea.ActualHeight * ScreenZoom), 2);
+            Texture tex = new Texture((int)(ViewArea.ActualWidth), (int)(ViewArea.ActualHeight), 1);
             DefaultCanvas = new RenderingCanvas(tex);
         }
 

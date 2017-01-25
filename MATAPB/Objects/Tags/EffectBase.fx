@@ -1,5 +1,7 @@
 ﻿$V$
 
+bool gzBufferOn;
+
 cbuffer WorldConstantBuffer
 {
 	float4 eye;
@@ -27,8 +29,8 @@ struct VertexOutput
 struct ColorOutput
 {
 	float4 color : SV_TARGET0;
-	float4 z : SV_TARGET1;
 	float4 g : SV_TARGET2;
+	float4 z : SV_TARGET1;
 };
 
 VertexOutput MyVertexShader(VertexData vertex)
@@ -48,8 +50,12 @@ $GS$
 ColorOutput MyPixelShader(VertexOutput vertex)
 {
 	ColorOutput result = (ColorOutput)0;
-	result.z = vertex.normal / 2.0 + 0.5;
-	result.g = distance(vertex.coord, eye) / 1000.0;
+
+	if (gzBufferOn)
+	{
+		result.z = vertex.normal / 2.0 + 0.5;
+		result.g = distance(vertex.coord, eye) / 1000.0;
+	}
 
 $PS$
 	return result;
