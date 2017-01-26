@@ -154,8 +154,6 @@ namespace ExampleTemple.Worlds
 
         private void MovePlayer()
         {
-
-
             Point mouseDelta = MATAPB.Input.Mouse.GetDelta();
 
             MoveData data = new MoveData()

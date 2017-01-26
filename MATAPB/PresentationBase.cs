@@ -96,8 +96,6 @@ namespace MATAPB
 
             BackGround = new Objects.Primitive.Plane(2, 2, Orientations.plusZ);
             BackGround.Tags.ClearAndSet(new ColorTexture() { Texture = DefaultCanvas.renderView });
-
-            SSAOEffect = new SSAO();
         }
 
         private static double _FPS = 60.0;
@@ -156,8 +154,6 @@ namespace MATAPB
         public static Clock AnimationClock { get; private set; }
 
         public static event PreviewRenderEventHandler PreviewRender;
-
-        public static SSAO SSAOEffect { get; set; }
 
         public static void Launch()
         {
