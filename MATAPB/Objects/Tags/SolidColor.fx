@@ -14,5 +14,7 @@ float4 SolidColor_color;
 #end
 #PS
 result.color = SolidColor_color;
+result.g.a = result.color.a;
+result.z.a = result.color.a;
 #end
 ##end

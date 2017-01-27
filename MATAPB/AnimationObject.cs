@@ -25,6 +25,8 @@ namespace MATAPB
         private static bool locking;
         private static List<AnimationObject> stackList = new List<AnimationObject>();
 
+        private static bool trasitioning, animating, waitingToEndAnimating;
+
         public static void Lock()
         {
             locking = true;
@@ -32,20 +34,42 @@ namespace MATAPB
 
         public static void Unlock()
         {
+            if (animating)
+            {
+                waitingToEndAnimating = true;
+                return;
+            }
+
+            trasitioning = true;
+
             foreach(AnimationObject ao in stackList)
             {
                 list.Add(ao);
             }
 
             stackList.Clear();
+
+            trasitioning = false;
         }
 
         public static void DoAnimation()
         {
+            while (trasitioning) { }
+
+            if(waitingToEndAnimating)
+            {
+                Unlock();
+                waitingToEndAnimating = false;
+            }
+
+            animating = true;
+
             foreach(AnimationObject ao in list)
             {
                 ao.AnimationOneFrame();
             }
+
+            animating = false;
         }
 
         protected virtual void AnimationOneFrame()

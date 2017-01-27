@@ -136,6 +136,7 @@
     <Compile Include="Objects\TagCollection.cs" />
     <Compile Include="Objects\Tags\Camera.cs" />
     <Compile Include="Objects\Tags\ColorTexture.cs" />
+    <Compile Include="Objects\Tags\HeightToColor.cs" />
     <Compile Include="Objects\Tags\Hopup.cs" />
     <Compile Include="Objects\Tags\Lighting.cs" />
     <Compile Include="Objects\Tags\LineThicknessGS.cs" />
@@ -215,6 +216,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Objects\Tags\LineThicknessGS.fx" />
     <EmbeddedResource Include="PostEffect\Fog.fx" />
+    <EmbeddedResource Include="Objects\Tags\HeightToColor.fx" />
     <Content Include="sharpdx_direct3d11_1_effects_arm.dll" />
     <Content Include="sharpdx_direct3d11_1_effects_x64.dll" />
     <Content Include="sharpdx_direct3d11_1_effects_x86.dll" />

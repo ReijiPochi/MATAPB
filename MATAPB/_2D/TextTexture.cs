@@ -36,7 +36,7 @@ namespace MATAPB._2D
             };
         }
 
-        private string _Font = "メイリオ";
+        private string _Font = "Consolas";
         public string Font
         {
             get { return _Font; }

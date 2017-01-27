@@ -30,13 +30,14 @@ namespace MATAPB.Gaming.FPS
 
         public double SpeedLRDelta { get; set; } = 20.0;
         public double SpeedFBDelta { get; set; } = 20.0;
+        public double HeightDelta { get; set; } = 10.0;
         public double FOVDelta { get; set; } = 200.0;
         public double Inertia { get; set; } = 10.0;
 
         double actualSpeedLR, actualSpeedFB;
         double actualSpeedX, actualSpeedZ;
         public double angleLR = 0.0, angleUD = 0.0;
-        double heightOffset = 0.0, targetHeight = 0.0;
+        protected double heightOffset = 0.0, targetHeight = 0.0;
         double inertiaX, inertiaZ;
 
         public virtual void Move(MoveData data)
@@ -115,7 +116,7 @@ namespace MATAPB.Gaming.FPS
                     targetHeight = heightOffset + data.height;
                 }
 
-                double deltaEyeY = (targetHeight - PlayerCam.Eye.Y) * 10.0;
+                double deltaEyeY = (targetHeight - PlayerCam.Eye.Y) * HeightDelta;
                 if (Math.Abs(deltaEyeY) < 0.0001) deltaEyeY = 0.0;
 
                 
