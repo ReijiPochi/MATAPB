@@ -17,6 +17,62 @@ namespace MATAPB
 
         }
 
+        public RenderingCanvas(int w, int h, int sample)
+        {
+            Texture tex = new Texture(w, h, sample);
+
+            renderTexture = tex.Tex;
+            renderTarget = new RenderTargetView(PresentationBase.GraphicsDevice, tex.Tex);
+            renderView = new ShaderResourceView(PresentationBase.GraphicsDevice, tex.Tex);
+
+            Texture2DDescription depthBufferDesc = new Texture2DDescription
+            {
+                ArraySize = 1,
+                BindFlags = BindFlags.DepthStencil,
+                Format = Format.D32_Float,
+                Width = tex.Description.Width,
+                Height = tex.Description.Height,
+                MipLevels = 1,
+                SampleDescription = tex.Description.SampleDescription
+            };
+
+            depthTexture = new Texture2D(PresentationBase.GraphicsDevice, depthBufferDesc);
+            depthStencil = new DepthStencilView(PresentationBase.GraphicsDevice, depthTexture);
+
+            Texture2DDescription zBufferDesc = new Texture2DDescription
+            {
+                ArraySize = 1,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                Format = Format.R32_Float,
+                Width = tex.Description.Width,
+                Height = tex.Description.Height,
+                MipLevels = 1,
+                SampleDescription = tex.Description.SampleDescription
+            };
+
+            zTexture = new Texture2D(PresentationBase.GraphicsDevice, zBufferDesc);
+            zTarget = new RenderTargetView(PresentationBase.GraphicsDevice, zTexture);
+            zView = new ShaderResourceView(PresentationBase.GraphicsDevice, zTexture);
+
+            Texture2DDescription gBufferDesc = new Texture2DDescription
+            {
+                ArraySize = 1,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                Format = Format.R8G8B8A8_UNorm,
+                Width = tex.Description.Width,
+                Height = tex.Description.Height,
+                MipLevels = 1,
+                SampleDescription = tex.Description.SampleDescription
+            };
+
+            geometryTexture = new Texture2D(PresentationBase.GraphicsDevice, gBufferDesc);
+            geometryTarget = new RenderTargetView(PresentationBase.GraphicsDevice, geometryTexture);
+            geometryView = new ShaderResourceView(PresentationBase.GraphicsDevice, geometryTexture);
+
+            width = tex.Description.Width;
+            height = tex.Description.Height;
+        }
+
         public RenderingCanvas(Texture tex)
         {
             //RenderTargetViewDescription rtvDesc = new RenderTargetViewDescription()
@@ -98,7 +154,6 @@ namespace MATAPB
 
             result.depthTexture = new Texture2D(PresentationBase.GraphicsDevice, depthBufferDesc);
             result.depthStencil = new DepthStencilView(PresentationBase.GraphicsDevice, result.depthTexture);
-            result.depthView = new ShaderResourceView(PresentationBase.GraphicsDevice, result.depthTexture);
 
             Texture2DDescription zBufferDesc = new Texture2DDescription
             {
@@ -144,7 +199,6 @@ namespace MATAPB
 
         public Texture2D depthTexture;
         public DepthStencilView depthStencil;
-        public ShaderResourceView depthView;
 
         public Texture2D zTexture;
         public RenderTargetView zTarget;
@@ -181,19 +235,33 @@ namespace MATAPB
             PresentationBase.GraphicsDevice.ImmediateContext.ClearDepthStencilView(depthStencil, DepthStencilClearFlags.Depth, 1.0f, 0);
         }
 
+        public void Resolve(RenderingCanvas target)
+        {
+            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(renderTexture, 0, target.renderTexture, 0, Format.B8G8R8A8_UNorm);
+            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(geometryTexture, 0, target.geometryTexture, 0, Format.B8G8R8A8_UNorm);
+            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(zTexture, 0, target.zTexture, 0, Format.R32_Float);
+        }
+
+        public void Resolve()
+        {
+            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(renderTexture, 0, PresentationBase.BackBufferTexture, 0, Format.B8G8R8A8_UNorm);
+        }
+
         protected override void OnDispose()
         {
             if (renderTarget != null) renderTarget.Dispose();
             if (depthStencil != null) depthStencil.Dispose();
             if (geometryTarget != null) geometryTarget.Dispose();
+            if (zTarget != null) zTarget.Dispose();
 
             if (renderTexture != null) renderTexture.Dispose();
             if (depthTexture != null) depthTexture.Dispose();
             if (geometryTexture != null) geometryTexture.Dispose();
+            if (zTexture != null) zTexture.Dispose();
 
             if (renderView != null) renderView.Dispose();
-            if (depthView != null) depthView.Dispose();
             if (geometryView != null) geometryView.Dispose();
+            if (zView != null) zView.Dispose();
         }
     }
 }

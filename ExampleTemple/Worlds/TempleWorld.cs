@@ -78,6 +78,8 @@ namespace ExampleTemple.Worlds
             hitArea.Hysteresis = 0.5;
         }
 
+        RenderingCanvas templeCanvas = new RenderingCanvas((int)(PresentationBase.ViewArea.ActualWidth), (int)(PresentationBase.ViewArea.ActualHeight), 2);
+
         Object3D map = new Object3D(@"Objects\Map.obj");
         Object3D mapArea = new Object3D(@"Objects\MapArea.obj");
         Object3D sky = new Object3D(@"Objects\sky.obj");
@@ -135,13 +137,14 @@ namespace ExampleTemple.Worlds
                 miniMapWorld.Render(context);
             }
 
-            PresentationBase.DefaultCanvas.SetCanvas();
+            templeCanvas.SetCanvas();
             {
-                context.canvas = PresentationBase.DefaultCanvas;
+                templeCanvas.ClearCanvas();
+                context.canvas = templeCanvas;
                 base.Render(context);
             }
 
-            SwitchToBackbuffer();
+            SwitchAndResolveToBackbuffer(templeCanvas);
 
             hudWorld.Render(context);
         }

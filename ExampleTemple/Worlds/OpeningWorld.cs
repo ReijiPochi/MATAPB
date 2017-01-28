@@ -31,7 +31,7 @@ namespace ExampleTemple.Worlds
 
         public override void Render(RenderingContext context)
         {
-            SwitchToBackbuffer();
+            PresentationBase.SetAndClearBackBuffer();
             base.Render(context);
         }
 

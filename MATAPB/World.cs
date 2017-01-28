@@ -83,10 +83,19 @@ namespace MATAPB
                 );
         }
 
-        protected void SwitchToBackbuffer()
+        protected void SwitchToBackbuffer(RenderingCanvas target)
         {
             PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(PresentationBase.BackBuffer);
-            PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(PresentationBase.BackBuffer, Color.Black);
+
+            if (Effect != null)
+                Effect.Apply(target);
+        }
+
+        protected void SwitchAndResolveToBackbuffer(RenderingCanvas target)
+        {
+            target.Resolve(PresentationBase.DefaultCanvas);
+
+            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(PresentationBase.BackBuffer);
 
             if (Effect != null)
                 Effect.Apply(PresentationBase.DefaultCanvas);
