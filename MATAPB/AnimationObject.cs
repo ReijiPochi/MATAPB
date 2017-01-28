@@ -20,6 +20,8 @@ namespace MATAPB
             }
         }
 
+        public static bool Pause { get; set; } = false;
+
         private static List<AnimationObject> list = new List<AnimationObject>();
 
         private static bool locking;
@@ -62,14 +64,17 @@ namespace MATAPB
                 waitingToEndAnimating = false;
             }
 
-            animating = true;
-
-            foreach(AnimationObject ao in list)
+            if(!Pause)
             {
-                ao.AnimationOneFrame();
-            }
+                animating = true;
 
-            animating = false;
+                foreach (AnimationObject ao in list)
+                {
+                    ao.AnimationOneFrame();
+                }
+
+                animating = false;
+            }
         }
 
         protected virtual void AnimationOneFrame()

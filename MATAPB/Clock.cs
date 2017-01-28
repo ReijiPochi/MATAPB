@@ -24,6 +24,8 @@ namespace MATAPB
 
         public double Interval { get; set; }
 
+        double nextTick = 0;
+
         public event TickEventHandler Tick;
         protected void RaiseTick(long time)
         {
@@ -48,20 +50,20 @@ namespace MATAPB
         public void Pause()
         {
             IsCounting = false;
+            nextTick = 0;
         }
 
         public void Stop()
         {
             IsRunning = false;
             IsCounting = false;
+            nextTick = 0;
 
             if (thread != null) thread.Join();
         }
 
         private void Work()
         {
-            double nextTick = 0;
-
             while (IsRunning)
             {
                 if (!IsCounting)
