@@ -25,7 +25,7 @@ namespace ExampleTemple.Worlds
     {
         public TempleWorld()
         {
-            Effect = new Straight();
+            Effect = new Fog();
 
             GlobalLight1.Color = new Vector4(1.1f, 1.1f, 1.1f, 0.0f);
             GlobalLight1.Direction = new Vector4(2.0f, -2.0f, -10.0f, 0);
@@ -77,8 +77,6 @@ namespace ExampleTemple.Worlds
             hitArea.MineRadius = 2.0;
             hitArea.Hysteresis = 0.5;
         }
-
-        RenderingCanvas templeCanvas = new RenderingCanvas((int)(PresentationBase.ViewArea.ActualWidth), (int)(PresentationBase.ViewArea.ActualHeight), 2);
 
         Object3D map = new Object3D(@"Objects\Map.obj");
         Object3D mapArea = new Object3D(@"Objects\MapArea.obj");
@@ -137,14 +135,12 @@ namespace ExampleTemple.Worlds
                 miniMapWorld.Render(context);
             }
 
-            templeCanvas.SetCanvas();
+            PresentationBase.DefaultCanvas.SetCanvas();
             {
-                templeCanvas.ClearCanvas();
-                context.canvas = templeCanvas;
+                PresentationBase.DefaultCanvas.ClearCanvas();
+                context.canvas = PresentationBase.DefaultCanvas;
                 base.Render(context);
             }
-
-            SwitchAndResolveToBackbuffer(templeCanvas);
 
             hudWorld.Render(context);
         }

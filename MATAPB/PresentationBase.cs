@@ -92,8 +92,10 @@ namespace MATAPB
             BackBufferTexture = SharpDX.Direct3D11.Resource.FromSwapChain<Texture2D>(SwapChain, 0);
             BackBuffer = new RenderTargetView(GraphicsDevice, BackBufferTexture);
 
+            ResolvedTexture = new Texture((int)(ViewArea.ActualWidth), (int)(ViewArea.ActualHeight), 1);
+
             BackGround = new Objects.Primitive.Plane(2, 2, Orientations.plusZ);
-            BackGround.Tags.ClearAndSet(new ColorTexture() { Texture = DefaultCanvas.renderView });
+            BackGround.Tags.ClearAndSet(new ColorTexture() { Texture = ResolvedTexture.ShaderResource });
         }
 
         private static double _FPS = 60.0;
@@ -145,6 +147,8 @@ namespace MATAPB
 
         public static RenderingCanvas DefaultCanvas { get; private set; }
 
+        public static Texture ResolvedTexture { get; private set; }
+
         public static Texture2D BackBufferTexture { get; private set; }
 
         public static RenderTargetView BackBuffer { get; private set; }
@@ -195,9 +199,14 @@ namespace MATAPB
                 };
 
                 DefaultCanvas.ClearCanvas();
-                SetAndClearBackBuffer();
+                DefaultCanvas.SetCanvas();
 
                 World.Render(context);
+
+                DefaultCanvas.Resolve(ResolvedTexture);
+
+                SetAndClearBackBuffer();
+                BackGround.Draw(new RenderingContext());
 
                 SwapChain.Present(0, PresentFlags.None);
             }
@@ -246,8 +255,7 @@ namespace MATAPB
 
         private static void InitDefaultRenderTarget()
         {
-            Texture tex = new Texture((int)(ViewArea.ActualWidth), (int)(ViewArea.ActualHeight));
-            DefaultCanvas = new RenderingCanvas(tex);
+            DefaultCanvas = new RenderingCanvas((int)(ViewArea.ActualWidth), (int)(ViewArea.ActualHeight), 2);
         }
 
         private static void InitD2d()

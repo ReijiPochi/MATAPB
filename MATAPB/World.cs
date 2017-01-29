@@ -85,20 +85,17 @@ namespace MATAPB
 
         protected void SwitchToBackbuffer(RenderingCanvas target)
         {
-            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(PresentationBase.BackBuffer);
+            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(PresentationBase.DefaultCanvas.renderTarget);
 
             if (Effect != null)
                 Effect.Apply(target);
         }
 
-        protected void SwitchAndResolveToBackbuffer(RenderingCanvas target)
+        protected void ApplyEffect(PostEffect.PostEffect effect, RenderingCanvas source, RenderingCanvas output)
         {
-            target.Resolve(PresentationBase.DefaultCanvas);
+            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(output.renderTarget);
 
-            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(PresentationBase.BackBuffer);
-
-            if (Effect != null)
-                Effect.Apply(PresentationBase.DefaultCanvas);
+            effect.Apply(source);
         }
 
         protected void UpdateConstantBuffer()

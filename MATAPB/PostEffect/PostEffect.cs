@@ -35,6 +35,8 @@ namespace MATAPB.PostEffect
 
             PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
+            PresentationBase.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, target.renderTexture.Description.Width, target.renderTexture.Description.Height);
+
             PresentationBase.GraphicsDevice.ImmediateContext.DrawIndexed(TargetPlane.IndexCount, 0, 0);
         }
 

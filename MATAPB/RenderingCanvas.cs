@@ -235,16 +235,9 @@ namespace MATAPB
             PresentationBase.GraphicsDevice.ImmediateContext.ClearDepthStencilView(depthStencil, DepthStencilClearFlags.Depth, 1.0f, 0);
         }
 
-        public void Resolve(RenderingCanvas target)
+        public void Resolve(Texture target)
         {
-            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(renderTexture, 0, target.renderTexture, 0, Format.B8G8R8A8_UNorm);
-            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(geometryTexture, 0, target.geometryTexture, 0, Format.B8G8R8A8_UNorm);
-            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(zTexture, 0, target.zTexture, 0, Format.R32_Float);
-        }
-
-        public void Resolve()
-        {
-            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(renderTexture, 0, PresentationBase.BackBufferTexture, 0, Format.B8G8R8A8_UNorm);
+            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(renderTexture, 0, target.Tex, 0, Format.B8G8R8A8_UNorm);
         }
 
         protected override void OnDispose()
