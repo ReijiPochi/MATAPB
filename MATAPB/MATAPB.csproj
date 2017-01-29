@@ -136,6 +136,7 @@
     <Compile Include="Objects\TagCollection.cs" />
     <Compile Include="Objects\Tags\Camera.cs" />
     <Compile Include="Objects\Tags\ColorTexture.cs" />
+    <Compile Include="Objects\Tags\Fog.cs" />
     <Compile Include="Objects\Tags\HeightToColor.cs" />
     <Compile Include="Objects\Tags\Hopup.cs" />
     <Compile Include="Objects\Tags\Lighting.cs" />
@@ -186,6 +187,7 @@
     <EmbeddedResource Include="Objects\Tags\Hopup.fx" />
     <EmbeddedResource Include="Objects\Tags\SolidColor.fx" />
     <EmbeddedResource Include="Objects\Tags\DefaultGS.fx" />
+    <EmbeddedResource Include="Objects\Tags\Fog.fx" />
     <None Include="packages.config" />
     <EmbeddedResource Include="PostEffect\SSAO.fx" />
     <EmbeddedResource Include="PostEffect\Straight.fx" />

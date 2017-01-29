@@ -83,14 +83,6 @@ namespace MATAPB
                 );
         }
 
-        protected void SwitchToBackbuffer(RenderingCanvas target)
-        {
-            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(PresentationBase.DefaultCanvas.renderTarget);
-
-            if (Effect != null)
-                Effect.Apply(target);
-        }
-
         protected void ApplyEffect(PostEffect.PostEffect effect, RenderingCanvas source, RenderingCanvas output)
         {
             PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(output.renderTarget);
@@ -105,6 +97,8 @@ namespace MATAPB
             cbuffer = new ConstantBuffer()
             {
                 eye = new Vector4(ActiveCamera.Eye, 0),
+                fog_color = new Vector4(1.0f),
+                fog_constant = new Vector4(0.02f, 0.3f, 4.0f, 0),
                 light1_color = GlobalLight1.Color,
                 light1_direction = Vector4.Normalize(GlobalLight1.Direction),
                 light1_lambertConstant = GlobalLight1.LambertConstant,
@@ -120,6 +114,12 @@ namespace MATAPB
         public struct ConstantBuffer
         {
             public Vector4 eye;
+            public Vector4 fog_color;
+
+            /// <summary>
+            /// x:offset y:fallout z:power
+            /// </summary>
+            public Vector4 fog_constant;
             public Vector4 light1_color;
             public Vector4 light1_direction;
             public Vector4 light1_lambertConstant;

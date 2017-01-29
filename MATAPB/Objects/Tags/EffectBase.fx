@@ -5,6 +5,8 @@ bool gzBufferOn;
 cbuffer WorldConstantBuffer
 {
 	float4 eye;
+	float4 fog_color;
+	float4 fog_constant;
 	float4 light1_color;
 	float4 light1_direction;
 	float4 light1_lambertConstant;

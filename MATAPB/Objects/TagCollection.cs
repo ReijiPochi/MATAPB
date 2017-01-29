@@ -62,7 +62,7 @@ namespace MATAPB.Objects
             Initialize();
         }
 
-        public void AddTag(Tag[] tags)
+        public void AddTag(params Tag[] tags)
         {
             foreach(Tag tag in tags)
             {

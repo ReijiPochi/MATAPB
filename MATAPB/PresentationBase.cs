@@ -232,7 +232,7 @@ namespace MATAPB
                 DeviceCreationFlags.BgraSupport,
                 new SwapChainDescription
                 {
-                    BufferCount = 1,
+                    BufferCount = 2,
                     OutputHandle = source.Handle,
                     IsWindowed = false,
                     SampleDescription = new SampleDescription
