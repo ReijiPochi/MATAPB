@@ -23,12 +23,12 @@ namespace MATAPB.PostEffect
         EffectShaderResourceVariable renderTarget;
         EffectShaderResourceVariable zBuffer;
 
-        public override void Apply(RenderingCanvas target)
+        public override void Apply(RenderingCanvas source, RenderingCanvas target)
         {
-            renderTarget.SetResource(target.renderView);
-            zBuffer.SetResource(target.zView);
+            renderTarget.SetResource(source.renderView);
+            zBuffer.SetResource(source.zView);
 
-            base.Apply(target);
+            base.Apply(source, target);
         }
     }
 }

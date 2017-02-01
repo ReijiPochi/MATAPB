@@ -85,9 +85,7 @@ namespace MATAPB
 
         protected void ApplyEffect(PostEffect.PostEffect effect, RenderingCanvas source, RenderingCanvas output)
         {
-            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(output.renderTarget);
-
-            effect.Apply(source);
+            effect.Apply(source, output);
         }
 
         protected void UpdateConstantBuffer()

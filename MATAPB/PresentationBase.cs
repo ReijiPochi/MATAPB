@@ -94,9 +94,14 @@ namespace MATAPB
 
             ResolvedTexture = new Texture((int)(ViewArea.ActualWidth), (int)(ViewArea.ActualHeight), 1);
 
-            BackGround = new Objects.Primitive.Plane(2, 2, Orientations.plusZ);
-            BackGround.Tags.ClearAndSet(new ColorTexture() { Texture = ResolvedTexture.ShaderResource });
+            //BackGround = new Objects.Primitive.Plane(2, 2, Orientations.plusZ);
+            //BackGround.Tags.ClearAndSet(new ColorTexture() { Texture = ResolvedTexture.ShaderResource, FilterType = SharpDX.Direct3D11.Filter.MinMagMipLinear });
+            //BackGround.Tags.OutputToGZbuffer = false;
+
+            presentEffect = new GaussianFilter(BackBufferTexture.Description.Width, BackBufferTexture.Description.Height);
         }
+
+        private static PostEffect.PostEffect presentEffect;
 
         private static double _FPS = 60.0;
         public static double FPS
@@ -206,7 +211,8 @@ namespace MATAPB
                 DefaultCanvas.Resolve(ResolvedTexture);
 
                 SetAndClearBackBuffer();
-                BackGround.Draw(new RenderingContext());
+                //BackGround.Draw(new RenderingContext());
+                presentEffect.Apply(ResolvedTexture, null);
 
                 SwapChain.Present(0, PresentFlags.None);
             }

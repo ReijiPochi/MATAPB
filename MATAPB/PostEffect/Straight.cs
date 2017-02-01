@@ -21,11 +21,18 @@ namespace MATAPB.PostEffect
 
         EffectShaderResourceVariable renderTarget;
 
-        public override void Apply(RenderingCanvas target)
+        public override void Apply(RenderingCanvas source, RenderingCanvas target)
         {
-            renderTarget.SetResource(target.renderView);
+            renderTarget.SetResource(source.renderView);
 
-            base.Apply(target);
+            base.Apply(source, target);
+        }
+
+        public override void Apply(Texture source, RenderingCanvas target)
+        {
+            renderTarget.SetResource(source.ShaderResource);
+
+            base.Apply(source, target);
         }
     }
 }

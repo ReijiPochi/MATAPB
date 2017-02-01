@@ -150,6 +150,7 @@
     <Compile Include="Orientations.cs" />
     <Compile Include="OverlayWindow.cs" />
     <Compile Include="PostEffect\Fog.cs" />
+    <Compile Include="PostEffect\GaussianFilter.cs" />
     <Compile Include="PostEffect\PostEffect.cs" />
     <Compile Include="PostEffect\SSAO.cs" />
     <Compile Include="PostEffect\Straight.cs" />
@@ -191,6 +192,7 @@
     <None Include="packages.config" />
     <EmbeddedResource Include="PostEffect\SSAO.fx" />
     <EmbeddedResource Include="PostEffect\Straight.fx" />
+    <EmbeddedResource Include="PostEffect\GaussianFilter.fx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

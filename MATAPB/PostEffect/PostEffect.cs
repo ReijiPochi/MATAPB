@@ -25,7 +25,7 @@ namespace MATAPB.PostEffect
         public InputLayout VertexLayout { get; protected set; }
         protected Plane TargetPlane { get; } = new Plane(2, 2, Orientations.plusZ);
 
-        public virtual void Apply(RenderingCanvas target)
+        public virtual void Apply(RenderingCanvas source, RenderingCanvas target)
         {
             CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(0).Apply(PresentationBase.GraphicsDevice.ImmediateContext);
             PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.InputLayout = VertexLayout;
@@ -35,8 +35,27 @@ namespace MATAPB.PostEffect
 
             PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
-            PresentationBase.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, target.renderTexture.Description.Width, target.renderTexture.Description.Height);
+            PresentationBase.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, source.renderTexture.Description.Width, source.renderTexture.Description.Height);
 
+            if (target != null)
+                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetRenderTargets(target.renderTarget);
+            PresentationBase.GraphicsDevice.ImmediateContext.DrawIndexed(TargetPlane.IndexCount, 0, 0);
+        }
+
+        public virtual void Apply(Texture source, RenderingCanvas target)
+        {
+            CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(0).Apply(PresentationBase.GraphicsDevice.ImmediateContext);
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.InputLayout = VertexLayout;
+
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TargetPlane.VertexBuffer, VertexData.SizeInBytes, 0));
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.SetIndexBuffer(TargetPlane.IndexBuffer, Format.R32_UInt, 0);
+
+            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+
+            PresentationBase.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, source.Description.Width, source.Description.Height);
+
+            if (target != null)
+                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetRenderTargets(target.renderTarget);
             PresentationBase.GraphicsDevice.ImmediateContext.DrawIndexed(TargetPlane.IndexCount, 0, 0);
         }
 

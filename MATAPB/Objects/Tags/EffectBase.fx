@@ -68,7 +68,9 @@ technique10 MyTechnique
 	pass MyPass
 	{
 		SetVertexShader(CompileShader(vs_5_0, MyVertexShader()));
+#ifdef GS
 		SetGeometryShader(CompileShader(gs_5_0, MyGeometryShader()));
+#endif
 		SetPixelShader(CompileShader(ps_5_0, MyPixelShader()));
 	}
 }

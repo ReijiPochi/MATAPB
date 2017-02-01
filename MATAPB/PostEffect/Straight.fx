@@ -2,7 +2,7 @@
 
 SamplerState tex_sampler
 {
-	Filter = MIN_MAG_LINEAR_MIP_POINT;
+	Filter = MIN_MAG_MIP_POINT;
 };
 
 struct VertexData

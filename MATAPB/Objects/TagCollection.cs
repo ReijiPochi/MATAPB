@@ -224,9 +224,6 @@ namespace MATAPB.Objects
                 }
             }
 
-            if (geometryShader == null)
-                geometryShader = LoadShaderText("DefaultGS.fx");
-
             string[] baseText = LoadShaderText("EffectBase.fx").Split('$');
             string result = null;
 

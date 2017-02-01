@@ -3,6 +3,7 @@ float LineThicknessGS_halfThickness;
 #end
 
 #GS
+#define GS
 [maxvertexcount(6)]
 void MyGeometryShader(line VertexData vertices[2], inout TriangleStream<VertexData> stream)
 {
