@@ -14,7 +14,7 @@ using SharpDX.Direct3D;
 
 namespace MATAPB.PostEffect
 {
-    public abstract class PostEffect
+    public abstract class PostEffect : AutoDisposeObject
     {
         public PostEffect()
         {
@@ -25,26 +25,24 @@ namespace MATAPB.PostEffect
         public InputLayout VertexLayout { get; protected set; }
         protected Plane TargetPlane { get; } = new Plane(2, 2, Orientations.plusZ);
 
-        public virtual void Apply(RenderingCanvas source, RenderingCanvas target)
+        public virtual void Apply(RenderingCanvas source, RenderingCanvas target = null)
         {
-            CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(0).Apply(PresentationBase.GraphicsDevice.ImmediateContext);
-            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.InputLayout = VertexLayout;
-
-            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TargetPlane.VertexBuffer, VertexData.SizeInBytes, 0));
-            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.SetIndexBuffer(TargetPlane.IndexBuffer, Format.R32_UInt, 0);
-
-            PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-
-            PresentationBase.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, source.renderTexture.Description.Width, source.renderTexture.Description.Height);
-
             if (target != null)
-                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetRenderTargets(target.renderTarget);
-            PresentationBase.GraphicsDevice.ImmediateContext.DrawIndexed(TargetPlane.IndexCount, 0, 0);
+                DoApply(source.renderView, target.renderTarget, target.width, target.height);
+            else
+                DoApply(source.renderView, null, source.width, source.height);
         }
 
-        public virtual void Apply(Texture source, RenderingCanvas target)
+        public virtual void Apply(Texture source, RenderingCanvas target = null)
         {
-            CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(0).Apply(PresentationBase.GraphicsDevice.ImmediateContext);
+            if (target != null)
+                DoApply(source.ShaderResource, target.renderTarget, target.width, target.height);
+            else
+                DoApply(source.ShaderResource, null, source.Description.Width, source.Description.Height);
+        }
+
+        protected virtual void DoApply(ShaderResourceView source, RenderTargetView target, int w, int h)
+        {
             PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.InputLayout = VertexLayout;
 
             PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TargetPlane.VertexBuffer, VertexData.SizeInBytes, 0));
@@ -52,10 +50,17 @@ namespace MATAPB.PostEffect
 
             PresentationBase.GraphicsDevice.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
-            PresentationBase.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, source.Description.Width, source.Description.Height);
+            PresentationBase.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, w, h);
 
             if (target != null)
-                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetRenderTargets(target.renderTarget);
+                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetRenderTargets(target);
+
+            Render(0);
+        }
+
+        protected virtual void Render(int pass)
+        {
+            CurrentEffect.GetTechniqueByIndex(0).GetPassByIndex(pass).Apply(PresentationBase.GraphicsDevice.ImmediateContext);
             PresentationBase.GraphicsDevice.ImmediateContext.DrawIndexed(TargetPlane.IndexCount, 0, 0);
         }
 

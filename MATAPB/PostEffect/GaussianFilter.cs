@@ -14,8 +14,7 @@ namespace MATAPB.PostEffect
     {
         public GaussianFilter(int w, int h)
         {
-            temp = new Texture(w, h);
-            tempTrg = new RenderingCanvas(temp);
+            tempTrg = new RenderingCanvas(w, h, 1);
 
             Width = w;
             Height = h;
@@ -37,7 +36,8 @@ namespace MATAPB.PostEffect
         public double Width { get; }
         public double Height { get; }
 
-        Texture temp;
+        public int Detail { get; set; } = 1;
+
         RenderingCanvas tempTrg;
 
         EffectShaderResourceVariable src;
@@ -49,38 +49,34 @@ namespace MATAPB.PostEffect
         float[] weightsValue = new float[8];
         Vector2[] samplePosValues = new Vector2[8];
 
-        public override void Apply(RenderingCanvas source, RenderingCanvas target)
+        protected override void DoApply(ShaderResourceView source, RenderTargetView target, int w, int h)
         {
-            SetSamplePos(2, Width, Height);
+            SetSamplePos(Detail, Width, Height);
 
-            src.SetResource(source.renderView);
+            double offset = Detail * 8;
+
+            src.SetResource(source);
             samplePos.Set(samplePosValues);
-            offsetX.Set(new Vector2((float)(16.0 / Width), 0.0f));
-            offsetY.Set(new Vector2(0.0f, (float)(16.0 / Height)));
+            offsetX.Set(new Vector2((float)(offset / Width), 0.0f));
+            offsetY.Set(new Vector2(0.0f, (float)(offset / Height)));
 
-            base.Apply(source, tempTrg);
+
+            RenderTargetView[] views = null;
+            if (target == null)
+                views = PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.GetRenderTargets(8);
+
+            base.DoApply(source, tempTrg.renderTarget, w, h);
 
             PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.ResetTargets();
-            src.SetResource(temp.ShaderResource);
 
-            base.Apply(source, target);
-        }
+            if (target != null)
+                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(target);
+            else
+                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(views);
 
-        public override void Apply(Texture source, RenderingCanvas target)
-        {
-            SetSamplePos(2, Width, Height);
+            src.SetResource(tempTrg.renderView);
 
-            src.SetResource(source.ShaderResource);
-            samplePos.Set(samplePosValues);
-            offsetX.Set(new Vector2((float)(16.0 / Width), 0.0f));
-            offsetY.Set(new Vector2(0.0f, (float)(16.0 / Height)));
-
-            base.Apply(source, tempTrg);
-
-            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.ResetTargets();
-            src.SetResource(temp.ShaderResource);
-
-            base.Apply(source, target);
+            Render(1);
         }
 
         private void SetWeight(double dispertion)
@@ -109,6 +105,11 @@ namespace MATAPB.PostEffect
                 samplePosValues[i] = new Vector2((float)(pixelOffset / w), (float)(pixelOffset / h));
                 pixelOffset -= skip;
             }
+        }
+
+        protected override void OnDispose()
+        {
+            if (src != null) src.Dispose();
         }
     }
 }

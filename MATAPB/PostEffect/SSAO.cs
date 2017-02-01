@@ -28,13 +28,20 @@ namespace MATAPB.PostEffect
         EffectShaderResourceVariable gBuffer;
         EffectShaderResourceVariable zBuffer;
 
-        public override void Apply(RenderingCanvas source, RenderingCanvas target)
+        public override void Apply(RenderingCanvas source, RenderingCanvas target = null)
         {
             renderTarget.SetResource(source.renderView);
             gBuffer.SetResource(source.geometryView);
             zBuffer.SetResource(source.zView);
 
             base.Apply(source, target);
+        }
+
+        protected override void OnDispose()
+        {
+            if (renderTarget != null) renderTarget.Dispose();
+            if (gBuffer != null) gBuffer.Dispose();
+            if (zBuffer != null) zBuffer.Dispose();
         }
     }
 }

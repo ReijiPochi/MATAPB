@@ -30,5 +30,11 @@ namespace MATAPB.PostEffect
 
             base.Apply(source, target);
         }
+
+        protected override void OnDispose()
+        {
+            if (renderTarget != null) renderTarget.Dispose();
+            if (zBuffer != null) zBuffer.Dispose();
+        }
     }
 }

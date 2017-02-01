@@ -212,6 +212,8 @@ namespace MATAPB
 
         public void SetCanvas()
         {
+            PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.ResetTargets();
+
             if (geometryTarget != null && zTarget != null)
             {
                 PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(depthStencil, renderTarget, geometryTarget, zTarget);
