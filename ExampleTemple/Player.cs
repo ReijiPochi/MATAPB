@@ -17,20 +17,12 @@ namespace ExampleTemple
     {
         public Player()
         {
-            //scoreBg.Tags.AddTag(new SolidColor(SolidColorOverwriteMode.ColorAndAlpha, new MatColor(0.4, 0.1, 0.1, 0.1)));
+            
         }
-
-        //Text score = new Text(500, 200, new MatColor(1, 1, 1, 1));
-        //MATAPB.Objects.Primitive.Plane scoreBg = new MATAPB.Objects.Primitive.Plane(0.25, 0.1, Orientations.plusZ);
-
-        //Vector3 offset = new Vector3(1.0f, -0.5f, 0);
 
         public override void Draw(RenderingContext context)
         {
-            //scoreBg.PSRTag.Position = PlayerCam.Target + offset;
-            //scoreBg.PSRTag.Rotation = new System.Numerics.Vector3((float)(angleUD), (float)(-angleLR), 0);
-            //score.Draw(context);
-            //scoreBg.Draw(context);
+            
         }
     }
 }

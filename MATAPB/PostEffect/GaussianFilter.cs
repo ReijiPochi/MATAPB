@@ -19,7 +19,7 @@ namespace MATAPB.PostEffect
             Width = w;
             Height = h;
 
-            SetWeight(25.0);
+            SetWeight(200.0);
 
             CurrentEffect = TagCollection.Compile(LoadShaderText("GaussianFilter.fx"));
             InitInputLayout();
@@ -36,7 +36,7 @@ namespace MATAPB.PostEffect
         public double Width { get; }
         public double Height { get; }
 
-        public int Detail { get; set; } = 1;
+        public int Detail { get; set; } = 2;
 
         RenderingCanvas tempTrg;
 
@@ -46,14 +46,14 @@ namespace MATAPB.PostEffect
         EffectVectorVariable offsetX;
         EffectVectorVariable offsetY;
 
-        float[] weightsValue = new float[8];
-        Vector2[] samplePosValues = new Vector2[8];
+        float[] weightsValue = new float[16];
+        Vector2[] samplePosValues = new Vector2[16];
 
         protected override void DoApply(ShaderResourceView source, RenderTargetView target, int w, int h)
         {
             SetSamplePos(Detail, Width, Height);
 
-            double offset = Detail * 8;
+            double offset = Detail * 16;
 
             src.SetResource(source);
             samplePos.Set(samplePosValues);
@@ -65,7 +65,7 @@ namespace MATAPB.PostEffect
             if (target == null)
                 views = PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.GetRenderTargets(8);
 
-            base.DoApply(source, tempTrg.renderTarget, w, h);
+            base.DoApply(source, tempTrg.colorTarget, w, h);
 
             PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.ResetTargets();
 
@@ -74,7 +74,7 @@ namespace MATAPB.PostEffect
             else
                 PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(views);
 
-            src.SetResource(tempTrg.renderView);
+            src.SetResource(tempTrg.colorResource);
 
             Render(1);
         }
@@ -83,14 +83,14 @@ namespace MATAPB.PostEffect
         {
             float total = 0.0f;
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 16; i++)
             {
                 double pos = 1.0 + 2.0 * i;
                 weightsValue[i] = (float)Math.Exp(-0.5 * pos * pos / dispertion);
                 total += 2.0f * weightsValue[i];
             }
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 16; i++)
             {
                 weightsValue[i] /= total;
             }
@@ -100,7 +100,7 @@ namespace MATAPB.PostEffect
         {
             int pixelOffset = -1;
 
-            for(int i = 0; i < 8; i++)
+            for(int i = 0; i < 16; i++)
             {
                 samplePosValues[i] = new Vector2((float)(pixelOffset / w), (float)(pixelOffset / h));
                 pixelOffset -= skip;

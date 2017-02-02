@@ -10,6 +10,15 @@ using SharpDX.DXGI;
 
 namespace MATAPB
 {
+    public enum RenderingCanvasMode
+    {
+        Color = 0x0001,
+        Depth = 0x0010,
+        Zbuffer = 0x0100,
+        Gbuffer = 0x1000,
+        Full = 0x1111
+    }
+
     public class RenderingCanvas : AutoDisposeObject
     {
         public RenderingCanvas()
@@ -17,60 +26,72 @@ namespace MATAPB
 
         }
 
-        public RenderingCanvas(int w, int h, int sample)
+        public RenderingCanvas(int w, int h, int sample, RenderingCanvasMode mode = RenderingCanvasMode.Full)
         {
-            Texture tex = new Texture(w, h, sample);
-
-            renderTexture = tex.Tex;
-            renderTarget = new RenderTargetView(PresentationBase.GraphicsDevice, tex.Tex);
-            renderView = new ShaderResourceView(PresentationBase.GraphicsDevice, tex.Tex);
-
-            Texture2DDescription depthBufferDesc = new Texture2DDescription
+            if((mode & RenderingCanvasMode.Color) != 0)
             {
-                ArraySize = 1,
-                BindFlags = BindFlags.DepthStencil,
-                Format = Format.D32_Float,
-                Width = tex.Description.Width,
-                Height = tex.Description.Height,
-                MipLevels = 1,
-                SampleDescription = tex.Description.SampleDescription
-            };
+                Color = new Texture(w, h, sample);
 
-            depthTexture = new Texture2D(PresentationBase.GraphicsDevice, depthBufferDesc);
-            depthStencil = new DepthStencilView(PresentationBase.GraphicsDevice, depthTexture);
+                colorTexture = Color.Tex;
+                colorTarget = new RenderTargetView(PresentationBase.GraphicsDevice, Color.Tex);
+                colorResource = new ShaderResourceView(PresentationBase.GraphicsDevice, Color.Tex);
+            }
 
-            Texture2DDescription zBufferDesc = new Texture2DDescription
+            if((mode & RenderingCanvasMode.Depth) != 0)
             {
-                ArraySize = 1,
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                Format = Format.R32_Float,
-                Width = tex.Description.Width,
-                Height = tex.Description.Height,
-                MipLevels = 1,
-                SampleDescription = tex.Description.SampleDescription
-            };
+                Texture2DDescription depthBufferDesc = new Texture2DDescription
+                {
+                    ArraySize = 1,
+                    BindFlags = BindFlags.DepthStencil,
+                    Format = Format.D32_Float,
+                    Width = w,
+                    Height = h,
+                    MipLevels = 1,
+                    SampleDescription = colorTexture.Description.SampleDescription
+                };
 
-            zTexture = new Texture2D(PresentationBase.GraphicsDevice, zBufferDesc);
-            zTarget = new RenderTargetView(PresentationBase.GraphicsDevice, zTexture);
-            zView = new ShaderResourceView(PresentationBase.GraphicsDevice, zTexture);
+                depthTexture = new Texture2D(PresentationBase.GraphicsDevice, depthBufferDesc);
+                depthStencil = new DepthStencilView(PresentationBase.GraphicsDevice, depthTexture);
+            }
 
-            Texture2DDescription gBufferDesc = new Texture2DDescription
+            if((mode & RenderingCanvasMode.Zbuffer) != 0)
             {
-                ArraySize = 1,
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                Format = Format.R8G8B8A8_UNorm,
-                Width = tex.Description.Width,
-                Height = tex.Description.Height,
-                MipLevels = 1,
-                SampleDescription = tex.Description.SampleDescription
-            };
+                Texture2DDescription zBufferDesc = new Texture2DDescription
+                {
+                    ArraySize = 1,
+                    BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                    Format = Format.R32_Float,
+                    Width = w,
+                    Height = h,
+                    MipLevels = 1,
+                    SampleDescription = colorTexture.Description.SampleDescription
+                };
 
-            geometryTexture = new Texture2D(PresentationBase.GraphicsDevice, gBufferDesc);
-            geometryTarget = new RenderTargetView(PresentationBase.GraphicsDevice, geometryTexture);
-            geometryView = new ShaderResourceView(PresentationBase.GraphicsDevice, geometryTexture);
+                zTexture = new Texture2D(PresentationBase.GraphicsDevice, zBufferDesc);
+                zTarget = new RenderTargetView(PresentationBase.GraphicsDevice, zTexture);
+                zResource = new ShaderResourceView(PresentationBase.GraphicsDevice, zTexture);
+            }
 
-            width = tex.Description.Width;
-            height = tex.Description.Height;
+            if((mode & RenderingCanvasMode.Gbuffer) != 0)
+            {
+                Texture2DDescription gBufferDesc = new Texture2DDescription
+                {
+                    ArraySize = 1,
+                    BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                    Format = Format.R8G8B8A8_UNorm,
+                    Width = w,
+                    Height = h,
+                    MipLevels = 1,
+                    SampleDescription = colorTexture.Description.SampleDescription
+                };
+
+                geometryTexture = new Texture2D(PresentationBase.GraphicsDevice, gBufferDesc);
+                geometryTarget = new RenderTargetView(PresentationBase.GraphicsDevice, geometryTexture);
+                geometryView = new ShaderResourceView(PresentationBase.GraphicsDevice, geometryTexture);
+            }
+
+            Width = w;
+            Height = h;
         }
 
         public RenderingCanvas(Texture tex)
@@ -81,9 +102,9 @@ namespace MATAPB
             //    Dimension = RenderTargetViewDimension.Texture2D
             //};
 
-            renderTexture = tex.Tex;
-            renderTarget = new RenderTargetView(PresentationBase.GraphicsDevice, tex.Tex);
-            renderView = new ShaderResourceView(PresentationBase.GraphicsDevice, tex.Tex);
+            colorTexture = tex.Tex;
+            colorTarget = new RenderTargetView(PresentationBase.GraphicsDevice, tex.Tex);
+            colorResource = new ShaderResourceView(PresentationBase.GraphicsDevice, tex.Tex);
 
             Texture2DDescription depthBufferDesc = new Texture2DDescription
             {
@@ -112,7 +133,7 @@ namespace MATAPB
 
             zTexture = new Texture2D(PresentationBase.GraphicsDevice, zBufferDesc);
             zTarget = new RenderTargetView(PresentationBase.GraphicsDevice, zTexture);
-            zView = new ShaderResourceView(PresentationBase.GraphicsDevice, zTexture);
+            zResource = new ShaderResourceView(PresentationBase.GraphicsDevice, zTexture);
 
             Texture2DDescription gBufferDesc = new Texture2DDescription
             {
@@ -129,17 +150,17 @@ namespace MATAPB
             geometryTarget = new RenderTargetView(PresentationBase.GraphicsDevice, geometryTexture);
             geometryView = new ShaderResourceView(PresentationBase.GraphicsDevice, geometryTexture);
 
-            width = tex.Description.Width;
-            height = tex.Description.Height;
+            Width = tex.Description.Width;
+            Height = tex.Description.Height;
         }
 
         public static RenderingCanvas FromTexture2D(Texture2D tex2D)
         {
             RenderingCanvas result = new RenderingCanvas();
 
-            result.renderTexture = tex2D;
-            result.renderTarget = new RenderTargetView(PresentationBase.GraphicsDevice, tex2D);
-            result.renderView = new ShaderResourceView(PresentationBase.GraphicsDevice, tex2D);
+            result.colorTexture = tex2D;
+            result.colorTarget = new RenderTargetView(PresentationBase.GraphicsDevice, tex2D);
+            result.colorResource = new ShaderResourceView(PresentationBase.GraphicsDevice, tex2D);
 
             Texture2DDescription depthBufferDesc = new Texture2DDescription
             {
@@ -168,7 +189,7 @@ namespace MATAPB
 
             result.zTexture = new Texture2D(PresentationBase.GraphicsDevice, zBufferDesc);
             result.zTarget = new RenderTargetView(PresentationBase.GraphicsDevice, result.zTexture);
-            result.zView = new ShaderResourceView(PresentationBase.GraphicsDevice, result.zTexture);
+            result.zResource = new ShaderResourceView(PresentationBase.GraphicsDevice, result.zTexture);
 
             Texture2DDescription gBufferDesc = new Texture2DDescription
             {
@@ -185,30 +206,32 @@ namespace MATAPB
             result.geometryTarget = new RenderTargetView(PresentationBase.GraphicsDevice, result.geometryTexture);
             result.geometryView = new ShaderResourceView(PresentationBase.GraphicsDevice, result.geometryTexture);
 
-            result.width = tex2D.Description.Width;
-            result.height = tex2D.Description.Height;
+            result.Width = tex2D.Description.Width;
+            result.Height = tex2D.Description.Height;
 
             return result;
         }
 
         public Color4 color = new Color4(0.0f, 0.0f, 0.0f, 0.0f);
 
-        public Texture2D renderTexture;
-        public RenderTargetView renderTarget;
-        public ShaderResourceView renderView;
+        public Texture Color { get; }
+        public Texture2D colorTexture;
+        public RenderTargetView colorTarget;
+        public ShaderResourceView colorResource;
 
         public Texture2D depthTexture;
         public DepthStencilView depthStencil;
 
         public Texture2D zTexture;
         public RenderTargetView zTarget;
-        public ShaderResourceView zView;
+        public ShaderResourceView zResource;
 
         public Texture2D geometryTexture;
         public RenderTargetView geometryTarget;
         public ShaderResourceView geometryView;
 
-        public int width, height;
+        public int Width { get; protected set; }
+        public int Height { get; protected set; }
 
         public void SetCanvas()
         {
@@ -216,19 +239,19 @@ namespace MATAPB
 
             if (geometryTarget != null && zTarget != null)
             {
-                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(depthStencil, renderTarget, geometryTarget, zTarget);
+                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(depthStencil, colorTarget, geometryTarget, zTarget);
             }
             else
             {
-                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(depthStencil, renderTarget);
+                PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(depthStencil, colorTarget);
             }
         }
 
         public void ClearCanvas()
         {
-            PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(renderTarget, color);
-            PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(geometryTarget, Color.Black);
-            PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(zTarget, Color.Transparent);
+            PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(colorTarget, color);
+            PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(geometryTarget, SharpDX.Color.Black);
+            PresentationBase.GraphicsDevice.ImmediateContext.ClearRenderTargetView(zTarget, SharpDX.Color.Transparent);
             PresentationBase.GraphicsDevice.ImmediateContext.ClearDepthStencilView(depthStencil, DepthStencilClearFlags.Depth, 1.0f, 0);
         }
 
@@ -239,24 +262,24 @@ namespace MATAPB
 
         public void Resolve(Texture target)
         {
-            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(renderTexture, 0, target.Tex, 0, Format.B8G8R8A8_UNorm);
+            PresentationBase.GraphicsDevice.ImmediateContext.ResolveSubresource(colorTexture, 0, target.Tex, 0, Format.B8G8R8A8_UNorm);
         }
 
         protected override void OnDispose()
         {
-            if (renderTarget != null) renderTarget.Dispose();
+            if (colorTarget != null) colorTarget.Dispose();
             if (depthStencil != null) depthStencil.Dispose();
             if (geometryTarget != null) geometryTarget.Dispose();
             if (zTarget != null) zTarget.Dispose();
 
-            if (renderTexture != null) renderTexture.Dispose();
+            if (colorTexture != null) colorTexture.Dispose();
             if (depthTexture != null) depthTexture.Dispose();
             if (geometryTexture != null) geometryTexture.Dispose();
             if (zTexture != null) zTexture.Dispose();
 
-            if (renderView != null) renderView.Dispose();
+            if (colorResource != null) colorResource.Dispose();
             if (geometryView != null) geometryView.Dispose();
-            if (zView != null) zView.Dispose();
+            if (zResource != null) zResource.Dispose();
         }
     }
 }

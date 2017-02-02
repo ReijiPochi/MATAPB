@@ -23,7 +23,7 @@ namespace MATAPB.PostEffect
 
         public override void Apply(RenderingCanvas source, RenderingCanvas target = null)
         {
-            renderTarget.SetResource(source.renderView);
+            renderTarget.SetResource(source.colorResource);
 
             base.Apply(source, target);
         }
@@ -37,7 +37,7 @@ namespace MATAPB.PostEffect
 
         protected override void OnDispose()
         {
-            if (renderTarget != null) renderTarget.Dispose();
+            renderTarget?.Dispose();
         }
     }
 }

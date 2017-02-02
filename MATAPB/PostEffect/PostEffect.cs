@@ -28,15 +28,15 @@ namespace MATAPB.PostEffect
         public virtual void Apply(RenderingCanvas source, RenderingCanvas target = null)
         {
             if (target != null)
-                DoApply(source.renderView, target.renderTarget, target.width, target.height);
+                DoApply(source.colorResource, target.colorTarget, target.Width, target.Height);
             else
-                DoApply(source.renderView, null, source.width, source.height);
+                DoApply(source.colorResource, null, source.Width, source.Height);
         }
 
         public virtual void Apply(Texture source, RenderingCanvas target = null)
         {
             if (target != null)
-                DoApply(source.ShaderResource, target.renderTarget, target.width, target.height);
+                DoApply(source.ShaderResource, target.colorTarget, target.Width, target.Height);
             else
                 DoApply(source.ShaderResource, null, source.Description.Width, source.Description.Height);
         }

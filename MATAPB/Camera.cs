@@ -38,8 +38,8 @@ namespace MATAPB
         {
             if (PresentationBase.GraphicsDevice == null) return;
 
-            ViewPortWidth = (int)context.canvas.width;
-            ViewPortHeight = (int)context.canvas.height;
+            ViewPortWidth = (int)context.canvas.Width;
+            ViewPortHeight = (int)context.canvas.Height;
             PresentationBase.GraphicsDevice.ImmediateContext.Rasterizer.SetViewport(0, 0, ViewPortWidth, ViewPortHeight);
         }
     }

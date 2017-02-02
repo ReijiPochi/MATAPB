@@ -166,11 +166,13 @@ namespace MATAPB
         public static void LockObjects()
         {
             AnimationObject.Lock();
+            ActionObject.Lock();
         }
 
         public static void UnlockObjects()
         {
             AnimationObject.Unlock();
+            ActionObject.Unlock();
         }
 
         private static void AnimationClock_Tick(long time)
@@ -206,7 +208,7 @@ namespace MATAPB
 
                 SetAndClearBackBuffer();
 
-                presentEffect.Apply(ResolvedTexture, null);
+                World.Effect?.Apply(ResolvedTexture, null);
 
                 SwapChain.Present(0, PresentFlags.None);
             }

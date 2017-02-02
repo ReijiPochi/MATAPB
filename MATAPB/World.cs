@@ -32,7 +32,7 @@ namespace MATAPB
 
         public SharpDX.Direct3D11.Buffer WorldConstantBuffer { get; protected set; }
 
-        public PostEffect.PostEffect Effect { get; set; }
+        public PostEffect.PostEffect Effect { get; set; } = new Straight();
 
 
         public virtual void Render(RenderingContext context)

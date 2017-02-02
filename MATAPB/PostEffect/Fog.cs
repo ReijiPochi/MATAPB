@@ -25,8 +25,8 @@ namespace MATAPB.PostEffect
 
         public override void Apply(RenderingCanvas source, RenderingCanvas target)
         {
-            renderTarget.SetResource(source.renderView);
-            zBuffer.SetResource(source.zView);
+            renderTarget.SetResource(source.colorResource);
+            zBuffer.SetResource(source.zResource);
 
             base.Apply(source, target);
         }

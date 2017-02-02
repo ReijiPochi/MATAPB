@@ -30,9 +30,9 @@ namespace MATAPB.PostEffect
 
         public override void Apply(RenderingCanvas source, RenderingCanvas target = null)
         {
-            renderTarget.SetResource(source.renderView);
+            renderTarget.SetResource(source.colorResource);
             gBuffer.SetResource(source.geometryView);
-            zBuffer.SetResource(source.zView);
+            zBuffer.SetResource(source.zResource);
 
             base.Apply(source, target);
         }
