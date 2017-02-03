@@ -1,10 +1,5 @@
-﻿Texture2D renderTarget;
-Texture2D zBuffer;
-
-SamplerState tex_sampler
-{
-	Filter = MIN_MAG_LINEAR_MIP_POINT;
-};
+﻿Texture2DMS<float4, 4> renderTarget;
+Texture2DMS<float, 4> zBuffer;
 
 struct VertexData
 {
@@ -15,19 +10,23 @@ struct VertexData
 
 VertexData MyVertexShader(VertexData vertex)
 {
+	vertex.texCoord.x *= 1368;
+	vertex.texCoord.y *= 912;
 	return vertex;
 }
 
 float4 MyPixelShader(VertexData vertex) : SV_Target
 {
+	int2 index = int2(vertex.texCoord.x, vertex.texCoord.y);
 	float4 result;
-	result = renderTarget.Sample(tex_sampler, vertex.texCoord);
 
-	float fog = saturate(zBuffer.Sample(tex_sampler, vertex.texCoord) - 0.02);
-	if (fog > 0.3) fog = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		float fog = saturate(zBuffer.Load(index, i) - 0.02);
+		result += renderTarget.Load(index, i) + fog * 40.0;
+	}
 
-	result.rg += fog * 4.0;
-	result.b += fog * 4.5;
+	result /= 4;
 
 	return result;
 }

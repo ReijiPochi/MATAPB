@@ -12,12 +12,9 @@ namespace MATAPB.PostEffect
 {
     public class GaussianFilter : PostEffect
     {
-        public GaussianFilter(int w, int h)
+        public GaussianFilter(RenderingCanvas tempCanvas)
         {
-            tempTrg = new RenderingCanvas(w, h, 1);
-
-            Width = w;
-            Height = h;
+            tempTrg = tempCanvas;
 
             SetWeight(200.0);
 
@@ -32,9 +29,6 @@ namespace MATAPB.PostEffect
 
             weights.Set(weightsValue);
         }
-
-        public double Width { get; }
-        public double Height { get; }
 
         public int Detail { get; set; } = 2;
 
@@ -51,14 +45,14 @@ namespace MATAPB.PostEffect
 
         protected override void DoApply(ShaderResourceView source, RenderTargetView target, int w, int h)
         {
-            SetSamplePos(Detail, Width, Height);
+            SetSamplePos(Detail, tempTrg.Width, tempTrg.Height);
 
             double offset = Detail * 16;
 
             src.SetResource(source);
             samplePos.Set(samplePosValues);
-            offsetX.Set(new Vector2((float)(offset / Width), 0.0f));
-            offsetY.Set(new Vector2(0.0f, (float)(offset / Height)));
+            offsetX.Set(new Vector2((float)(offset / tempTrg.Width), 0.0f));
+            offsetY.Set(new Vector2(0.0f, (float)(offset / tempTrg.Height)));
 
 
             RenderTargetView[] views = null;

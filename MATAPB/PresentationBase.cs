@@ -74,7 +74,8 @@ namespace MATAPB
                 new RasterizerStateDescription()
                 {
                     CullMode = CullMode.None,
-                    FillMode = SharpDX.Direct3D11.FillMode.Solid
+                    FillMode = SharpDX.Direct3D11.FillMode.Solid,
+                    IsMultisampleEnabled = true
                 });
 
             using (state)
@@ -93,11 +94,7 @@ namespace MATAPB
             BackBuffer = new RenderTargetView(GraphicsDevice, BackBufferTexture);
 
             ResolvedTexture = new Texture((int)(ViewArea.ActualWidth), (int)(ViewArea.ActualHeight), 1);
-
-            presentEffect = new GaussianFilter(BackBufferTexture.Description.Width, BackBufferTexture.Description.Height);
         }
-
-        private static PostEffect.PostEffect presentEffect;
 
         private static double _FPS = 60.0;
         public static double FPS
@@ -183,6 +180,11 @@ namespace MATAPB
             Render();
         }
 
+        public static void SetBackBuffer()
+        {
+            GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(BackBuffer);
+        }
+
         public static void SetAndClearBackBuffer()
         {
             GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(BackBuffer);
@@ -199,14 +201,15 @@ namespace MATAPB
                     canvas = DefaultCanvas
                 };
 
-                DefaultCanvas.ClearCanvas();
+                SetAndClearBackBuffer();
                 DefaultCanvas.SetCanvas();
+                DefaultCanvas.ClearCanvas();
 
                 World.Render(context);
 
                 DefaultCanvas.Resolve(ResolvedTexture);
 
-                SetAndClearBackBuffer();
+                GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(BackBuffer);
 
                 World.Effect?.Apply(ResolvedTexture, null);
 

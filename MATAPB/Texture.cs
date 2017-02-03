@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using SharpDX.Direct3D11;
-using SharpDX;
+using SharpDX.Direct3D;
 using SharpDX.DXGI;
 
 namespace MATAPB
@@ -30,13 +30,15 @@ namespace MATAPB
 
             Tex = new Texture2D(PresentationBase.GraphicsDevice, Description);
 
-            //ShaderResourceViewDescription srvDesc = new ShaderResourceViewDescription()
-            //{
-            //    Format = Format.R8G8B8A8_UNorm,
-            //    Dimension = SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
-            //};
+            ShaderResourceViewDescription srvDesc = new ShaderResourceViewDescription()
+            {
+                Dimension = ShaderResourceViewDimension.Texture2DMultisampled
+            };
 
-            ShaderResource = new ShaderResourceView(PresentationBase.GraphicsDevice, Tex);
+            if (sample > 1)
+                ShaderResource = new ShaderResourceView(PresentationBase.GraphicsDevice, Tex, srvDesc);
+            else
+                ShaderResource = new ShaderResourceView(PresentationBase.GraphicsDevice, Tex);
         }
 
         public ShaderResourceView ShaderResource { get; set; }

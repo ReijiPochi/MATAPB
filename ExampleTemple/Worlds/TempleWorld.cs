@@ -42,6 +42,7 @@ namespace ExampleTemple.Worlds
             //map.PSRTag.Scale = new MatVector3(0.1);
             map.Tags.AddTag(new Tag[] { new ColorTexture(@"Objects\Map.png"), new Lighting() });
             sky.Tags.AddTag(new ColorTexture(@"Objects\Skydome.png"));
+            sky.Tags.OutputToGZbuffer = false;
 
             image.Tags.InsertToFirst(hopup);
             image.PSRTag.Position = new Vector3(0.0f, 2.0f, -6.2f);
@@ -76,7 +77,12 @@ namespace ExampleTemple.Worlds
             hitArea.MinePosition = image.PSRTag.Position;
             hitArea.MineRadius = 2.0;
             hitArea.Hysteresis = 0.5;
+
+            bokashi = new GaussianFilter(canvas);
         }
+
+        RenderingCanvas canvas = new RenderingCanvas((int)PresentationBase.ViewArea.ActualWidth, (int)PresentationBase.ViewArea.ActualHeight, 4);
+        RenderingCanvas temp = new RenderingCanvas((int)PresentationBase.ViewArea.ActualWidth, (int)PresentationBase.ViewArea.ActualHeight, 1);
 
         Object3D map = new Object3D(@"Objects\Map.obj");
         Object3D mapArea = new Object3D(@"Objects\MapArea.obj");
@@ -107,7 +113,9 @@ namespace ExampleTemple.Worlds
         HUDWorld hudWorld = new HUDWorld();
         MiniMapWorld miniMapWorld = new MiniMapWorld();
 
-        MATAPB.PostEffect.SSAO ssao = new MATAPB.PostEffect.SSAO();
+        //MATAPB.PostEffect.SSAO ssao = new MATAPB.PostEffect.SSAO();
+        MATAPB.PostEffect.Fog fog = new MATAPB.PostEffect.Fog();
+        GaussianFilter bokashi;
 
         private void HitArea_MineHit()
         {
@@ -135,12 +143,22 @@ namespace ExampleTemple.Worlds
                 miniMapWorld.Render(context);
             }
 
-            PresentationBase.DefaultCanvas.SetCanvas();
+            canvas.SetCanvas();
+            //PresentationBase.DefaultCanvas.SetCanvas();
             {
-                PresentationBase.DefaultCanvas.ClearCanvas();
-                context.canvas = PresentationBase.DefaultCanvas;
+                //PresentationBase.DefaultCanvas.ClearCanvas();
+                canvas.ClearCanvas();
+                //context.canvas = PresentationBase.DefaultCanvas;
+                context.canvas = canvas;
                 base.Render(context);
             }
+
+            //PresentationBase.GraphicsDevice.ImmediateContext.OutputMerger.SetTargets(PresentationBase.BackBuffer);
+            fog.Apply(canvas, PresentationBase.DefaultCanvas);
+            //bokashi.Apply(temp, PresentationBase.DefaultCanvas);
+
+            PresentationBase.DefaultCanvas.SetCanvas();
+            context.canvas = PresentationBase.DefaultCanvas;
 
             hudWorld.Render(context);
         }
